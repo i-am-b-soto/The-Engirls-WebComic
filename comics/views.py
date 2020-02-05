@@ -194,7 +194,8 @@ def view_panel(request, comic_pk =-1 ):
 			elif comic_panel.chapter +1 in chapters:
 				next_comic_pk = ComicPanel.objects.all().get(
 					chapter = comic_panel.chapter+1, 
-					episode = ComicPanel.objects.filter(chapter = comic_panel.chapter +1).order_by(F("episode").asc(nulls_last=True)).first()).pk
+					episode = ComicPanel.objects.filter(
+						chapter = comic_panel.chapter +1).order_by(F("episode").asc(nulls_last=True)).first().episode).pk
 				
 			# Is the previous episode in the current chapter?
 			if ComicPanel.objects.filter(chapter=comic_panel.chapter, episode = comic_panel.episode -1).exists():
@@ -204,9 +205,10 @@ def view_panel(request, comic_pk =-1 ):
 			elif comic_panel.chapter -1 in chapters:
 
 				#Find the last episode in the previous chapter  
-				prev_comic_pk = ComicPanel.objects.all.get(
+				prev_comic_pk = ComicPanel.objects.all().get(
 					chapter=comic_panel.chapter -1, 
-					episode=ComicPanel.objects.filter(chapter = comic_panel.chapter -1).order_by(F("episode").desc(nulls_last=True)).first()).pk
+					episode=ComicPanel.objects.filter(
+						chapter = comic_panel.chapter -1).order_by(F("episode").desc(nulls_last=True)).first().episode).pk
 				
 
 			# Tell the tag db to get alist of tags from the picture
