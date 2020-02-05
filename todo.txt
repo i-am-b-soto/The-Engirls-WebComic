@@ -1,0 +1,9 @@
+1) Add validation in the admin form to make sure chapter, episode is unique
+2) Finish view_panel
+	2a. oldest comic, prev comic, next comic, latest comic 
+		* Done, In need of testing 2-4-2020
+3) Make sure custom template for comic_panel works
+4) Add Autocomplete on Tag in Admin page
+5) Instagram, Facebook links? 
+
+... More to come

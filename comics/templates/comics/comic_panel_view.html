@@ -1,0 +1,80 @@
+{% extends "comics/base.html" %}
+{% block main_content %}
+
+	{% load static %}
+  	<!-- Bootstrap core CSS -->
+  	<link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  	<link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
+
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <div class="row">
+
+      <div class = "col"></div>
+
+      <!-- Post Content Column -->
+      <div class="col-lg-8">
+
+        <!-- Title -->
+        <h1 class="mt-4">{{ comic_panel.title }}</h1>
+
+        <hr>
+
+        <!-- Date/Time -->
+        <p>Posted on {{ comic_panel.uploadTime }}</p>
+
+        <hr>
+
+        <!-- Preview Image -->
+
+      <img class="rounded img-fluid" src="{{ MEDIA_URL }}{{ comic_panel.image }}" alt="{{ comic_panel.caption }}">
+      
+      <hr>
+
+      <p class = "lead"> {{ comic_panel.description | safe }} </p>
+
+         <!-- Description -->
+      <!-- {{ comic_panel.description }} -->
+        <!-- First Prev Next Latest -->
+        <div class="card my-4">
+          <h5 class="card-header text-center">
+
+          	<!-- Button to oldest comic -->
+          	{% if oldest_comic_pk != comic_panel.pk %}
+          		<a href="{% url 'view_panel' comic_pk=oldest_comic_pk %}" role="button" class="btn btn-outline-dark active" aria-pressed="true"> << First </a>
+          		<a href="{% url 'view_panel' comic_pk=prev_comic_pk %}" role="button" class="btn btn-outline-dark active" aria-pressed="true"> << Previous </a>
+          	{% endif %}
+
+          	<!-- Button to previous comic -->
+           	{% if newest_comic_pk != comic_panel.pk %}
+          		<a href="{% url 'view_panel' comic_pk=next_comic_pk %}" role="button" class="btn btn-outline-dark active" aria-pressed="true"> Next > </a>
+          		<a href="{% url 'view_panel' comic_pk=newest_comic_pk %}" role="button" class="btn btn-outline-dark active" aria-pressed="true"> Latest >> </a>           		
+          	{% endif %}
+
+
+          	<!-- Button to next comic-->         	
+          </h5>
+     
+        </div>
+      <!-- col-lg -->
+      </div>        
+      <hr> 
+
+      <!-- 3rd column -->
+      <div class = col></div>
+
+    </div>
+    <!-- /.row -->
+   
+  </div>
+  <!-- /.container -->
+
+  	<!-- Bootstrap core JavaScript -->
+  	<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  	<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+
+
+{% endblock %}
