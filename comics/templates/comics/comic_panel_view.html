@@ -12,58 +12,68 @@
 
     <div class="row">
 
-      <div class = "col"></div>
+      <div class = "col-sm"></div>
 
       <!-- Post Content Column -->
-      <div class="col-lg-8">
+      <div class="col-sm-8">
 
         <!-- Title -->
-        <h1 class="mt-4">{{ comic_panel.title }}</h1>
-
-        <hr>
-
-        <!-- Date/Time -->
-        <p>Posted on {{ comic_panel.uploadTime }}</p>
+        <div class="mt-4 engirls_font_large">
+          <h1>{{ comic_panel.title }}</h1> <p class = "engirls_font_norm">{{ comic_panel.uploadTime }}</p>
+        </div>
 
         <hr>
 
         <!-- Preview Image -->
+      <div class="shadow">
+        <img class="rounded img-fluid" src="{{ MEDIA_URL }}{{ comic_panel.image }}" alt="{{ comic_panel.caption }}">
+      </div>
+      <hr>  
 
-      <img class="rounded img-fluid" src="{{ MEDIA_URL }}{{ comic_panel.image }}" alt="{{ comic_panel.caption }}">
-      
-      <hr>
+           <div class = "container">
+              <div class = "row">
+                 <!-- Button to oldest comic -->
+                 {% if oldest_comic_pk != comic_panel.pk %}
+                  <div class = "col-3 engirls_font_norm">
+                    <a href="{% url 'view_panel' comic_pk=oldest_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> << First </a>
+                  </div>
+                  <div class = "col-3 engirls_font_norm">
+                    <a href="{% url 'view_panel' comic_pk=prev_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> < Prev </a>
+                  </div>
+                 {% endif %}
+                <!-- Button to previous comic -->
+                {% if newest_comic_pk != comic_panel.pk %}
+                  <div class = "col-3 engirls_font_norm">
+                    <a href="{% url 'view_panel' comic_pk=next_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> Next > </a>
+                  </div>
+                  <div class = "col-3 engirls_font_norm">
+                    <a href="{% url 'view_panel' comic_pk=newest_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> Newest >> </a>
+                  </div> 
+                {% endif %}
+                <!-- row --> 
+                </div>            
+             
+              <!-- Container -->
+              </div>
+            <hr>                  
 
-      <p class = "lead"> {{ comic_panel.description | safe }} </p>
-
+      <div class="card my-4">
          <!-- Description -->
-      <!-- {{ comic_panel.description }} -->
-        <!-- First Prev Next Latest -->
-        <div class="card my-4">
-          <h5 class="card-header text-center">
 
-          	<!-- Button to oldest comic -->
-          	{% if oldest_comic_pk != comic_panel.pk %}
-          		<a href="{% url 'view_panel' comic_pk=oldest_comic_pk %}" role="button" class="btn btn-outline-dark active" aria-pressed="true"> << First </a>
-          		<a href="{% url 'view_panel' comic_pk=prev_comic_pk %}" role="button" class="btn btn-outline-dark active" aria-pressed="true"> << Previous </a>
-          	{% endif %}
-
-          	<!-- Button to previous comic -->
-           	{% if newest_comic_pk != comic_panel.pk %}
-          		<a href="{% url 'view_panel' comic_pk=next_comic_pk %}" role="button" class="btn btn-outline-dark active" aria-pressed="true"> Next > </a>
-          		<a href="{% url 'view_panel' comic_pk=newest_comic_pk %}" role="button" class="btn btn-outline-dark active" aria-pressed="true"> Latest >> </a>           		
-          	{% endif %}
-
-
-          	<!-- Button to next comic-->         	
-          </h5>
-     
+        <div class="card-body">
+          <!-- <p class = "lead"> </p> -->
+            {{ comic_panel.description | safe }} 
         </div>
+
+        <!-- card -->
+        </div>
+
       <!-- col-lg -->
-      </div>        
-      <hr> 
+      </div> 
+
 
       <!-- 3rd column -->
-      <div class = col></div>
+      <div class = col-sm></div>
 
     </div>
     <!-- /.row -->
