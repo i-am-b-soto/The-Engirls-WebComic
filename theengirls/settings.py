@@ -26,8 +26,7 @@ SECRET_KEY = 'fs-i8la@(b(tuq9!ey16qi$+a=d2&0kuc2f&k0orj0y%22kc#h'
 DEBUG = True
 DEBUG_FILE = "Debug_Log.txt"
 
-ALLOWED_HOSTS = ['192.168.1.83', '192.168.56.1']
-
+ALLOWED_HOSTS = ['192.168.{}.{}'.format(i,j) for i in range(256) for j in range(256)]
 
 # Application definition
 
@@ -40,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ckeditor',
     'comics',
+    'dal',
+    'dal_select2'
 ]
 
 MIDDLEWARE = [

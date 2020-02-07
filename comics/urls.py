@@ -7,6 +7,7 @@ urlpatterns = [
 	#Path(route, view: httpRequest, kwargs, name)
     path('', views.index, name='index'),
     path('<int:comic_pk>/',views.view_panel, name ='view_panel'),
-    path('archive/', views.view_archive, name = 'archive')
-    #,path('tag-autocomplete/', TagAutocomplete.as_view(), name='tag-autocomplete')
+    path('archive/<int:page>/', views.view_archive, name = 'view_archive'),
+    path('archive/', views.view_archive, name = 'view_archive'),
+    path('series-autocomplete/', views.SeriesAutocomplete.as_view(), name='series-autocomplete')
 ]

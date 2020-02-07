@@ -1,0 +1,41 @@
+{% extends "comics/base.html" %}
+{% block main_content %}
+
+	{% load static %}
+  	<!-- Bootstrap core CSS -->
+  	<link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  	<link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
+
+<div class="album py-5 bg-light">
+  	<div class ="container">
+  		<!-- Pictures -->
+		<div class="row">
+			{% for comic in comics %}
+			<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
+				<div class="card mb-4 shadow">
+					<div class="card-header engirls_font_normal"> 
+						{{ comic.title }} 
+					</div>
+					<div class ="card-img-top">
+						<a href="{% url 'view_panel' comic_pk=comic.pk %}">
+							<img class="rounded" src="{{ comic.thumbnail.url }}" />
+						</a>
+						<hr>
+						<div class = "engirls_font_normal">Tags: </div>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	<!-- row -->
+	</div>
+<!-- container-->
+</div>
+<!-- album -->
+
+
+   	<!-- Bootstrap core JavaScript -->
+  	<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  	<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+ {% endblock %}

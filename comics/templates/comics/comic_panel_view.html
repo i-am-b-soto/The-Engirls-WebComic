@@ -34,21 +34,25 @@
               <div class = "row">
                  <!-- Button to oldest comic -->
                  {% if oldest_comic_pk != comic_panel.pk %}
-                  <div class = "col-3 engirls_font_norm">
-                    <a href="{% url 'view_panel' comic_pk=oldest_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> << First </a>
-                  </div>
-                  <div class = "col-3 engirls_font_norm">
-                    <a href="{% url 'view_panel' comic_pk=prev_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> < Prev </a>
-                  </div>
+                    <div class = "col-3 engirls_font_norm">
+                      <a href="{% url 'view_panel' comic_pk=oldest_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> << First </a>
+                    </div>
+                    {% if prev_comic_pk != -1 %}
+                      <div class = "col-3 engirls_font_norm">
+                        <a href="{% url 'view_panel' comic_pk=prev_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> < Prev </a>
+                      </div>
+                    {% endif%}
                  {% endif %}
                 <!-- Button to previous comic -->
                 {% if newest_comic_pk != comic_panel.pk %}
-                  <div class = "col-3 engirls_font_norm">
-                    <a href="{% url 'view_panel' comic_pk=next_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> Next > </a>
-                  </div>
-                  <div class = "col-3 engirls_font_norm">
-                    <a href="{% url 'view_panel' comic_pk=newest_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> Newest >> </a>
-                  </div> 
+                    {%  if next_comic_pk != -1%}
+                      <div class = "col-3 engirls_font_norm">
+                        <a href="{% url 'view_panel' comic_pk=next_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> Next > </a>
+                      </div>
+                    {% endif %}
+                    <div class = "col-3 engirls_font_norm">
+                      <a href="{% url 'view_panel' comic_pk=newest_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> Newest >> </a>
+                    </div> 
                 {% endif %}
                 <!-- row --> 
                 </div>            
@@ -61,7 +65,6 @@
          <!-- Description -->
 
         <div class="card-body">
-          <!-- <p class = "lead"> </p> -->
             {{ comic_panel.description | safe }} 
         </div>
 

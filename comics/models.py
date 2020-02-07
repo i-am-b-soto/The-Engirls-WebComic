@@ -20,6 +20,9 @@ class ComicPanel(models.Model):
 	#TODO, Change this if approperiate
 	description = RichTextField()
 	caption = models.CharField(max_length = 500)
+
+
+	series = models.CharField(max_length = 255, null = False, blank = False, default = "main", help_text="Label the series as main to be the default comic series" )
 	chapter = models.FloatField(null = True, blank = True)
 	episode = models.IntegerField(null = True, blank = True)
 	#chapter = models.FloatField(null=True, validators=[MinValueValidator(1)])
@@ -30,101 +33,67 @@ class ComicPanel(models.Model):
 	uploadTime = models.DateField(default=timezone.now)
 
 	# (width, height) of thumbnail
-	_thumbnail_size = (241, 200)
+	_thumbnail_size = (150, 100)
 	# Thumbnail of the picture
 	thumbnail = models.ImageField(
-		upload_to='thumbnails/',
+		upload_to='comics/thumbnails/',
 		null=True,
 		blank=True)  # the small 200x200 picture object   
 
 	class Meta:
 		constraints = [
-			models.UniqueConstraint(fields=['chapter', 'episode'], name='Must be null or unique')
+			models.UniqueConstraint(fields=['series','chapter', 'episode'], name='Must be null or unique')
 			]
 
 	def __str__(self):
 		return self.title
 
-	def _get_inner_crop_dimens(self, image):
-		'''Return tuple of dimensions for inner crop of thumnail image.'''
 
-		# Get dimensions of image
-		image_width, image_height = image.size
 
-		# Check if image size is unreasonable
-		# TODO: See if this error check can be tossed
-		if image_width < int(self._thumbnail_size[0]) \
-			or image_height < int(self._thumbnail_size[1]):
-			return (0, 0, 5, 5)
-
-		# Get image center point
-		image_center_width = image_width / 2
-		image_center_height = image_height /2
-
-		# Get origin and end point of crop
-		origin_x = image_center_width - int(self._thumbnail_size[0] / 2)
-		origin_y = image_center_height - int(self._thumbnail_size[1] / 2)
-		end_x = origin_x + int(self._thumbnail_size[0])
-		end_y = origin_y + int(self._thumbnail_size[1])
-
-		# Final dimensions of crop
-		crop_dimens = (origin_x, origin_y, end_x, end_y)
-		#print "crop dimens: " + ','.join([str(cd) for cd in crop_dimens])
-
-		return crop_dimens	
 
 	def generateThumbnail(self):
 		'''Generate a center-zoom square thumbnail of original image.'''
+		# Original code: https://gist.github.com/valberg/2429288
 
-		mode =''
-		pixelColorValues = None
+	  # Set our max thumbnail size in a tuple (max width, max height)
+		THUMBNAIL_SIZE = self._thumbnail_size
 
-		# See what kind of file we are dealing with
-		if self.image.name.endswith('.jpg'):
-			pilImageType = 'jpeg'
-			fileExtension = 'jpg'
-			djangoType = 'image/jpeg'
-			mode = 'RGB'
-			pixelColorValues = (255,255,255)
-		elif self.image.name.endswith(".png"):
-			pilImageType = "png"
-			fileExtension = "png"
-			djangoType = 'image/png'
-			mode = 'RGBA'
-			pixelColorValues = (255,255,255,0)
+		DJANGO_TYPE = self.image.file.content_type
 
-		# Open big picture into PIL
-		self.image.seek(0)
-		OriginalImage = Image.open(BytesIO(self.image.read()))
-		#python 2 code -
-		#OriginalImage = Image.open(StringIO(self.image.read()))
+		if DJANGO_TYPE == 'image/jpeg':
+			PIL_TYPE = 'jpeg'
+			FILE_EXTENSION = 'jpg'
+		elif DJANGO_TYPE == 'image/png':
+			PIL_TYPE = 'png'
+			FILE_EXTENSION = 'png'
 
-		# Crop image
-		inner_crop_dimens = self._get_inner_crop_dimens(OriginalImage)
-		OriginalImage = OriginalImage.crop(inner_crop_dimens)
-		#OriginalImage.thumbnail(thumbnailSize, Image.ANTIALIAS)
+		# Open original photo which we want to thumbnail using PIL's Image
+		image = Image.open(StringIO(self.image.read()))
 
-		# Save image
-		tempHandle = BytesIO()
+		# We use our PIL Image object to create the thumbnail, which already
+		# has a thumbnail() convenience method that contrains proportions.
+		# Additionally, we use Image.ANTIALIAS to make the image look better.
+		# Without antialiasing the image pattern artifacts may result.
+		image.thumbnail(THUMBNAIL_SIZE, Image.ANTIALIAS)
 
-		#print("Original image: " + OriginalImage)
+		# Save the thumbnail
+		temp_handle = ByteIO()
+		image.save(temp_handle, PIL_TYPE)
+		temp_handle.seek(0)
 
-		# Original Python 2 code
-		#tempHandle = StringIO()
-		background = Image.new(mode, self._thumbnail_size, pixelColorValues)
-		background.paste(OriginalImage,( (int(self._thumbnail_size[0]) - int(OriginalImage.size[0] / 2)), (int(self._thumbnail_size[1]) - int(OriginalImage.size[1] / 2))))
-		background.save(tempHandle, pilImageType)
-		tempHandle.seek(0)
-		suf = SimpleUploadedFile(os.path.split(self.image.name)[-1], tempHandle.read(), content_type=djangoType)
-		self.thumbnail.save('%s.%s' % (os.path.splitext(suf.name)[0], fileExtension), suf, save=False)
-	   
+		# Save image to a SimpleUploadedFile which can be saved into
+		# ImageField
+		suf = SimpleUploadedFile(os.path.split(self.image.name)[-1],
+				temp_handle.read(), content_type=DJANGO_TYPE)
+		# Save SimpleUploadedFile into image field
+		self.thumbnail.save(
+			'%s_thumbnail.%s' % (os.path.splitext(suf.name)[0], FILE_EXTENSION),
+			suf,
+			save=False
+		)
+
 	def save(self):
 		self.generateThumbnail()
 
 
 		super(ComicPanel, self).save()
-
-class Tag(models.Model):
-	picture = models.ForeignKey(ComicPanel, on_delete = models.CASCADE)
-	tag = models.CharField(max_length=15, null=False)
-
