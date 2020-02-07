@@ -102,82 +102,83 @@ def view_archive(request, page =1):
 # View for specific comic
 def view_panel(request, comic_pk =-1 ):
 
- if id != -1:
-
-		if request.method == 'GET':
-
-			try:
-				comic_panel = ComicPanel.objects.all().get(pk=comic_pk)
+	if request.method == 'GET':
+		# Default values for local variables
+		comic_panel = None
+		newest_comic_pk = -1
+		oldest_comic_pk = -1
+		next_comic_pk = -1
+		prev_comic_pk = -1
+		try:
+			comic_panel = ComicPanel.objects.all().get(pk=comic_pk)
+		except ObjectDoesNotExist:
+			return render(request, 'comics/comic_panel_view.html', context = {'comic_panel': comic_panel, 'newest_comic_pk': newest_comic_pk, 'oldest_comic_pk': oldest_comic_pk,
+										'prev_comic_pk' : prev_comic_pk,
+										'next_comic_pk': next_comic_pk,
+									  },) 
 			
-			except ObjectDoesNotExist:
-				raise Http404("I didn't find anything, are there any comics uploaded?")  
-			
-			# Default values for local variables
-			newest_comic_pk = comic_panel.pk
-			oldest_comic_pk = comic_panel.pk
-			next_comic_pk = -1
-			prev_comic_pk = -1
-
-			# Get chapters
-			chapter_dicts = ComicPanel.objects.filter(series = comic_panel.series).values('chapter').distinct()
-			chapters = []
-			for item in chapter_dicts:
-				if item['chapter']:
-					chapters.append(item['chapter'])         
-
-			# If Chapters exists
-			if chapters:
-
-				finalChapter = max(chapters)
-				newest_comic_pk = ComicPanel.objects.filter(
-					series = comic_panel.series, 
-					chapter=finalChapter).order_by(F("episode").desc(nulls_last=True)).first().pk
 
 
-				firstChapter = min(chapters)
-				oldest_comic_pk = final_comic = ComicPanel.objects.filter(
-					series = comic_panel.series, chapter=firstChapter).order_by(F("episode").asc(nulls_last=True)).first().pk
+		# Get chapters
+		chapter_dicts = ComicPanel.objects.filter(series = comic_panel.series).values('chapter').distinct()
+		chapters = []
+		for item in chapter_dicts:
+			if item['chapter']:
+				chapters.append(item['chapter'])         
 
-				# Do we have an episode? Find the next, previous and first
-				if comic_panel.episode:
+		# If Chapters exists
+		if chapters:
 
-					# Is the next episode in the current chaper?
-					if ComicPanel.objects.filter(series = comic_panel.series, chapter=comic_panel.chapter, episode = comic_panel.episode+1).exists():
-						next_comic_pk = ComicPanel.objects.all().get(
+
+
+			finalChapter = max(chapters)
+			newest_comic_pk = ComicPanel.objects.filter(
+				series = comic_panel.series, 
+				chapter=finalChapter).order_by(F("episode").desc(nulls_last=True)).first().pk
+
+
+			firstChapter = min(chapters)
+			oldest_comic_pk = final_comic = ComicPanel.objects.filter(
+				series = comic_panel.series, chapter=firstChapter).order_by(F("episode").asc(nulls_last=True)).first().pk
+
+			# Do we have an episode? Find the next, previous and first
+			if comic_panel.episode:
+
+				# Is the next episode in the current chaper?
+				if ComicPanel.objects.filter(series = comic_panel.series, chapter=comic_panel.chapter, episode = comic_panel.episode+1).exists():
+					next_comic_pk = ComicPanel.objects.all().get(
 							series=comic_panel.series, chapter=comic_panel.chapter, episode=comic_panel.episode + 1).pk 
 					
-					# Is the next episode in another chaper?
-					elif comic_panel.chapter +1 in chapters:
-						next_comic_pk = ComicPanel.objects.all().get(
-							series = comic_panel.series,
-							chapter = comic_panel.chapter+1, 
-							episode = ComicPanel.objects.filter(
-								chapter = comic_panel.chapter +1).order_by(F("episode").asc(nulls_last=True)).first().episode).pk
+				# Is the next episode in another chaper?
+				elif comic_panel.chapter +1 in chapters:
+					next_comic_pk = ComicPanel.objects.all().get(
+						series = comic_panel.series,
+						chapter = comic_panel.chapter+1, 
+						episode = ComicPanel.objects.filter(
+							chapter = comic_panel.chapter +1).order_by(F("episode").asc(nulls_last=True)).first().episode).pk
 						
-					# Is the previous episode in the current chapter?
-					if ComicPanel.objects.filter(series = comic_panel.series, chapter=comic_panel.chapter, episode = comic_panel.episode -1).exists():
-						prev_comic_pk = ComicPanel.objects.all().get(
-							series = comic_panel.series, 
-							chapter=comic_panel.chapter, 
-							episode = comic_panel.episode -1).pk
+				# Is the previous episode in the current chapter?
+				if ComicPanel.objects.filter(series = comic_panel.series, chapter=comic_panel.chapter, episode = comic_panel.episode -1).exists():
+					prev_comic_pk = ComicPanel.objects.all().get(
+						series = comic_panel.series, 
+						chapter=comic_panel.chapter, 
+						episode = comic_panel.episode -1).pk
 
-					# Is the previous episode in the previous chapter?
-					elif comic_panel.chapter -1 in chapters:
+				# Is the previous episode in the previous chapter?
+				elif comic_panel.chapter -1 in chapters:
 
-						#Find the last episode in the previous chapter  
-						prev_comic_pk = ComicPanel.objects.all().get(
-							series = comic_panel.series,
-							chapter=comic_panel.chapter -1, 
-							episode=ComicPanel.objects.filter(
-								chapter = comic_panel.chapter -1).order_by(F("episode").desc(nulls_last=True)).first().episode).pk
+					#Find the last episode in the previous chapter  
+					prev_comic_pk = ComicPanel.objects.all().get(
+						series = comic_panel.series,
+						chapter=comic_panel.chapter -1, 
+						episode=ComicPanel.objects.filter(
+							chapter = comic_panel.chapter -1).order_by(F("episode").desc(nulls_last=True)).first().episode).pk
 				
 
-			return render(request, 'comics/comic_panel_view.html',
-				context = {'comic_panel': comic_panel,
+		return render(request, 'comics/comic_panel_view.html',
+					context = {'comic_panel': comic_panel,
 										'newest_comic_pk': newest_comic_pk,
 										'oldest_comic_pk': oldest_comic_pk,
 										'prev_comic_pk' : prev_comic_pk,
 										'next_comic_pk': next_comic_pk,
 									  },)
-		else:
-			raise Http404("I can't find that page. Bitch, what you tryna do?")
