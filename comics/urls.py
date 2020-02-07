@@ -11,3 +11,4 @@ urlpatterns = [
     path('archive/', views.view_archive, name = 'view_archive'),
     path('series-autocomplete/', views.SeriesAutocomplete.as_view(), name='series-autocomplete')
 ]
+

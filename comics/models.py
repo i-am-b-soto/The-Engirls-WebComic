@@ -8,9 +8,12 @@ from io import StringIO,BytesIO
 import datetime
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils import timezone
+from django.conf import settings
 
 #TODO Add validation in the admin form to makesure chapter, episode is not repeated
 
+def getMainSeriesName():
+	return settings.MAIN_SERIES_NAME
 
 # Create your models here.
 class ComicPanel(models.Model):
@@ -22,7 +25,8 @@ class ComicPanel(models.Model):
 	caption = models.CharField(max_length = 500)
 
 
-	series = models.CharField(max_length = 255, null = False, blank = False, default = "main", help_text="Label the series as main to be the default comic series" )
+	series = models.CharField(max_length = 255, null = False, blank = False, default = getMainSeriesName, 
+		help_text="The default value is what the main Series Name is set to in Settings.py" )
 	chapter = models.FloatField(null = True, blank = True)
 	episode = models.IntegerField(null = True, blank = True)
 	#chapter = models.FloatField(null=True, validators=[MinValueValidator(1)])

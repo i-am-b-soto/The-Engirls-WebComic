@@ -1,0 +1,27 @@
+.banner{
+
+	background-image: url("images/theengirls_banner.png");
+	background-repeat: no-repeat;
+  	background-size: contain;
+  	width: 100%;
+  	height: 250px;
+}
+
+.theengirls_background{
+  	background-color: #EEE6E4
+}
+
+.comic_panel{
+  width: 100%;
+  height: auto;	
+}
+
+.engirls_font_norm{
+	font-family: 'Neucha', cursive;
+	font-size: 25px;
+}
+
+.engirls_font_large{
+	font-family: 'Neucha', cursive;
+	font-size: 40px;
+}
