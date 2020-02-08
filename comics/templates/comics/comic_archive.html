@@ -10,22 +10,31 @@
   	<div class ="container">
   		<!-- Pictures -->
 		<div class="row">
-			{% for comic in comics %}
-			<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
-				<div class="card mb-4 shadow">
-					<div class="card-header engirls_font_normal"> 
-						{{ comic.title }} 
-					</div>
-					<div class ="card-img-top">
-						<a href="{% url 'view_panel' comic_pk=comic.pk %}">
-							<img class="rounded" src="{{ comic.thumbnail.url }}" />
-						</a>
-						<hr>
-						<div class = "engirls_font_normal">Tags: </div>
+			{% if comics %}
+				{% for comic in comics %}
+				<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
+					<div class="card mb-4 shadow">
+						<div class="card-header engirls_font_normal"> 
+							{{ comic.title }} 
+						</div>
+						<div class ="card-img-top">
+							<a href="{% url 'view_panel' comic_pk=comic.pk %}">
+								<img class="rounded" src="{{ comic.thumbnail.url }}" />
+							</a>
+							<hr>
+							
+						</div>
 					</div>
 				</div>
-			</div>
-			{% endfor %}
+				{% endfor %}
+			{% else %}
+
+        		<div class = "col"></div>
+       		    <div class = "col my-4 text-center">
+         		 <p class = "lead engirls_font_large"> Looks like you don't have any comics! Upload some? </p>
+        		</div>
+        		<div class = "col"></div>			
+			{% endif %}
 		</div>
 	<!-- row -->
 	</div>

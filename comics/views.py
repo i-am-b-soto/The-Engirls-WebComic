@@ -12,8 +12,6 @@ from django.conf import settings
 from django.db.models import F
 from dal import autocomplete
 
-#TODO: might need a template loader
-
 
 # View for most recent comic
 def index(request):
@@ -59,8 +57,6 @@ class SeriesAutocomplete(autocomplete.Select2ListView):
 
 """ View_archive """
 def view_archive(request, page =1):
-	pass
-"""
 	allComicPanels = ComicPanel.objects.all().order_by("-uploadTime")
 	# TODO: Create this
 	form = ArchiveSearchForm()
@@ -68,6 +64,7 @@ def view_archive(request, page =1):
 		sortByList = []
 
 		form = ArchiveSearchForm(request.POST)
+		# TODO: Work on this form!
 		if form.is_valid():
 
 			# Order by
@@ -81,9 +78,9 @@ def view_archive(request, page =1):
 				allpictures = allComicPanels.filter(chapter=chapter)
 
 			# Filter by Tag
-			tag = form.cleaned_data.get("tag")
-			if tag:
-				allpictures = allComicPanels.filter(tag=tag)
+			series = form.cleaned_data.get("series")
+			if series:
+				allpictures = allComicPanels.filter(series=tag)
 				#page = 1
 
 	paginator = Paginator(allComicPanels, 4)  # Show 4 per page
@@ -98,7 +95,7 @@ def view_archive(request, page =1):
 			'comics': comics,
 			'form': form})
 
-"""
+
 # View for specific comic
 def view_panel(request, comic_pk =-1 ):
 
