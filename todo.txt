@@ -1,9 +1,29 @@
+[Normal]
 1) Add validation in the admin form to make sure chapter, episode is unique
+
+[Finished]
 2) Finish view_panel
 	2a. oldest comic, prev comic, next comic, latest comic 
 		* Done, In need of testing 2-4-2020
+	* Done
+
+[Finished]
 3) Make sure custom template for comic_panel works
+	* Done
+
+[Normal]
 4) Add Autocomplete on Tag in Admin page
+
+[Normal
 5) Instagram, Facebook links? 
 
+[high]
+6) Add pagination on Archive page
+
+[high]
+7) Add filter feature on Archive page
+	7a) Make chapter field dependant on series
+
+[Normal]
+8) Make comic images stack horizontally on mobile
 ... More to come
