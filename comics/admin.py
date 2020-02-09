@@ -19,7 +19,7 @@ class ComicPanelAdmin(admin.ModelAdmin):
 	#inlines = [tagInline]
 	list_filter = ('chapter', 'series')
 	#search_fields = ['title','series','chapter']
-	list_display = ('title',)
+	list_display = ('title','series', 'chapter', 'episode')
 	#autocomplete_fields['tag__tag']
 	
 #admin.site.register(tagInline)

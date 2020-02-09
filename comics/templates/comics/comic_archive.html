@@ -13,18 +13,18 @@
 			{% if comics %}
 				{% for comic in comics %}
 				<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
-					<div class="card mb-4 shadow">
+					
+					<div class="card mb-4 ml-4 mr-4 shadow">
+						<div class="embed-responsive embed-responsive-1by1">
+							<a href="{% url 'view_panel' comic_pk=comic.pk %}">
+     							<img alt="Card image cap" class="embed-responsive-item" src="{{ comic.thumbnail.url }}" />
+     						</a>
+  						</div>
 						<div class="card-header engirls_font_normal"> 
 							{{ comic.title }} 
-						</div>
-						<div class ="card-img-top">
-							<a href="{% url 'view_panel' comic_pk=comic.pk %}">
-								<img class="rounded" src="{{ comic.thumbnail.url }}" />
-							</a>
-							<hr>
-							
-						</div>
+						</div>						
 					</div>
+				
 				</div>
 				{% endfor %}
 			{% else %}
