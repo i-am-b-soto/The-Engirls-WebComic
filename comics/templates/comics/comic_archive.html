@@ -8,69 +8,75 @@
 
   	<div class ="container py-5">
   		<!-- Pictures -->
-		<div class="row">
 			<div class = "card-deck">
 			{% if comics %}
 				{% for comic in comics %}
+					{{ counter.increment }}	
+					{% if counter.count|divisibleby:4 %}
 
-				<div class="col-sm-4 col-md-3 col-lg-3">
-
-					<div class="card mb-4 shadow">
-						<div class="view overlay">
+						<!-- Wrap 
+						<div class="w-100 d-none d-sm-block d-md-none"></div>
+					-->
+					{% endif %}
+				<!--<div class="col-sm-4 col-md-3 col-lg-3"> -->
+					<div class="w-100 d-none d-sm-block d-md-none"></div>
+					<div class="card mb-4shadow">
 							<div class="embed-responsive embed-responsive-1by1">
 								<a href="{% url 'view_panel' comic_pk=comic.pk %}">
 									{% if comic.thumbnail %}
 	     								<img alt="Card image cap" class="embed-responsive-item" src="{{ comic.thumbnail.url }}" />
-									{% else %}
-										
+									
+									{% else %}	
 										<div class = "col text-center">
 											<h5 class= "engirls_font_large"> No image available</h5>
 										</div>
 										
 									{% endif %}
 	     						</a>
-	  						</div>
-	  					</div>
+	  						</div>  					
 	  					<div class = "card-header"> 
-							<div class="engirls_font_normal"> 
+							<div class="engirls_font_norm"> 
 								{{ comic.title }} 
 							</div>	
 						</div>					
 					</div>
-				</div>
+				<!-- </div> -->
 				{% endfor %}
 				</div>
 			{% else %}
-
-        		<div class = "col"></div>
-       		    <div class = "col my-4 text-center">
-         		 <p class = "lead engirls_font_large"> Looks like you don't have any comics! Upload some? </p>
-        		</div>
-        		<div class = "col"></div>			
+				<div class = row>
+	        		<div class = "col"></div>
+	       		    <div class = "col my-4 text-center">
+	         		 <p class = "lead engirls_font_large"> Looks like you don't have any comics! Upload some? </p>
+	        		</div>
+	        		<div class = "col"></div>	
+        		</div>		
 			{% endif %}
-		</div>
+		
 	<!-- row -->
 
-	<div class = "row">
-	<!-- Pagination -->
-	<div class= "py-3">
-	  <nav aria-label="Page navigation">
+	<div class = "row py-3">
 	    <div class="pagination">
+	    	<div class = col-xs-4></div>
 	      {% if comics.paginator.num_pages > 1 %}
-			{% for num in comics.paginator.page_range %}
-				<div class = "col-2">
-					{% if comics.number == num %}
-						<a class="active pagination_submit"><a href="" >{{ num }}</a>
-					{% else %}
-						<a class="pagination_submit">{{ num }}</a>
-					{% endif %}
-				</div>
-			{% endfor %}
+	      	<div class = "col-xs-4 col-md-4 col-lg-4 engirls_font_norm">
+		      	#
+		     </div>
+				{% for num in comics.paginator.page_range %}
+					<div class = "col-xs-2 col md-3 col-lg-4 engirls_font_norm">
+						{% if comics.number == num %}
+							<a class="active pagination_submit"><a href="" >{{ num }}</a></a>
+						{% else %}
+							<a class="pagination_submit">{{ num }}</a>
+						{% endif %}
+					</div>
+				{% endfor %}
+			</div>
 		{% endif %}
-	    </div>
-	  </nav>
-	</div>
-</div>
+		</div>
+
+   </div>
+
 </div>
 <!-- container-->
 

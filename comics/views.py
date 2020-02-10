@@ -13,6 +13,19 @@ from django.db.models import F
 from dal import autocomplete
 
 
+""" Counter class used for django templates """
+class Counter:
+    count = 0
+
+    def increment(self):
+        self.count = self.count +1
+        return ''
+
+    def decrement(self):
+        self.count = self.count -1
+        return ''
+
+
 # View for most recent comic
 def index(request):
 	if request.method == 'GET':
@@ -58,6 +71,7 @@ class SeriesAutocomplete(autocomplete.Select2ListView):
 """ View_archive """
 def view_archive(request, page =1):
 	allComicPanels = ComicPanel.objects.all().order_by("-uploadTime")
+	
 	# TODO: Create this
 	form = ArchiveSearchForm()
 	if request.method == 'POST':
@@ -83,7 +97,7 @@ def view_archive(request, page =1):
 				allpictures = allComicPanels.filter(series=tag)
 				#page = 1
 
-	paginator = Paginator(allComicPanels, 10)  
+	paginator = Paginator(allComicPanels, 8)  
 	try:
 		comics = paginator.page(page)
 	except PageNotAnInteger:
@@ -93,7 +107,8 @@ def view_archive(request, page =1):
 
 	return render(request, 'comics/comic_archive.html',context = {
 			'comics': comics,
-			'form': form})
+			'form': form,
+			'counter':Counter()})
 
 
 # View for specific comic
