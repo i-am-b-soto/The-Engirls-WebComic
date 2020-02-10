@@ -6,8 +6,7 @@
   	<link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   	<link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
 
-<div class="album py-5 bg-light">
-  	<div class ="container">
+  	<div class ="container py-5">
   		<!-- Pictures -->
 		<div class="row">
 			<div class = "card-deck">
@@ -20,7 +19,15 @@
 						<div class="view overlay">
 							<div class="embed-responsive embed-responsive-1by1">
 								<a href="{% url 'view_panel' comic_pk=comic.pk %}">
-	     							<img alt="Card image cap" class="embed-responsive-item" src="{{ comic.thumbnail.url }}" />
+									{% if comic.thumbnail %}
+	     								<img alt="Card image cap" class="embed-responsive-item" src="{{ comic.thumbnail.url }}" />
+									{% else %}
+										
+										<div class = "col text-center">
+											<h5 class= "engirls_font_large"> No image available</h5>
+										</div>
+										
+									{% endif %}
 	     						</a>
 	  						</div>
 	  					</div>
@@ -43,14 +50,50 @@
 			{% endif %}
 		</div>
 	<!-- row -->
+
+	<div class = "row">
+	<!-- Pagination -->
+	<div class= "py-3">
+	  <nav aria-label="Page navigation">
+	    <div class="pagination">
+	      {% if comics.paginator.num_pages > 1 %}
+			{% for num in comics.paginator.page_range %}
+				<div class = "col-2">
+					{% if comics.number == num %}
+						<a class="active pagination_submit"><a href="" >{{ num }}</a>
+					{% else %}
+						<a class="pagination_submit">{{ num }}</a>
+					{% endif %}
+				</div>
+			{% endfor %}
+		{% endif %}
+	    </div>
+	  </nav>
 	</div>
-<!-- container-->
 </div>
-<!-- album -->
+</div>
+<!-- container-->
 
+<script> 
+//Show this page as active
 
-   	<!-- Bootstrap core JavaScript -->
-  	<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-  	<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+/*
+$("#nav-gallery-link").addClass("active");
+
+// When num link is clicked, re-fire form submit
+$(".pagination_submit").click(function() {
+	page_num = $.trim($(this).text());
+
+	$("#search_submit").on("click", function(e){
+    	e.preventDefault();
+    	$('#search_form').attr('action', "comics/archive/" + page_num + "/").submit();
+	});
+	$("#search_submit").trigger("click");
+});
+</script>
+
+ <!-- Bootstrap core JavaScript -->
+ <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+ <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
  {% endblock %}

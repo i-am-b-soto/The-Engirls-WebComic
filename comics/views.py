@@ -83,7 +83,7 @@ def view_archive(request, page =1):
 				allpictures = allComicPanels.filter(series=tag)
 				#page = 1
 
-	paginator = Paginator(allComicPanels, 10)  # Show 10 per page
+	paginator = Paginator(allComicPanels, 8)  
 	try:
 		comics = paginator.page(page)
 	except PageNotAnInteger:

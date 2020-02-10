@@ -78,6 +78,9 @@ class ComicPanel(models.Model):
 	  # Set our max thumbnail size in a tuple (max width, max height)
 		THUMBNAIL_SIZE = self.getThumnbnailSize(division_fact = 3)
 
+		if settings.DEBUG:
+			print("Thumbnail size: ")
+			print(THUMBNAIL_SIZE)
 		#DJANGO_TYPE = self.image.file.content_type
 
 		if self.image.name.endswith(".jpg"):
@@ -108,14 +111,27 @@ class ComicPanel(models.Model):
 
 			# Save image to a SimpleUploadedFile which can be saved into
 			# ImageField
-			suf = SimpleUploadedFile(os.path.split(instance.name)[-1],
-					temp_handle.read(), content_type=DJANGO_TYPE)
+			try:
+				suf = SimpleUploadedFile(os.path.split(instance.name)[-1],
+						temp_handle.read(), content_type=DJANGO_TYPE)
+			except FileNotFoundError:
+				if settings.DEBUG:
+					print("Error in simple file upload")
+			except Exception: 
+				print("Error while creating thumbnail")
+
+
+			if settings.DEBUG:
+				print("suf:")
+				print(suf.name)
+				
 			# Save SimpleUploadedFile into image field
 			self.thumbnail.save(
 				'%s_thumbnail.%s' % (os.path.splitext(suf.name)[0], FILE_EXTENSION),
 				suf,
 				save=False
 			)
+
 
 		
 
