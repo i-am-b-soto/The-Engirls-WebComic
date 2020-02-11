@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from .models import ComicPanel
 from django.http import HttpResponse, Http404
 #from .models import Tag
-from .forms import ArchiveSearchForm
+from .forms import ArchiveSearchForm, getSeriesNames
 from django.template import loader, RequestContext
 from django.conf import settings
 from django.db.models import F
@@ -77,24 +77,32 @@ def view_archive(request, page =1):
 	if request.method == 'POST':
 		sortByList = []
 
+		if settings.DEBUG:
+			print("Posting on Archive search form!")
+
 		form = ArchiveSearchForm(request.POST)
 		# TODO: Work on this form!
 		if form.is_valid():
-
-			# Order by
-			if form.cleaned_data.get("ascending") == True:
-				allComicPAnels = ComicPanels.order_by("uploadTime")
 
 			chapter = form.cleaned_data.get("chapter")
 			
 			# Filter by chapter
 			if chapter:
-				allpictures = allComicPanels.filter(chapter=chapter)
+				allComicPanels = allComicPanels.filter(chapter=chapter)
 
 			# Filter by Tag
-			series = form.cleaned_data.get("series")
-			if series:
-				allpictures = allComicPanels.filter(series=tag)
+			series_number = form.cleaned_data.get("series")
+
+			if settings.DEBUG:
+				print("Valid form; series = " + str(getSeriesNames(series_index = series_number)) )
+
+			if series_number:
+				allComicPanels = allComicPanels.filter(series=getSeriesNames(series_index = series_number))
+
+			# Order by
+			if form.cleaned_data.get("ascending") == True:
+				allComicPanels = allComicPanels.order_by("uploadTime")
+
 				#page = 1
 
 	paginator = Paginator(allComicPanels, 8)  
