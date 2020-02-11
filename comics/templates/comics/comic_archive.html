@@ -10,28 +10,27 @@
   	<div class ="container pt-1">
 		<!-- Search -->
 		<div class="row">
+			
 			  <div id="search_menu"> <p><button type="submit" class="btn btn-outline-dark" >Search Options</button></p></div>
 
 			  <div id = "collapsible" style="display:none">
 				<nav class="navbar navbar-light bg-light justify-content-between">
 						<form class="form-inline ml-sm-2" method="POST" id = "search_form">
 							{% csrf_token %}
-							 <ul class="navbar-nav mr-3">
 							{% for field in form %}
-							     
-      							  <li class="nav-item engirls_font_norm"> 
+							      <div class = "col-sm-6 col-sm-offset-2">
 							        {{ field.errors }}
 							        {{ field.label_tag }} {{ field }}
-							        {% endif %}
-							    </li>
+							  
 							{% endfor %}
-							</ul>
+							
 						<button type="submit" class="btn btn-outline-dark" id = "search_submit">Search</button>
+						 </div>
 						</form>
 					
 				</nav>
 			    </div>
-			  </div>
+			
 
 			
 		<!-- row -->
