@@ -25,5 +25,7 @@
 	7a) Make chapter field dependant on series
 
 [Normal]
-8) Make comic images stack horizontally on mobile
+8) Make comic images stack horizontally on mobile on Archive
+	8a) Images are of equal hight on archive page 
+		*Done
 ... More to come

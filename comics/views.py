@@ -107,8 +107,7 @@ def view_archive(request, page =1):
 
 	return render(request, 'comics/comic_archive.html',context = {
 			'comics': comics,
-			'form': form,
-			'counter':Counter()})
+			'form': form})
 
 
 # View for specific comic
