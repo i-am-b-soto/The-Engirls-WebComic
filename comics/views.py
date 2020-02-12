@@ -96,7 +96,7 @@ def view_archive(request, page =1):
 			if settings.DEBUG:
 				print("Valid form; series = " + str(getSeriesNames(series_index = series_number)) )
 
-			if series_number:
+			if series_number and series_number != '0':
 				allComicPanels = allComicPanels.filter(series=getSeriesNames(series_index = series_number))
 
 			# Order by
@@ -115,7 +115,9 @@ def view_archive(request, page =1):
 
 	return render(request, 'comics/comic_archive.html',context = {
 			'comics': comics,
-			'form': form})
+			'form': form,
+			'cur_page': page
+			})
 
 
 # View for specific comic

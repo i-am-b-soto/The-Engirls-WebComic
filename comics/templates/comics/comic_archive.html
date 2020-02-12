@@ -7,18 +7,36 @@
   	<link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
 
 
+
 <div class = "container pt-1">
+	
 	<div class = "row">
 		<!-- form -->
-		<div class = "col-3">
-			<form class="form ml-sm-2" method="POST" id = "search_form">
+		<div class ="col-lg-3 col-md-2 col-sm-12">
+			<form class="form" method="POST" id = "search_form">
 				{% csrf_token %}
-				{{ form.as_table }}
-								
-				<button type="submit" class="btn btn-outline-dark" id = "search_submit">Filter</button>		 
-				</form>	
+				<table class="table table-striped table-borderless">
+				  <thead>
+				    <tr>
+				      <th scope="col engirls_font_norm">Filter Comics: </th>
+				      <th scope="col"></th>
+				    </tr>
+				  </thead>
+					  <tbody>
+							{% for field in form %}
+								<tr>
+									<th scope="row"> {{ field.name }}</th>
+									<td>{{ field }}</td>
+								    {{ form.field }}
+								</tr>
+							{% endfor %}			    	
+					      
+					  </tbody>
+				  </table>				
+					<button type="submit" class="btn btn-outline-dark" id = "search_submit">Filter</button>		 
+			</form>	
 		</div>
-				
+
 		<div class = "col-sm-12 col-md-10 col-lg-8">
 
 			<!-- main comic container container -->
@@ -72,9 +90,9 @@
 						{% for num in comics.paginator.page_range %}
 							<div class = "col-xs-1 col-md-2 col-lg-3 engirls_font_norm">
 								{% if comics.number == num %}
-									<a class="active pagination_submit"><a href="" >{{ num }}</a></a>
+									<a class="active pagination_submit" href="{% url 'view_archive' page=num %}" >{{ num }}</a>
 								{% else %}
-									<a class="pagination_submit">{{ num }}</a>
+									<a class="pagination_submit" href="{% url 'view_archive' page=num %}">{{ num }}</a>
 								{% endif %}
 							</div>
 						{% endfor %}
@@ -94,23 +112,12 @@
 <div class="container py-3"></div>
 
 <script> 
-$("#nav-gallery-link").addClass("active");
 
 // When num link is clicked, re-fire form submit
 $(".pagination_submit").click(function() {
-	page_num = $.trim($(this).text());
-
-	$("#search_submit").on("click", function(e){
-    	e.preventDefault();
-    	$('#search_form').attr('action', "{% url 'view_archive' %}").submit();
-	});
 	$("#search_submit").trigger("click");
 });
-$('#search_menu').click(function(){
-    $(this).next().slideToggle();
-    $(this).hide();
-    return false;
-});
+
 </script>
 
  <!-- Bootstrap core JavaScript -->
