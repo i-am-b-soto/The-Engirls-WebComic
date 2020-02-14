@@ -5,25 +5,25 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from .models import ComicPanel
 from django.http import HttpResponse, Http404
-#from .models import Tag
 from .forms import ArchiveSearchForm, getSeriesNames
 from django.template import loader, RequestContext
 from django.conf import settings
 from django.db.models import F
-from dal import autocomplete
+#from dal import autocomplete
+from .filters import ComicPanelFilter
 
 
 """ Counter class used for django templates """
 class Counter:
-    count = 0
+	count = 0
 
-    def increment(self):
-        self.count = self.count +1
-        return ''
+	def increment(self):
+		self.count = self.count +1
+		return ''
 
-    def decrement(self):
-        self.count = self.count -1
-        return ''
+	def decrement(self):
+		self.count = self.count -1
+		return ''
 
 
 # View for most recent comic
@@ -63,12 +63,35 @@ def index(request):
 		else: 
 			return view_panel(request)
 
+"""
 class SeriesAutocomplete(autocomplete.Select2ListView):
 
 	def get_list(self):
 		return list (ComicPanel.objects.values('series_name').distinct())
+"""
 
-""" View_archive """
+def view_archive(request, page=1):
+	#Attempting to write this method with djando filters
+	"""
+		For filter references:
+			https://django-filter.readthedocs.io/en/stable/guide/usage.html#the-filter
+			https://stackoverflow.com/questions/44048156/django-filter-use-paginations
+	"""
+	comic_list = ComicPanel.objects.all()
+	comic_filter = ComicPanelFilter(request.GET, queryset=comic_list)
+	paginator = Paginator(comic_filter.qs, 8)
+	#TODO: Why 1? 
+	page = request.GET.get('page', 1)
+	try:
+		comics = paginator.page(page)
+	except (PageNotAnInteger, TypeError):
+		comics = paginator.page(1)
+	except EmptyPage:
+		comics = paginator.page(paginator.num_pages)
+
+	return render(request, 'comics/comic_archive.html', {'filter': comic_filter, 'comics': comics})	
+
+""" View_archive  Attempt 1 
 def view_archive(request, page =1):
 	allComicPanels = ComicPanel.objects.all().order_by("-uploadTime")
 	
@@ -118,7 +141,7 @@ def view_archive(request, page =1):
 			'form': form,
 			'cur_page': page
 			})
-
+"""
 
 # View for specific comic
 def view_panel(request, comic_pk =-1 ):

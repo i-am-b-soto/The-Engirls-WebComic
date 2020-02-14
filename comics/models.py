@@ -1,7 +1,5 @@
 from django.db import models
 from ckeditor.fields import RichTextField
-#from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator
 from PIL import Image
 import os
 from io import StringIO,BytesIO

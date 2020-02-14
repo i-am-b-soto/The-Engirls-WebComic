@@ -34,6 +34,7 @@ ALLOWED_HOSTS.append('localhost')
 
 # Application definition
 
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,8 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ckeditor',
     'comics',
-    'dal',
-    'dal_select2'
+    'django_filters'
 ]
 
 MIDDLEWARE = [
