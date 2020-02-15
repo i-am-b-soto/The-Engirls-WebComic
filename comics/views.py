@@ -70,7 +70,7 @@ class SeriesAutocomplete(autocomplete.Select2ListView):
 		return list (ComicPanel.objects.values('series_name').distinct())
 """
 
-def view_archive(request, page=1):
+def view_archive(request):
 	#Attempting to write this method with djando filters
 	"""
 		For filter references:
@@ -89,7 +89,7 @@ def view_archive(request, page=1):
 	except EmptyPage:
 		comics = paginator.page(paginator.num_pages)
 
-	return render(request, 'comics/comic_archive.html', {'filter': comic_filter, 'comics': comics})	
+	return render(request, 'comics/comic_archive.html', context = {'filter': comic_filter, 'comics': comics})	
 
 """ View_archive  Attempt 1 
 def view_archive(request, page =1):

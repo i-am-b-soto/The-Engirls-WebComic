@@ -12,7 +12,7 @@
 		<div class = "row">
 			<!-- form -->
 			<div class = "col-lg-4 col-sm-12 engirls_font_norm">
-				<form class="form" method="GET" id = "search_form">
+				<form class="form" method="GET">
 					{% csrf_token %}
 					<table class="table table-striped table-borderless">
 					  <thead>
@@ -30,7 +30,7 @@
 								{% endfor %}			    	      
 						  </tbody>
 					  </table>				
-						<button type="submit" class="btn btn-outline-dark" id = "search_submit">Filter</button>		 
+						<button type="submit" class="btn btn-outline-dark">Filter</button>		 
 				</form>	
 			<!-- col -->
 			</div>
@@ -91,10 +91,22 @@
 				     </div>
 						{% for num in comics.paginator.page_range %}
 							<div class = "col-xs-1 col-md-2 col-lg-3 engirls_font_norm">
+								<!-- Current page number -->
 								{% if comics.number == num %}
-									<a class="active pagination_submit" href="{{ request.get_full_path }}&page={{ num }}" >{{ num }}</a>
+									<!-- If there is existing query parameters -->
+								 	{% if 'series' in request.get_full_path %}
+								 		<h5><a class="text-primary" href="{{ request.get_full_path }}&page={{ num }}" >{{ num }}</a></h5>
+								 	{% else %}
+										<h5><a class="text-primary" href="{% url 'view_archive' %}?page={{ num }}" >{{ num }}</a></h5>
+								 	{% endif %}
+
+								 <!-- Other page numbers -->
 								{% else %}
-									<a class="pagination_submit" href="{{ request.get_full_path }}&page={{ num }}">{{ num }}</a>
+									{% if 'series' in request.get_full_path %}
+										<h5><a class="text-secondary" href="{{ request.get_full_path }}&page={{ num }}">{{ num }}</a></h5>
+									{%  else %}
+										<h5><a class="text-secondary" href="{% url 'view_archive' %}?page={{ num }}" >{{ num }}</a></h5>
+									{% endif %}
 								{% endif %}
 							</div>
 						{% endfor %}
@@ -118,12 +130,6 @@
 
 <script> 
 
-// When num link is clicked, re-fire form submit
-/*
-$(".pagination_submit").click(function() {
-	$("#search_submit").trigger("click");
-});
-*/
 
 </script>
 
