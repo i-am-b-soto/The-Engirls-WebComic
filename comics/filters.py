@@ -1,5 +1,6 @@
 import django_filters
 from .models import ComicPanel
+from django.conf import settings
 
 """
 References:  
@@ -14,14 +15,17 @@ def getUniqueSeries():
 	series_list = []
 	i = 0
 	for item in series_dicts:
-		series_list.append((i,item[0]))
+		series_list.append((item[0],item[0]))
+		if settings.DEBUG:
+			pass
 		i = i+1
+
 	return series_list
 
 class ComicPanelFilter(django_filters.FilterSet):
 	#chapter = NumberFilter(field_name='chapter', lookup_expr='gt')
 
-	series = django_filters.ChoiceFilter(choices = getUniqueSeries())
+	series = django_filters.ChoiceFilter(choices = getUniqueSeries)
 	# The following does not have the intended resulrs; options in the form of: ('main',), ('None',)... etc
 	#series=django_filters.ModelChoiceFilter(queryset=ComicPanel.objects.all().values_list('series').distinct())
 
@@ -29,5 +33,5 @@ class ComicPanelFilter(django_filters.FilterSet):
 
 	class Meta:
 		model = ComicPanel
-		fields = ['chapter', 'episode']
+		fields = ['series', 'chapter', 'episode']
 

@@ -71,16 +71,11 @@ class SeriesAutocomplete(autocomplete.Select2ListView):
 """
 
 def view_archive(request):
-	#Attempting to write this method with djando filters
-	"""
-		For filter references:
-			https://django-filter.readthedocs.io/en/stable/guide/usage.html#the-filter
-			https://stackoverflow.com/questions/44048156/django-filter-use-paginations
-	"""
-	comic_list = ComicPanel.objects.all()
+
+	comic_list = ComicPanel.objects.all().order_by("uploadTime")
 	comic_filter = ComicPanelFilter(request.GET, queryset=comic_list)
 	paginator = Paginator(comic_filter.qs, 8)
-	#TODO: Why 1? 
+
 	page = request.GET.get('page', 1)
 	try:
 		comics = paginator.page(page)
