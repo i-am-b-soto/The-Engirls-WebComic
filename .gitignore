@@ -2,3 +2,6 @@
 *.jpg
 *.png
 *.jpeg
+facebookkeys.txt
+comics/__pycache__/*
+comics/migration/*

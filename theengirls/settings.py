@@ -12,8 +12,20 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
-
+#### Custom values ####
 MAIN_SERIES_NAME = "main"
+#########################
+
+
+def getSocialInfo(filename):
+    with open(filename) as social_secrets:
+        app_id = social_secrets.readline()
+        app_secret = social_secrets.readline() 
+    return (app_id, app_secret)
+
+
+SOCIAL_AUTH_FACEBOOK_KEY = getSocialInfo('facebookkeys.txt')[0] # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = getSocialInfo('facebookkeys.txt')[1]  # App Secret
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -44,7 +56,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ckeditor',
     'comics',
-    'django_filters'
+    'django_filters',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -55,10 +68,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware', #<-- Social Django
 ]
 
 
 ROOT_URLCONF = 'theengirls.urls'
+
 
 TEMPLATES = [
     {
@@ -72,10 +87,22 @@ TEMPLATES = [
                 'django.template.context_processors.media',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',  # <-- Social Django
+                'social_django.context_processors.login_redirect', # <-- Social Django
             ],
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.instagram.InstagramOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+
 
 TEMPLATE_DEBUG = True
 
@@ -126,8 +153,6 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATIC_URL = '/static/'

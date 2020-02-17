@@ -9,6 +9,9 @@ Filter references: https://django-filter.readthedocs.io/en/stable/guide/usage.ht
 github: https://github.com/carltongibson/django-filter
 Adding choices: https://stackoverflow.com/questions/1455415/using-django-filter-with-choices-field-need-any-option
 
+To get chapter and episode to be based off series: 
+	https://stackoverflow.com/questions/49174420/how-to-filter-a-modelmultiplechoicefield-based-on-another-field
+
 """
 def getUniqueSeries():
 	series_dicts = ComicPanel.objects.all().values_list('series').distinct()

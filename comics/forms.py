@@ -1,6 +1,13 @@
 from django import forms
-from .models import ComicPanel
-from dal import autocomplete
+from .models import Comment, ComicPanel
+#from dal import autocomplete
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('body',)
+
 
 #Todo: Make this much more effecient
 def getSeriesNames(series_index=-1):

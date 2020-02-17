@@ -155,10 +155,19 @@ class ComicPanel(models.Model):
 			return
 
 
-		
-
 	def save(self):
 		#self.set_thumbnail_resize()
 		self.generateThumbnail()
 		#self.image.open()
 		super(ComicPanel, self).save()
+
+
+class Comment(models.Model):
+    ComicPanel = models.ForeignKey(ComicPanel,on_delete=models.CASCADE,related_name='comments')
+    name = models.CharField(max_length=144, blank=True, null=True)
+    body = models.TextField()
+    created_on = models.DateField(default=timezone.now)
+
+
+    def __str__(self):
+        return 'Comment {} by {}'.format(self.body, self.name)

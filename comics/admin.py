@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import ComicPanel
+from .models import ComicPanel, Comment
 
 """
 Deprecated
@@ -22,7 +22,12 @@ class ComicPanelAdmin(admin.ModelAdmin):
 	list_display = ('title','series', 'chapter', 'episode')
 	#autocomplete_fields['tag__tag']
 	
-#admin.site.register(tagInline)
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('name', 'body', 'ComicPanel', 'created_on')
+    list_filter = ('created_on',)
+    search_fields = ('name', 'body')
 
 
 

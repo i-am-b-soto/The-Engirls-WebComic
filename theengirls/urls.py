@@ -12,6 +12,13 @@ Class-based views
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+
+
+Add social login:
+https://simpleisbetterthancomplex.com/tutorial/2016/10/24/how-to-add-social-login-to-django.html  
+
+Add comment system:
+https://djangocentral.com/creating-comments-system-with-django/  
 """
 from django.contrib import admin
 from django.urls import path, include
@@ -22,7 +29,8 @@ from .views import error_404
 urlpatterns = [
 	path('', include('comics.urls')),
 	path('comics/', include('comics.urls')),
-	path('admin/', admin.site.urls)
+	path('admin/', admin.site.urls),
+    path('oauth/', include('social_django.urls', namespace='social')),  # <--    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 #handler404 = error_404

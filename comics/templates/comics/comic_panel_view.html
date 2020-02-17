@@ -1,10 +1,15 @@
 {% extends "base.html" %}
 {% block main_content %}
 
-	{% load static %}
-  	<!-- Bootstrap core CSS -->
-  	<link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-  	<link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
+{% load static %}
+
+<!-- must follow this link here: 
+https://stackoverflow.com/questions/38482059/enabling-cors-cross-origin-request-in-django
+-->
+
+<!-- Bootstrap core CSS -->
+<link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
 
 
   <!-- Page Content -->
@@ -83,18 +88,62 @@
       </div> 
 
 
-      <!-- 3rd column -->
-      <div class = col-sm></div>
+      <!-- 3rd column - Comments -->
+      <div class = col-sm>
+        <div class = "comment_form">
+          {% if True%}
+         
+          <form action = "" method="POST"> 
+              {% csrf_token %}
+              {{ comment_form }}
+          <button id="post_comment" type="submit" class="button-submit">post</button>
+          </form>
+          {% else %}
+            <div class="engirls_font_norm"> Please log in to comment :) </p>
+          {% endif %}
+          </div>
+          <div id = "comment_list"></div>
+          <a name="comment_start"></a>
+        </div>       
+      </div>
 
     </div>
     <!-- /.row -->
    
   </div>
   <!-- /.container -->
+<script>
 
-  	<!-- Bootstrap core JavaScript -->
-  	<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-  	<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+// Render the list of comments via ajax
+function render_comment_list(){
+  $("#comment_list").load('comics/comments/{{ comic_panel.pk }}/1/');
+}
+
+// Post and render the comment list upon clickin the post comment button
+$("#post_comment").on('click', function(e) {
+    e.preventDefault();
+    var form = $(this).closest("form");
+     $.ajax({
+            url: 'comics/comments/{{ comic_panel.pk }}/1/',
+            type: 'POST',
+            data: form.serialize(),
+            dataType: "jsonp"
+        }).done(function(data) {
+          render_comment_list();
+        });
+      return false;
+  });
+
+$(document).ready(function(){
+  render_comment_list();
+});
+
+
+ 
+</script>
+<!-- Bootstrap core JavaScript -->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
 
 
