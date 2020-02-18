@@ -10,6 +10,8 @@ from django.conf import settings
 from django.db.models import F
 from .filters import ComicPanelFilter
 
+from social_django.models import UserSocialAuth
+
 
 
 # View for most recent comic
@@ -48,13 +50,6 @@ def index(request):
 			return view_panel(request, comic_to_display.pk)
 		else: 
 			return view_panel(request)
-
-"""
-class SeriesAutocomplete(autocomplete.Select2ListView):
-
-	def get_list(self):
-		return list (ComicPanel.objects.values('series_name').distinct())
-"""
 
 # View Archive
 def view_archive(request):

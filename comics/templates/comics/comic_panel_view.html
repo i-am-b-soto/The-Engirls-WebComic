@@ -82,7 +82,7 @@
        <!-- 3rd column - Comments -->
       <div class = "col-sm py-2">
         <div class = "comment_form ml-2">
-          {% if True %}
+          {% if user.is_authenticated %}
          
           <form action = "" method="POST"> 
               {% csrf_token %}
@@ -96,8 +96,12 @@
               <button id="post_comment" type="submit" class="button-submit btn-outline-dark btn-sm">post</button>
                 </div>
           </form>
+          <!-- if user is not authenticated -->
           {% else %}
-            <div class="engirls_font_norm"> Please log in to comment :) </p>
+            <div class="engirls_font_norm">
+              Please Login:
+              <a href="{% url 'social:begin' 'facebook' %}"><img src="https://img.icons8.com/doodle/48/000000/facebook-new.png"></a>
+            </p>
           {% endif %}
           </div>
           <div id = "comment_list"></div>
