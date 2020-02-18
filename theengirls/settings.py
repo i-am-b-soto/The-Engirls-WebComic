@@ -24,8 +24,12 @@ def getSocialInfo(filename):
     return (app_id, app_secret)
 
 
-SOCIAL_AUTH_FACEBOOK_KEY = getSocialInfo('facebookkeys.txt')[0] # App ID
-SOCIAL_AUTH_FACEBOOK_SECRET = getSocialInfo('facebookkeys.txt')[1]  # App Secret
+FB_VALUES = getSocialInfo('facebookkeys.txt')
+SOCIAL_AUTH_FACEBOOK_KEY = '' + str(FB_VALUES[0]) + '' # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = '' + str(FB_VALUES[1]) + '' # App Secret
+
+#print(SOCIAL_AUTH_FACEBOOK_KEY)
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

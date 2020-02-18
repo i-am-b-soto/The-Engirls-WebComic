@@ -78,7 +78,7 @@ def view_comments(request, comic_pk, page=1):
 	except ObjectDoesNotExist as e: 
 		raise Http404
 
-	if request.method == 'POST':
+	if request.method == 'POST' and request.user.is_authenticated:
 		comment_form = CommentForm(request.POST)
 		if comment_form.is_valid():
 			# Create Comment object but don't save to database yet
@@ -86,6 +86,8 @@ def view_comments(request, comic_pk, page=1):
 			# Assign the current post to the comment
 			new_comment.ComicPanel = cp
 			# Save the comment to the database
+			new_comment.name = request.user.username
+
 			new_comment.save()
 
 		else:
