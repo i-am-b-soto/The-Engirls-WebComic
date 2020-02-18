@@ -17,7 +17,8 @@ https://stackoverflow.com/questions/38482059/enabling-cors-cross-origin-request-
 
     <div class="row">
 
-      <div class = "col-sm"></div>
+      <!-- First column -->
+     <!--  <div class = "col-sm"></div> -->
 
       <!-- Post Content Column -->
       <div class="col-sm-8">
@@ -89,14 +90,21 @@ https://stackoverflow.com/questions/38482059/enabling-cors-cross-origin-request-
 
 
       <!-- 3rd column - Comments -->
-      <div class = col-sm>
+      <div class = "col-sm py-2">
         <div class = "comment_form">
-          {% if True%}
+          {% if True %}
          
           <form action = "" method="POST"> 
               {% csrf_token %}
-              {{ comment_form }}
-          <button id="post_comment" type="submit" class="button-submit">post</button>
+              {% for field in comment_form %}
+                <div class = "row">
+                  {{ field.label }}
+                </div>
+                <div class = "row">
+                  {{ field }}
+              {% endfor %}  
+             <button id="post_comment" type="submit" class="button-submit btn-outline-dark btn-sm">post</button>
+                </div>
           </form>
           {% else %}
             <div class="engirls_font_norm"> Please log in to comment :) </p>
@@ -115,8 +123,8 @@ https://stackoverflow.com/questions/38482059/enabling-cors-cross-origin-request-
 <script>
 
 // Render the list of comments via ajax
-function render_comment_list(){
-  $("#comment_list").load('comics/comments/{{ comic_panel.pk }}/1/');
+function render_comment_list(page_num=1){
+  $("#comment_list").load('/comics/comments/{{ comic_panel.pk }}/' + page_num + '/');
 }
 
 // Post and render the comment list upon clickin the post comment button
@@ -124,15 +132,16 @@ $("#post_comment").on('click', function(e) {
     e.preventDefault();
     var form = $(this).closest("form");
      $.ajax({
-            url: 'comics/comments/{{ comic_panel.pk }}/1/',
+            url: '{% url "view_comments" comic_pk=comic_panel.pk page=1 %}',
             type: 'POST',
-            data: form.serialize(),
-            dataType: "jsonp"
+            data: form.serialize()
         }).done(function(data) {
+          $('#id_body').val('');
           render_comment_list();
         });
       return false;
   });
+
 
 $(document).ready(function(){
   render_comment_list();

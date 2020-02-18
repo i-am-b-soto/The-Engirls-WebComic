@@ -166,7 +166,7 @@ class Comment(models.Model):
     ComicPanel = models.ForeignKey(ComicPanel,on_delete=models.CASCADE,related_name='comments')
     name = models.CharField(max_length=144, blank=True, null=True)
     body = models.TextField()
-    created_on = models.DateField(default=timezone.now)
+    created_on = models.DateTimeField(auto_now_add=True)
 
 
     def __str__(self):

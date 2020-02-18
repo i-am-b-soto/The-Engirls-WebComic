@@ -97,7 +97,7 @@ def view_comments(request, comic_pk, page=1):
 			if settings.DEBUG:
 				print("Comment form is not valid! HACKER!!! HACKKERRRR!")
 
-	comments = cp.comments.all().order_by("created_on")
+	comments = cp.comments.all().order_by("-created_on")
 
 	# Show 5 per page
 	paginator = Paginator(comments, 10)
