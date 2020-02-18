@@ -3,9 +3,6 @@
 
 {% load static %}
 
-<!-- must follow this link here: 
-https://stackoverflow.com/questions/38482059/enabling-cors-cross-origin-request-in-django
--->
 
 <!-- Bootstrap core CSS -->
 <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -15,27 +12,29 @@ https://stackoverflow.com/questions/38482059/enabling-cors-cross-origin-request-
   <!-- Page Content -->
   <div class="container">
 
-    <div class="row">
 
-      <!-- First column -->
-     <!--  <div class = "col-sm"></div> -->
-
-      <!-- Post Content Column -->
-      <div class="col-sm-8">
 
         {% if comic_panel %}
-          <!-- Title -->
-          <div class="mt-4 engirls_font_large">
-            <h1>{{ comic_panel.title }}</h1> <p class = "engirls_font_norm">{{ comic_panel.uploadTime }}</p>
+          <div class="row">
+
+            <div class="col">        
+              <!-- Title -->
+              <div class="mt-4 engirls_font_large">
+                <h1>{{ comic_panel.title }}</h1> <p class = "engirls_font_norm">{{ comic_panel.uploadTime }}</p>
+              </div>
+              <hr>
+              <!-- col -->
+            </div>
+            <!-- row -->
           </div>
+          <div class="row">
 
-          <hr>
-
-          <!-- Preview Image -->
-        <div class="shadow">
-          <img class="rounded img-fluid" src="{{ MEDIA_URL }}{{ comic_panel.image }}" alt="{{ comic_panel.caption }}">
-        </div>
-        <hr>  
+            <div class="col-sm-8">
+                <!-- Preview Image -->
+              <div class="shadow">
+                <img class="rounded img-fluid" src="{{ MEDIA_URL }}{{ comic_panel.image }}" alt="{{ comic_panel.caption }}">
+              </div>
+              <hr>  
 
              <div class = "container">
                 <div class = "row">
@@ -68,28 +67,19 @@ https://stackoverflow.com/questions/38482059/enabling-cors-cross-origin-request-
                 </div>
               <hr>                  
 
+        <!-- Description -->
         <div class="card my-4">
-           <!-- Description -->
-
           <div class="card-body">
               {{ comic_panel.description | safe }} 
           </div>
 
           <!-- card -->
-          </div>
-
-      {% else %}
-        <div class = "col"></div>
-        <div class = "my-4 text-center">
-          <p class = "lead engirls_font_large"> Looks like you don't have any comics! Upload some? </p>
         </div>
 
-      {% endif %}
       <!-- col-sm -->
       </div> 
 
-
-      <!-- 3rd column - Comments -->
+       <!-- 3rd column - Comments -->
       <div class = "col-sm py-2">
         <div class = "comment_form ml-2">
           {% if True %}
@@ -103,7 +93,7 @@ https://stackoverflow.com/questions/38482059/enabling-cors-cross-origin-request-
                 <div class = "row">
                   {{ field }}
               {% endfor %}  
-             <button id="post_comment" type="submit" class="button-submit btn-outline-dark btn-sm">post</button>
+              <button id="post_comment" type="submit" class="button-submit btn-outline-dark btn-sm">post</button>
                 </div>
           </form>
           {% else %}
@@ -114,6 +104,19 @@ https://stackoverflow.com/questions/38482059/enabling-cors-cross-origin-request-
           <a name="comment_start"></a>
         </div>       
       </div>
+           
+      <!-- If no comic Pk -->
+    {% else %}
+      <div class = "col"></div>
+      <div class = "my-4 text-center">
+        <p class = "lead engirls_font_large"> Looks like you don't have a comic! Upload some? </p>
+      </div>
+
+    {% endif %}
+
+
+
+
 
     </div>
     <!-- /.row -->

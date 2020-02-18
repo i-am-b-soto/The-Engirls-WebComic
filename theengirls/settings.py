@@ -119,6 +119,11 @@ DATABASES = {
     }
 }
 
+#LOGIN_REDIRECT_URL = '/'
+#AUTH_USER_MODEL = 'registration.User'
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = '#'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

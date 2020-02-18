@@ -14,7 +14,7 @@ https://bootsnipp.com/snippets/g68X5
 				{% if comments %}
 					{% for comment in comments %}
 						<div class="media">
-							<small>Created on: {{ comment.created_on }} <br> by: {{ comment.name }}</small>
+							<small>Posted on: {{ comment.created_on|date:"d-m-Y" }} <br> by: {{ comment.name }}</small>
 			                <div class="media-comment">
 			                	<br>{{ comment.body }}
 			                </div>
