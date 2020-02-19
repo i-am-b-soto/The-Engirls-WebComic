@@ -27,7 +27,6 @@ Comment system:
 
 12) Get captions to work
 
-13) Add Comment feature
 
 14) Finish social login
 

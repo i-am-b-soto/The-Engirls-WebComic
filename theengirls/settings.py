@@ -19,16 +19,17 @@ MAIN_SERIES_NAME = "main"
 
 def getSocialInfo(filename):
     with open(filename) as social_secrets:
-        app_id = social_secrets.readline()
-        app_secret = social_secrets.readline() 
-    return (app_id, app_secret)
-
+        line = social_secrets.readline()
+        line = line.split(':')
+        secrets_tuple = (line[0], line[1])
+        return secrets_tuple
+    return ('','')
 
 FB_VALUES = getSocialInfo('facebookkeys.txt')
-SOCIAL_AUTH_FACEBOOK_KEY = '' + str(FB_VALUES[0]) + '' # App ID
-SOCIAL_AUTH_FACEBOOK_SECRET = '' + str(FB_VALUES[1]) + '' # App Secret
+#print('FB Secret: ' + str(FB_VALUES[1]))
+SOCIAL_AUTH_FACEBOOK_KEY = FB_VALUES[0] # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = FB_VALUES[1]  # App Secret
 
-#print(SOCIAL_AUTH_FACEBOOK_KEY)
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
