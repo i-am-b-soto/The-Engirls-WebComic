@@ -70,7 +70,7 @@ def view_archive(request):
 
 
 # Load our comments
-def view_comments(request, comic_pk, page=1):
+def view_comments(request, comic_pk =-1, page=1):
 	comments_paginated = []
 
 	try:

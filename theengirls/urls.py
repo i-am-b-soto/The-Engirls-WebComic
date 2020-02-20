@@ -19,7 +19,7 @@ from .views import error_404
 
 urlpatterns = [
 	path('', include('comics.urls')), # Home URL
-	path('comics/', include('comics.urls')), # Comic app URKS
+	path('comics/', include('comics.urls')), # Comic app URLS
 	path('admin/', admin.site.urls), # Django Admin URLS
     path('accounts/', include('django.contrib.auth.urls')), # Django User Auth URLS
     path('oauth/', include('social_django.urls', namespace='social')),  # Social App URLS 

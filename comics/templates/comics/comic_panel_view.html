@@ -2,8 +2,6 @@
 {% block main_content %}
 
 {% load static %}
-
-
 <!-- Bootstrap core CSS -->
 <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 <link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
@@ -12,105 +10,104 @@
   <!-- Page Content -->
   <div class="container">
 
+    {% if comic_panel %}
 
+      <div class="row">
 
-        {% if comic_panel %}
-          <div class="row">
-
-            <div class="col">        
-              <!-- Title -->
-              <div class="mt-4 engirls_font_large">
-                <h1>{{ comic_panel.title }}</h1> <p class = "engirls_font_norm">{{ comic_panel.uploadTime }}</p>
-              </div>
-              <hr>
-              <!-- col -->
-            </div>
-            <!-- row -->
+        <div class="col">        
+          <!-- Title -->
+          <div class="mt-4 engirls_font_large">
+            <h1>{{ comic_panel.title }}</h1> <p class = "engirls_font_norm">{{ comic_panel.uploadTime }}</p>
           </div>
-          <div class="row">
-
-            <div class="col-sm-8">
-                <!-- Preview Image -->
-              <div class="shadow">
-                <img class="rounded img-fluid" src="{{ MEDIA_URL }}{{ comic_panel.image }}" alt="{{ comic_panel.caption }}">
-              </div>
-              <hr>  
-
-             <div class = "container">
-                <div class = "row">
-                   <!-- Button to oldest comic -->
-                   {% if oldest_comic_pk != comic_panel.pk %}
-                      <div class = "col-3 engirls_font_norm">
-                        <a href="{% url 'view_panel' comic_pk=oldest_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> << First </a>
-                      </div>
-                      {% if prev_comic_pk != -1 %}
-                        <div class = "col-3 engirls_font_norm">
-                          <a href="{% url 'view_panel' comic_pk=prev_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> < Prev </a>
-                        </div>
-                      {% endif%}
-                   {% endif %}
-                  <!-- Button to previous comic -->
-                  {% if newest_comic_pk != comic_panel.pk %}
-                      {%  if next_comic_pk != -1%}
-                        <div class = "col-3 engirls_font_norm">
-                          <a href="{% url 'view_panel' comic_pk=next_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> Next > </a>
-                        </div>
-                      {% endif %}
-                      <div class = "col-3 engirls_font_norm">
-                        <a href="{% url 'view_panel' comic_pk=newest_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> Newest >> </a>
-                      </div> 
-                  {% endif %}
-                  <!-- row --> 
-                  </div>            
-               
-                <!-- Container -->
-                </div>
-              <hr>                  
-
-        <!-- Description -->
-        <div class="card my-4">
-          <div class="card-body">
-              {{ comic_panel.description | safe }} 
-          </div>
-
-          <!-- card -->
+          <hr>
+          <!-- col -->
         </div>
-
-      <!-- col-sm -->
-      </div> 
-
-       <!-- 3rd column - Comments -->
-      <div class = "col-sm py-2">
-        <div class = "comment_form ml-2">
-          {% if user.is_authenticated %}
-         
-          <form action = "" method="POST"> 
-              {% csrf_token %}
-              {% for field in comment_form %}
-                <div class = "row">
-                  {{ field.label }}
-                </div>
-                <div class = "row">
-                  {{ field }}
-              {% endfor %}  
-              <button id="post_comment" type="submit" class="button-submit btn-outline-dark btn-sm">post</button>
-                </div>
-          </form>
-          <!-- if user is not authenticated -->
-          {% else %}
-            <div class="engirls_font_norm">
-              Please Login to Comment:<br>
-              <a href="{% url 'social:begin' 'facebook' %}"><img src="https://img.icons8.com/doodle/48/000000/facebook-new.png"></a>
-            </p>
-          {% endif %}
-          </div>
-          <div id = "comment_list"></div>
-          <a name="comment_start"></a>
-        </div>       
+        <!-- row -->
       </div>
-           
-      <!-- If no comic Pk -->
+      <div class="row">
+
+        <div class="col-sm-8">
+            <!-- Preview Image -->
+          <div class="shadow">
+            <img class="rounded img-fluid" src="{{ MEDIA_URL }}{{ comic_panel.image }}" alt="{{ comic_panel.caption }}">
+          </div>
+          <hr>  
+
+          <div class = "container">
+            <div class = "row">
+               <!-- Button to oldest comic -->
+               {% if oldest_comic_pk != comic_panel.pk %}
+                  <div class = "col-3 engirls_font_norm">
+                    <a href="{% url 'view_panel' comic_pk=oldest_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> << First </a>
+                  </div>
+                  {% if prev_comic_pk != -1 %}
+                    <div class = "col-3 engirls_font_norm">
+                      <a href="{% url 'view_panel' comic_pk=prev_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> < Prev </a>
+                    </div>
+                  {% endif%}
+               {% endif %}
+              <!-- Button to previous comic -->
+              {% if newest_comic_pk != comic_panel.pk %}
+                  {%  if next_comic_pk != -1%}
+                    <div class = "col-3 engirls_font_norm">
+                      <a href="{% url 'view_panel' comic_pk=next_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> Next > </a>
+                    </div>
+                  {% endif %}
+                  <div class = "col-3 engirls_font_norm">
+                    <a href="{% url 'view_panel' comic_pk=newest_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> Newest >> </a>
+                  </div> 
+              {% endif %}
+              <!-- row --> 
+            </div>            
+             
+              <!-- Container -->
+          </div>
+          <hr>                  
+
+          <!-- Description -->
+          <div class="card my-4">
+            <div class="card-body">
+                {{ comic_panel.description | safe }} 
+            </div>
+
+            <!-- card -->
+          </div>
+
+        <!-- col-sm -->
+        </div> 
+
+         <!-- 3rd column - Comments -->
+        <div class = "col-sm py-2">
+          <div class = "comment_form ml-2">
+            {% if user.is_authenticated %}
+            <form action = "" method="POST"> 
+                {% csrf_token %}
+                {% for field in comment_form %}
+                  <div class = "row">
+                    {{ field.label }}
+                  </div>
+                  <div class = "row">
+                    {{ field }}
+                {% endfor %}  
+                <button id="post_comment" type="submit" class="button-submit btn-outline-dark btn-sm">post</button>
+                  </div>
+            </form>
+            <!-- if user is not authenticated -->
+            {% else %}
+              <div class="engirls_font_norm">
+                Please Login to Comment:<br>
+                <a href="{% url 'social:begin' 'facebook' %}"><img src="https://img.icons8.com/doodle/48/000000/facebook-new.png"></a>
+              </p>
+            {% endif %}
+            </div>
+            <div id = "comment_list"></div>
+            <a name="comment_start"></a>
+          </div>       
+        </div>
+       
+    <!-- If no comic Pk -->
     {% else %}
+
       <div class = "col"></div>
       <div class = "my-4 text-center">
         <p class = "lead engirls_font_large"> Looks like you don't have a comic! Upload some? </p>
@@ -122,16 +119,19 @@
 
 
 
-    </div>
-    <!-- /.row -->
-   
   </div>
-  <!-- /.container -->
+  <!-- /.row -->
+   
+</div>
+<!-- /.container -->
 <script>
+
 
 // Render the list of comments via ajax
 function render_comment_list(page_num=1){
-  $("#comment_list").load('/comics/comments/{{ comic_panel.pk }}/' + page_num + '/');
+  if( {{ comic_panel }} != null){
+    $("#comment_list").load('/comics/comments/{{ comic_panel.pk }}/' + page_num + '/');
+  } 
 }
 
 // Post and render the comment list upon clickin the post comment button
@@ -139,7 +139,7 @@ $("#post_comment").on('click', function(e) {
     e.preventDefault();
     var form = $(this).closest("form");
      $.ajax({
-            url: '{% url "view_comments" comic_pk=comic_panel.pk page=1 %}',
+            url: '/comics/comments/{{ comic_panel.pk }}/1/',
             type: 'POST',
             data: form.serialize()
         }).done(function(data) {
