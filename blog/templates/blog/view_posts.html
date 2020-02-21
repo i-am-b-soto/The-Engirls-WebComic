@@ -7,6 +7,7 @@
 <link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
 
 {% if posts %}
+<div class = "page-header text-center engirls_font_large"> Engirls Blog</div>
 <div class = "container"> 
   <div class = "row rounded" style = "background-color:#f9f8f8">
     <div class = "col-sm-3 py-2 engirls_font_norm">
@@ -31,15 +32,16 @@
         <div class = "col-sm-12">
             <div class="jumbotron jumbotron-fluid rounded shadow">
               <div class = "mx-sm-3 text-center">
-                <h1 class = "engirls_font_large">{{ post.title }}</h1>
-                <div class = "engirls_font_small"> Category: {{ post.category }} <br>
-                  <span class="label label-success">Created on: {{ post.created_on }}</span>
+                <a href = "{% url 'blog:view_post' post_pk=post.pk %}" style = "color:inherit;">
+                  <h1 class = "engirls_font_large">{{ post.title }}</h1>
+                  <div class = "engirls_font_small"> Category: {{ post.category }} <br>
+                    <span class="label label-success">Created on: {{ post.created_on }}</span>    
+                  </div>
+                  {{ post.body|safe|truncatewords:50 }}
                 </div>
-              </div>
+              </a>
             </div>
-            <div style="height: 200px;"></div>
         </div>
-      
           
         
       {% endfor %}
@@ -94,3 +96,4 @@
  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
 {% endblock %}
+

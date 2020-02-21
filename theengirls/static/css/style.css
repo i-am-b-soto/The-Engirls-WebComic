@@ -1,11 +1,3 @@
-.banner{
-
-	background-image: url("images/theengirls_banner.png");
-	background-repeat: no-repeat;
-  	background-size: contain;
-  	width: 100%;
-  	height: 250px;
-}
 
 .theengirls_background{
   	background-color: #EEE6E4
@@ -31,3 +23,12 @@
 	font-size: 40px;
 }
 
+footer{
+    width: 100%;
+    height: 50px;
+    background-color: #000000;
+    border-top: 1px solid #C2B8B8;
+    z-index: 10;
+    margin-top: -51px;
+    position: relative;
+}

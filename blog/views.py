@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from .forms import CommentForm
 from .models import Post, Comment
 from .filters import PostFilter
+from django.http import HttpResponse, Http404
 
 ###########################################################################
 # Blog Views
@@ -78,6 +79,8 @@ def view_posts(request):
 
 # View individual post
 def view_post(request, post_pk =-1):
+	p = None
+	comment_form = None
 	if request.method == 'GET':
 
 		try:
@@ -86,4 +89,4 @@ def view_post(request, post_pk =-1):
 			raise Http404
 
 		comment_form = CommentForm()
-		render(request, "blog/view_post.html", context = {'post': p, 'comment_form':comment_form} )
+	return render(request, "blog/view_post.html", context = {'post': p, 'comment_form':comment_form} )

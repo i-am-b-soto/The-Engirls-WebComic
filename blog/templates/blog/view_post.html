@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block main_content %}
+
+{% load static %}
+<!-- Bootstrap core CSS -->
+<link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
+
+
+  <!-- Page Content -->
+  <div class="container">
+
+    {% if post %}
+
+      <div class="row">
+
+        <div class="col">        
+          <!-- Title -->
+          <div class="mt-4 engirls_font_large">
+            <h1 class = "float-left">{{ post.title }}</h1> <br><small><p>{{ post.created_on }}</p>
+               <p> Category: {{ post.category }}</p></small>
+          </div>
+
+          <hr>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="card my-4 shadow">
+            <div class="card-body">
+                {{ post.body | safe }} 
+            </div>
+          </div>
+        </div> 
+
+         <!-- 3rd column - Comments -->
+        <div class = "col-sm py-2">
+          <div class = "comment_form ml-2">
+            {% if user.is_authenticated %}
+            <form action = "" method="POST"> 
+                {% csrf_token %}
+                {% for field in comment_form %}
+                  <div class = "row engirls_font_small">
+                    {{ field.label }}
+                  </div>
+                  <div class = "row">
+                    {{ field }}
+                {% endfor %}  
+                <button id="post_comment" type="submit" class="button-submit btn-outline-dark btn-sm">post</button>
+                  </div>
+            </form>
+
+            <!-- if user is not authenticated -->
+            {% else %}
+              <div class="engirls_font_small">
+                Please Login to Comment:<br>
+                <a href="{% url 'social:begin' 'facebook' %}"><img src="https://img.icons8.com/doodle/48/000000/facebook-new.png"></a>
+              </p>
+            {% endif %}
+            </div>
+            <div id = "comment_list"></div>
+            <a name="comment_start"></a>
+          </div>       
+        </div>
+       
+    <!-- If no comic Pk -->
+    {% else %}
+
+      <div class = "col-sm-3"></div>
+      <div class = "col-sm text-center">
+        <div class = "engirls_font_large"> Looks like there is no Post here :( </div>
+      </div>
+      <div class = "col-sm-3"></div>
+
+    {% endif %}
+
+  </div>
+  <!-- /.row -->
+   
+</div>
+<!-- /.container -->
+<script>
+
+
+// Render the list of comments via ajax
+function render_comment_list(page_num=1){
+  
+    $("#comment_list").load('/blog/comments/{{ post.pk }}/' + page_num + '/');
+  
+}
+
+// Post and render the comment list upon clickin the post comment button
+$("#post_comment").on('click', function(e) {
+    e.preventDefault();
+    var form = $(this).closest("form");
+     $.ajax({
+            url: '/blog/comments/{{ post.pk }}/1/',
+            type: 'POST',
+            data: form.serialize()
+        }).done(function(data) {
+          $('#id_body').val('');
+          render_comment_list();
+        });
+      return false;
+  });
+
+
+$(document).ready(function(){
+  render_comment_list();
+});
+
+
+ 
+</script>
+<!-- Bootstrap core JavaScript -->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+{% endblock %}
