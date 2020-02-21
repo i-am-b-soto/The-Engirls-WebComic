@@ -64,7 +64,7 @@ class Counter():
 def view_posts(request):
 	post_list = Post.objects.all().order_by("created_on")
 	post_filter = PostFilter(request.GET, queryset=post_list)
-	paginator = Paginator(post_filter.qs, 8)
+	paginator = Paginator(post_filter.qs, 5)
 
 	page = request.GET.get('page', 1)
 	try:
@@ -72,7 +72,7 @@ def view_posts(request):
 	except (PageNotAnInteger, TypeError):
 		posts = paginator.page(1)
 	except EmptyPage:
-		comics = paginator.page(paginator.num_pages)
+		posts = paginator.page(paginator.num_pages)
 
 	return render(request, 'blog/view_posts.html', context = {'filter': post_filter, 'posts': posts, 'counter': Counter()})	
 
