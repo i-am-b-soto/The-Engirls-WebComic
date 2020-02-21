@@ -30,17 +30,18 @@
       {% for post in posts %}
         <!-- Content section -->
         <div class = "col-sm-12">
-            <div class="jumbotron jumbotron-fluid rounded shadow">
-              <div class = "mx-sm-3 text-center">
-                <a href = "{% url 'blog:view_post' post_pk=post.pk %}" style = "color:inherit;">
-                  <h1 class = "engirls_font_large">{{ post.title }}</h1>
-                  <div class = "engirls_font_small"> Category: {{ post.category }} <br>
-                    <span class="label label-success">Created on: {{ post.created_on }}</span>    
+             <a href = "{% url 'blog:view_post' post_pk=post.pk %}" style = "color:inherit;">
+              <div class="jumbotron jumbotron-fluid rounded shadow">
+                <div class = "mx-sm-3 text-center">
+                 
+                    <h1 class = "engirls_font_large">{{ post.title }}</h1>
+                    <div class = "engirls_font_small"> Category: {{ post.category }} <br>
+                      <span class="label label-success">Created on: {{ post.created_on }}</span>    
+                    </div>
+                    {{ post.body|safe|truncatewords:50 }}
                   </div>
-                  {{ post.body|safe|truncatewords:50 }}
-                </div>
+              </div>
               </a>
-            </div>
         </div>
           
         
