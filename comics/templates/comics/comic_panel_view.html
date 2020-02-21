@@ -127,9 +127,9 @@
 
 // Render the list of comments via ajax
 function render_comment_list(page_num=1){
-  if( {{ comic_panel }} != null){
+  //if( {{ comic_panel }} != null){
     $("#comment_list").load('/comics/comments/{{ comic_panel.pk }}/' + page_num + '/');
-  } 
+   
 }
 
 // Post and render the comment list upon clickin the post comment button
