@@ -22,10 +22,8 @@
   
   <!-- To Load custom Static files. Use this: --> 
 {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'comics/style.css' %}" /> 
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" /> 
 
-
-<!-- <link rel="stylesheet" type="text/css" href="../../static/comics/style.css"> -->
 
 </head> 
 <body class="theengirls_background">
@@ -40,14 +38,17 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-3">
       <li class="nav-item engirls_font_norm">
-        <a class="nav-link ml-3" href="{% url 'comic_index' %}">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link ml-3" href="{% url 'comics:comic_index' %}">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item engirls_font_norm">
-        <a class="nav-link ml-3" href="{% url 'view_archive' %}">Archive</a>
+        <a class="nav-link ml-3" href="{% url 'comics:view_archive' %}">Archive</a>
       </li>
       <li class="nav-item engirls_font_norm">
-        <a class="nav-link ml-3" href="#">News</a>
-      </li>      
+        <a class="nav-link ml-3" href="{% url 'blog:view_posts' %}">Blog</a>
+      </li>
+      <li class="nav-item engirls_font_norm">
+        <a class="nav-link ml-3" href="#">About</a>
+      </li>       
     </ul>
   </div>
 </nav>

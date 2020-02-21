@@ -1,5 +1,5 @@
 from django.db import models
-from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 from PIL import Image
 import os
 from io import StringIO,BytesIO
@@ -19,7 +19,7 @@ class ComicPanel(models.Model):
 	title = models.CharField(max_length = 255)
 	image = models.ImageField(upload_to = 'comics/')
 	#TODO, Change this if approperiate
-	description = RichTextField()
+	description = RichTextUploadingField()
 	caption = models.CharField(max_length = 500)
 
 
@@ -162,6 +162,7 @@ class ComicPanel(models.Model):
 		super(ComicPanel, self).save()
 
 
+# in future projects this should really be its own app
 class Comment(models.Model):
     ComicPanel = models.ForeignKey(ComicPanel,on_delete=models.CASCADE,related_name='comments')
     name = models.CharField(max_length=144, blank=True, null=True)
@@ -171,3 +172,6 @@ class Comment(models.Model):
 
     def __str__(self):
         return 'Comment {} by {}'.format(self.body, self.name)
+
+
+

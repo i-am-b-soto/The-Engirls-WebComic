@@ -3,14 +3,6 @@ from django.contrib import admin
 # Register your models here.
 from .models import ComicPanel, Comment
 
-"""
-Deprecated
-class tagInline(admin.StackedInline):
-  model = Tag
-  extra = 1
-  search_fields = ['tag']
-  #autocomplete_fields['tag']
-"""
 
 @admin.register(ComicPanel)
 class ComicPanelAdmin(admin.ModelAdmin):
@@ -26,8 +18,7 @@ class ComicPanelAdmin(admin.ModelAdmin):
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('name', 'body', 'ComicPanel', 'created_on')
-    list_filter = ('created_on',)
-    search_fields = ('name', 'body')
+    list_filter = ('created_on','name')
 
 
 

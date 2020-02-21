@@ -16,9 +16,14 @@
   height: auto;	
 }
 
-.engirls_font_norm{
+.engirls_font_small{
 	font-family: 'Neucha', cursive;
-  font-size: 25px;
+  font-size: 15px;
+}
+
+.engirls_font_norm{
+  font-family: 'Neucha', cursive;
+  font-size: 20px;
 }
 
 .engirls_font_large{
@@ -26,8 +31,3 @@
 	font-size: 40px;
 }
 
-.card-img-top {
-    width: 100%;
-    height: 15vw;
-    object-fit: cover;
-}

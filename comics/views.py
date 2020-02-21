@@ -1,15 +1,12 @@
-from .forms import CommentForm
 from django.shortcuts import render
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse
-from .models import ComicPanel, Comment
 from django.http import HttpResponse, Http404
-from django.template import loader, RequestContext
 from django.conf import settings
 from django.db.models import F
 from .filters import ComicPanelFilter
-
+from .models import ComicPanel, Comment
+from .forms import CommentForm
 from social_django.models import UserSocialAuth
 
 
@@ -192,3 +189,6 @@ def view_panel(request, comic_pk =-1 ):
 		'next_comic_pk': next_comic_pk,
 		'comment_form':comment_form
 									  })
+#def view_blog_comments(request, post)
+
+

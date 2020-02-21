@@ -17,8 +17,9 @@
         <div class="col">        
           <!-- Title -->
           <div class="mt-4 engirls_font_large">
-            <h1>{{ comic_panel.title }}</h1> <p class = "engirls_font_norm">{{ comic_panel.uploadTime }}</p>
+            <h1>{{ comic_panel.title }}</h1> <small><p>{{ comic_panel.uploadTime }}</p></small>
           </div>
+
           <hr>
           <!-- col -->
         </div>
@@ -37,24 +38,24 @@
             <div class = "row">
                <!-- Button to oldest comic -->
                {% if oldest_comic_pk != comic_panel.pk %}
-                  <div class = "col-3 engirls_font_norm">
-                    <a href="{% url 'view_panel' comic_pk=oldest_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> << First </a>
+                  <div class = "col-3 engirls_font_small">
+                    <a href="{% url 'comics:view_panel' comic_pk=oldest_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> << First </a>
                   </div>
                   {% if prev_comic_pk != -1 %}
-                    <div class = "col-3 engirls_font_norm">
-                      <a href="{% url 'view_panel' comic_pk=prev_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> < Prev </a>
+                    <div class = "col-3 engirls_font_small">
+                      <a href="{% url 'comics:view_panel' comic_pk=prev_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> < Prev </a>
                     </div>
                   {% endif%}
                {% endif %}
               <!-- Button to previous comic -->
               {% if newest_comic_pk != comic_panel.pk %}
                   {%  if next_comic_pk != -1%}
-                    <div class = "col-3 engirls_font_norm">
-                      <a href="{% url 'view_panel' comic_pk=next_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> Next > </a>
+                    <div class = "col-3 engirls_font_small">
+                      <a href="{% url 'comics:view_panel' comic_pk=next_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> Next > </a>
                     </div>
                   {% endif %}
-                  <div class = "col-3 engirls_font_norm">
-                    <a href="{% url 'view_panel' comic_pk=newest_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> Newest >> </a>
+                  <div class = "col-3 engirls_font_small">
+                    <a href="{% url 'comics:view_panel' comic_pk=newest_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> Newest >> </a>
                   </div> 
               {% endif %}
               <!-- row --> 
@@ -83,7 +84,7 @@
             <form action = "" method="POST"> 
                 {% csrf_token %}
                 {% for field in comment_form %}
-                  <div class = "row">
+                  <div class = "row engirls_font_small">
                     {{ field.label }}
                   </div>
                   <div class = "row">
@@ -94,7 +95,7 @@
             </form>
             <!-- if user is not authenticated -->
             {% else %}
-              <div class="engirls_font_norm">
+              <div class="engirls_font_small">
                 Please Login to Comment:<br>
                 <a href="{% url 'social:begin' 'facebook' %}"><img src="https://img.icons8.com/doodle/48/000000/facebook-new.png"></a>
               </p>
@@ -108,16 +109,13 @@
     <!-- If no comic Pk -->
     {% else %}
 
-      <div class = "col"></div>
-      <div class = "my-4 text-center">
-        <p class = "lead engirls_font_large"> Looks like you don't have a comic! Upload some? </p>
+      <div class = "col-sm-3"></div>
+      <div class = "col-sm text-center">
+        <div class = "engirls_font_large"> Looks like there is no comic here :( </div>
       </div>
+      <div class = "col-sm-3"></div>
 
     {% endif %}
-
-
-
-
 
   </div>
   <!-- /.row -->

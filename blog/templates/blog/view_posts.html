@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block main_content %}
+
+{% load static %}
+<!-- Bootstrap core CSS -->
+<link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
+
+{% if posts %}
+<div class = "container"> 
+  <div class = "row">
+    <div class = "col-sm-3">
+      <form class="form" method="GET">
+        {% csrf_token %}
+          <table class="table table-striped table-borderless">
+            <thead>
+              <tr>
+                {% for field in filter.form %}
+                  <th scope="col">{{ field.name }}</th>
+                  <th scope="col">{{ field }}</th>
+                {% endfor %} 
+              </tr>
+            </thead>
+          </table>        
+        <button type="submit" class="btn btn-outline-dark">Filter</button>     
+      </form>       
+    </div>
+
+    <div class = "col-sm"> 
+      {% for post in posts %}
+        {% if counter.count|divisibleby:2 %}
+          <section class="py-5 bg-image-full" style="background-image: url('images/london.jpg');">
+          </section>      
+        {% else %}
+          <section class="py-5 bg-image-full" style="background-image: url('images/london2.jpg');">
+          </section>      
+        {% endif %}
+        <div style="height: 200px;"></div>
+
+        <!-- Content section -->
+        <section class="py-5">
+          <div class="container">
+            <h1 class = "engirls_font_large">{{ post.title }}</h1>
+          </div>
+        </section>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class = "row py-3 ml-2">
+    <div class="pagination">
+      {% if comics.paginator.num_pages > 1 %}
+        <div class = "col-xs-1 col-md-2 col-lg-3 engirls_font_norm">
+            #
+        </div>
+        {% for num in comics.paginator.page_range %}
+          <div class = "col-xs-1 col-md-2 col-lg-3 engirls_font_norm">
+            <!-- Current page number -->
+            {% if comics.number == num %}
+                <h5><a class="text-primary" href="{% url 'blog:view_posts' page=num %}" >{{ num }}</a></h5>
+            {% else %}
+              <h5><a class="text-secondary" href="{% url 'blog:view_posts' page=num %}" >{{ num }}</a></h5>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% else %}
+<div class = "container">
+  <div class = "row">
+    <div class = "col-sm-3"></div>
+    <div class = "col-sm engirls_font_large">
+      Looks like there are no blogs :(
+    </div>
+    <div class = "col-sm-3"></div>
+  </div>
+</div>
+{% endif %}
+
+ <!-- Bootstrap core JavaScript -->
+ <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+ <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+{% endblock %}

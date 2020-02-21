@@ -16,7 +16,7 @@ import os
 MAIN_SERIES_NAME = "main"
 #########################
 
-
+########### Secret Keys ################
 def getSocialInfo(filename):
     with open(filename) as social_secrets:
         line = social_secrets.readline()
@@ -26,21 +26,20 @@ def getSocialInfo(filename):
     return ('','')
 
 FB_VALUES = getSocialInfo('facebookkeys.txt')
-#print('FB Secret: ' + str(FB_VALUES[1]))
 SOCIAL_AUTH_FACEBOOK_KEY = FB_VALUES[0] # App ID
 SOCIAL_AUTH_FACEBOOK_SECRET = FB_VALUES[1]  # App Secret
-
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'fs-i8la@(b(tuq9!ey16qi$+a=d2&0kuc2f&k0orj0y%22kc#h'
+####################################################
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'fs-i8la@(b(tuq9!ey16qi$+a=d2&0kuc2f&k0orj0y%22kc#h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -53,14 +52,16 @@ ALLOWED_HOSTS.append('localhost')
 
 
 INSTALLED_APPS = [
+    'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
     'ckeditor',
+    'ckeditor_uploader',
     'comics',
+    'blog',
     'django_filters',
     'social_django',
 ]
@@ -99,6 +100,9 @@ TEMPLATES = [
     },
 ]
 
+
+###### Django Social-auth #######################
+
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.github.GithubOAuth2',
     'social_core.backends.twitter.TwitterOAuth',
@@ -106,11 +110,10 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.instagram.InstagramOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
-
+####################################################
 
 
 TEMPLATE_DEBUG = True
-
 WSGI_APPLICATION = 'theengirls.wsgi.application'
 
 
@@ -162,17 +165,21 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
+############################################
+#STATIC CONFIGURATION
+#############################################
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = (
+    # This is where static files for the whole site will be stored
+    os.path.join(BASE_DIR, 'theengirls/static/'),
+)
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-
 MEDIA_URL = '/media/'
+###########################################d
 
 ####################################
     ##  CKEDITOR CONFIGURATION ##
