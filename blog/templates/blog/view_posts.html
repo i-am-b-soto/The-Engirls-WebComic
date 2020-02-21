@@ -8,76 +8,75 @@
 
 {% if posts %}
 <div class = "page-header text-center engirls_font_large"> Engirls Blog</div>
-<div class = "container"> 
-  <div class = "row rounded" style = "background-color:#f9f8f8">
-    <div class = "col-sm-3 py-2 engirls_font_norm">
-        Selected Category:
-        <form class="form" method="GET">
-          {% csrf_token %}
-            <table class="table table-striped table-borderless">
-              <thead>
-                <tr>
-                  {% for field in filter.form %}
-                    <th scope="col">{{ field }}</th>
-                    <th scope="col"> <button type="submit" class="btn btn-outline-dark">Filter</button>  </th>
-                  {% endfor %} 
-                </tr>
-              </thead>
-            </table>        
-        </form>      
+  <div class = "container"> 
+    <div class = "row rounded" style = "background-color:#f9f8f8">
+      <div class = "col-sm-3 py-2 engirls_font_norm">
+          Selected Category:
+          <form class="form" method="GET">
+            {% csrf_token %}
+              <table class="table table-striped table-borderless">
+                <thead>
+                  <tr>
+                    {% for field in filter.form %}
+                      <th scope="col">{{ field }}</th>
+                      <th scope="col"> <button type="submit" class="btn btn-outline-dark">Filter</button>  </th>
+                    {% endfor %} 
+                  </tr>
+                </thead>
+              </table>        
+          </form>      
+      </div>
+
+        {% for post in posts %}
+          <!-- Content section -->
+          <div class = "col-sm-12">
+               <a href = "{% url 'blog:view_post' post_pk=post.pk %}" style = "color:inherit;">
+                <div class="jumbotron jumbotron-fluid rounded shadow" >
+                  <div class = "mx-sm-3 text-center">
+                   
+                      <h1 class = "engirls_font_large">{{ post.title }}</h1>
+                      <div class = "engirls_font_small"> Category: {{ post.category }} <br>
+                        <span class="label label-success">Created on: {{ post.created_on }}</span>    
+                      </div>
+                      {{ post.body|safe|truncatewords:50 }}
+                  </div>
+                </div>
+              </a>
+          </div>
+        {% endfor %}
+    <!-- end first row -->
     </div>
 
-      {% for post in posts %}
-        <!-- Content section -->
-        <div class = "col-sm-12">
-             <a href = "{% url 'blog:view_post' post_pk=post.pk %}" style = "color:inherit;">
-              <div class="jumbotron jumbotron-fluid rounded shadow" >
-                <div class = "mx-sm-3 text-center">
-                 
-                    <h1 class = "engirls_font_large">{{ post.title }}</h1>
-                    <div class = "engirls_font_small"> Category: {{ post.category }} <br>
-                      <span class="label label-success">Created on: {{ post.created_on }}</span>    
-                    </div>
-                    {{ post.body|safe|truncatewords:50 }}
-                  </div>
-              </div>
-              </a>
-        </div>
-          
-        
-      {% endfor %}
-  </div>
-
-<div class = "row py-3 ml-2">
-  <div class="pagination">
-    {% if posts.paginator.num_pages > 1 %}
-      <div class = "col-xs-1 col-md-2 col-lg-3 engirls_font_norm">
-          #
-       </div>
-      {% for num in posts.paginator.page_range %}
+  <div class = "row py-3 ml-2">
+    <div class="pagination">
+      {% if posts.paginator.num_pages > 1 %}
         <div class = "col-xs-1 col-md-2 col-lg-3 engirls_font_norm">
-          <!-- Current page number -->
-          {% if posts.number == num %}
-            <!-- If there is existing query parameters -->
-            {% if 'category' in request.get_full_path %}
-              <h5><a class="text-primary" href="{{ request.get_full_path }}&page={{ num }}" >{{ num }}</a></h5>
-            {% else %}
-              <h5><a class="text-primary" href="{% url 'blog:view_posts' %}?page={{ num }}" >{{ num }}</a></h5>
-            {% endif %}
+            #
+         </div>
+        {% for num in posts.paginator.page_range %}
+          <div class = "col-xs-1 col-md-2 col-lg-3 engirls_font_norm">
+            <!-- Current page number -->
+            {% if posts.number == num %}
+              <!-- If there is existing query parameters -->
+              {% if 'category' in request.get_full_path %}
+                <h5><a class="text-primary" href="{{ request.get_full_path }}&page={{ num }}" >{{ num }}</a></h5>
+              {% else %}
+                <h5><a class="text-primary" href="{% url 'blog:view_posts' %}?page={{ num }}" >{{ num }}</a></h5>
+              {% endif %}
 
-           <!-- Other page numbers -->
-        {% else %}
-          {% if 'category' in request.get_full_path %}
-            <h5><a class="text-secondary" href="{{ request.get_full_path }}&page={{ num }}">{{ num }}</a></h5>
-          {%  else %}
-            <h5><a class="text-secondary" href="{% url 'blog:view_posts' %}?page={{ num }}" >{{ num }}</a></h5>
+             <!-- Other page numbers -->
+          {% else %}
+            {% if 'category' in request.get_full_path %}
+              <h5><a class="text-secondary" href="{{ request.get_full_path }}&page={{ num }}">{{ num }}</a></h5>
+            {%  else %}
+              <h5><a class="text-secondary" href="{% url 'blog:view_posts' %}?page={{ num }}" >{{ num }}</a></h5>
+            {% endif %}
           {% endif %}
-        {% endif %}
-      </div>
-    {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
   </div>
-{% endif %}
-</div>
 </div>
 
 {% else %}
