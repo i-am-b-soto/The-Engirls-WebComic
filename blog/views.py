@@ -3,6 +3,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import CommentForm
 from .models import Post, Comment
+from .filters import PostFilter
 
 ###########################################################################
 # Blog Views
@@ -57,12 +58,12 @@ class Counter():
 	def decrement(self):
 		_counter = _counter -1
 	def count(self):
-		return _counter
+		return self._counter
 
 # View post list
 def view_posts(request):
-	post_list = ComicPanel.objects.all().order_by("created_on")
-	post_filter = ComicPanelFilter(request.GET, queryset=post_list)
+	post_list = Post.objects.all().order_by("created_on")
+	post_filter = PostFilter(request.GET, queryset=post_list)
 	paginator = Paginator(post_filter.qs, 8)
 
 	page = request.GET.get('page', 1)
@@ -72,7 +73,7 @@ def view_posts(request):
 		posts = paginator.page(1)
 	except EmptyPage:
 		comics = paginator.page(paginator.num_pages)
-*
+
 	return render(request, 'blog/view_posts.html', context = {'filter': post_filter, 'posts': posts, 'counter': Counter()})	
 
 # View individual post

@@ -27,7 +27,7 @@ urlpatterns = [
     path('oauth/', include('social_django.urls', namespace='social')),  # Social App URLS 
     path('ckeditor/', include('ckeditor_uploader.urls')), # CK Editor
 ] 
-#urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # Media Files
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # Media Files
 #urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
 
 #handler404 = error_404
