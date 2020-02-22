@@ -1,9 +1,5 @@
-References: 
-Social media login: 
-	https://simpleisbetterthancomplex.com/tutorial/2016/10/24/how-to-add-social-login-to-django.html
-Comment system: 
-	https://djangocentral.com/creating-comments-system-with-django/
 
+Items yet to be completed:
 
 [Normal]
 1) Add validation in the admin form to make sure chapter, episode is unique
@@ -17,24 +13,19 @@ Comment system:
 	3b.	Social media links
 
 [High]
-4) Create View Post with comments
+4) Add instagram to Social media login
 
 [High]
-5) Add instagram to Social media login
+5) Test Social Media login
 
 [High]
-6) Test Social Media login
-
-[High]
-7) Deploy to Apache server
+6) Deploy to Apache server
 
 [Normal]
-8) Add animation to comic hover on archive page
+7) Add animation to comic hover on archive page
 
 [Low]
-11) When editing existing comics, don't re-upload image
+8) When editing existing comics, don't re-upload image
 
-[High]
-12) Get captions to work
 
-13) ...
+9) ...

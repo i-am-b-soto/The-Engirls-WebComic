@@ -47,18 +47,21 @@
 
 						<div class="col-sm-3" style = "min-width: 175px;"> 
 							<div class="card mb-sm-3 mb-md-4 mb-lg-5 shadow" style="max-width:200px;min-width:150px;" >
-											
-								<a href="{% url 'comics:view_panel' comic_pk=comic.pk %}">
-								{% if comic.thumbnail %}
-										<img class="card-img-top img-fluid" style ="max-height: 150px;" src="{{ comic.thumbnail.url }}" />	
-								{% else %}	
-									<div class = "col text-center">
-										<h5 class= "engirls_font_large"> No image available</h5>
-									</div>
 									
-								{% endif %}
-								</a>
-					  			 					
+									{% if comic.thumbnail %}
+										<a href="{% url 'comics:view_panel' comic_pk=comic.pk %}">
+											<img class="card-img-top img-fluid" style ="max-height: 150px;" src="{{ comic.thumbnail.url }}" />
+										</a>	
+										
+									{% else %}	
+										<div class = "col text-center">
+											<a href="{% url 'comics:view_panel' comic_pk=comic.pk %}">
+												<h5 class= "engirls_font_large"> No image available</h5>
+											</a>
+										</div>
+										
+									{% endif %}
+									
 					  			<div class = "card-header engirls_font_norm"><h5> {{ comic.title }}</h5> </div>					
 							</div> 
 						</div>
