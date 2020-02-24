@@ -53,30 +53,22 @@
   </div>
 </nav>
 
-{% block main_content %}
-{% endblock %}
+<div id="my-page-container">
+  <div id ="my-content-wrap">
 
+    {% block main_content %}
+    {% endblock %}
 
-</body> 
-<!--
-<body>
-<footer class="footer">
-      <div class="container engirls_font_small">
-        <div class = "row">
-          <div class = "col-sm-4">
-            <span class="text-muted">Copyright © 2020 The Engirls</span>
-          </div>
-        <div class ="col-sm-4">
-          <span class="text-muted">Check us out on Social Media: </span>
-        </div>
-        <div lass = "col-sm-4">
-          <span class="text-muted">Review our privacy policy </span>
-        </div>
-      </div>
-    </div>
-</footer>  
+    {% block footer %}
+    {% endblock %}
+
+  </div>
+</div>
+
 </body>
--->
+
+
+
 </html>
 
 

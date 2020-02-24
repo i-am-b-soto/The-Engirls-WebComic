@@ -27,5 +27,9 @@ Items yet to be completed:
 [Low]
 8) When editing existing comics, don't re-upload image
 
+Miley Says:
+1) fix description box to look beautiful
+2) make filter button look beautiful
+
 
 9) ...
