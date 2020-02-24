@@ -44,8 +44,8 @@ footer {
 }
 
 footer a {
-  color: #fff;
-  font-size: 14px;
+  color: #9452F9;
+  font-size: 9px;
   transition-duration: 0.2s;
 }
 
@@ -94,14 +94,14 @@ ul.social-network li {
 }
 
 .social-network a.icoIGin:hover {
-  background-color: #007bb7;
+  background-color: #405DE6;
 }
 .social-network a.icoFacebook:hover i,
 .social-network a.icoLinkedin:hover i {
   color: #fff;
 }
 .social-network a.icoIGin:hover i {
-  color: #fff;
+  color: #5851DB;
 }
 
 .social-network a.socialIcon:hover,

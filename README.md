@@ -9,7 +9,7 @@ Items yet to be completed:
 
 [High]
 3) Footer
-	3a. Policy Page
+	3a. Policy Page - Done
 	3b.	Social media links
 
 [High]
@@ -33,3 +33,7 @@ Miley Says:
 
 
 9) ...
+
+
+What Grant needs to know:
+dont' put incorrect html in Description/ blog 
