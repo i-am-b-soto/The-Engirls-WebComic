@@ -11,26 +11,26 @@
 <div class = "container pt-1">	
 	<div class = "row">
 		<!-- form -->
-		<div class = "col-lg-4 col-sm-12 engirls_font_norm">
+		<div class = "col-lg-4 col-sm-12 engirls_font_small">
 			<form class="form" method="GET">
 				{% csrf_token %}
-					<table class="table table-striped table-borderless">
-					  <thead>
+					<table class="table table-striped">
+					  <thead >
 					    <tr>
 					      <th scope="col">Filter Comics: </th>
-					      <th scope="col"></th>
+					     
 					    </tr>
 					  </thead>
-						  <tbody>
+						  <tbody class = "">
 								{% for field in filter.form %}
-									<tr>
+									<tr class = "shadow shadow-light">
 										<th scope="row"> {{ field.name }}</th>
-										<td>{{ field }}</td>
+										<td class = "">{{ field }}</td>
 									</tr>
 								{% endfor %}			    	      
 						  </tbody>
 					  </table>				
-						<button type="submit" class="btn btn-outline-dark">Filter</button>		 
+						<button type="submit" class="btn btn-outline-dark shadow">Filter</button>		 
 				</form>	
 			<!-- col -->
 			</div>

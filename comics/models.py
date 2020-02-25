@@ -8,8 +8,6 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils import timezone
 from django.conf import settings
 
-#TODO Add validation in the admin form to makesure chapter, episode is not repeated
-
 def getMainSeriesName():
 	return settings.MAIN_SERIES_NAME
 
@@ -26,7 +24,7 @@ class ComicPanel(models.Model):
 	series = models.CharField(max_length = 255, null = False, blank = False, default = getMainSeriesName, 
 		help_text="The default value is what the main Series Name is set to in Settings.py" )
 	chapter = models.FloatField(null = True, blank = True)
-	episode = models.IntegerField(null = True, blank = True)
+	page = models.IntegerField(null = True, blank = True, name="page")
 	#chapter = models.FloatField(null=True, validators=[MinValueValidator(1)])
 	#episode = models.IntegerField(null=True, validators=[MinValueValidator(1)])
 
@@ -43,7 +41,7 @@ class ComicPanel(models.Model):
 
 	class Meta:
 		constraints = [
-			models.UniqueConstraint(fields=['series','chapter', 'episode'], name='Must be null or unique')
+			models.UniqueConstraint(fields=['series','chapter', 'page'], name='Must be null or unique')
 			]
 
 	def __str__(self):

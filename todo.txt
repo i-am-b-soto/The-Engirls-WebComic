@@ -1,35 +1,34 @@
-References: 
-Social media login: 
-	https://simpleisbetterthancomplex.com/tutorial/2016/10/24/how-to-add-social-login-to-django.html
-Comment system: 
-	https://djangocentral.com/creating-comments-system-with-django/
 
+Items yet to be completed:
 
 [Normal]
 1) Add validation in the admin form to make sure chapter, episode is unique
 
+[Normal]
+2) Add Autocomplete on Chapter and episode in filter form
 
-4) Add Autocomplete on Chapter and episode in filter form
+[High]
+4) Add instagram to Social media login
 
-[Normal
-5) Instagram, Facebook links? 
+[High]
+5) Test Social Media login
+
+[High]
+6) Deploy to Apache server
+
+[Normal]
+7) Add animation to comic hover on archive page
+
+[Low]
+8) When editing existing comics, don't re-upload image
+
+Miley Says:
+1) fix description box to look beautiful
+2) make filter button look beautiful
 
 
-[high]
-7) Add filter feature on Archive page
-	7a) Make chapter field dependant on series
-	7b) Make episode field depend on chapter
+9) ...
 
 
-10) Add animation to comic hover on archive page
-
-11) When editing existing comics, don't re-upload image
-
-12) Get captions to work
-
-
-14) Finish social login
-
-15) Create blog app
-
-16) ...
+What Grant needs to know:
+dont' put incorrect html in Description/ blog 

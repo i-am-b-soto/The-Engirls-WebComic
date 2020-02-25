@@ -6,7 +6,6 @@
 <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 <link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
 
-
   <!-- Page Content -->
   <div class="container">
 
@@ -41,11 +40,11 @@
                <!-- Button to oldest comic -->
                {% if oldest_comic_pk != comic_panel.pk %}
                   <div class = "col-3 engirls_font_small">
-                    <a href="{% url 'comics:view_panel' comic_pk=oldest_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> << First </a>
+                    <a href="{% url 'comics:view_panel' comic_pk=oldest_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm shadow"> << First </a>
                   </div>
                   {% if prev_comic_pk != -1 %}
                     <div class = "col-3 engirls_font_small">
-                      <a href="{% url 'comics:view_panel' comic_pk=prev_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> < Prev </a>
+                      <a href="{% url 'comics:view_panel' comic_pk=prev_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm shadow"> < Prev </a>
                     </div>
                   {% endif%}
                {% endif %}
@@ -53,11 +52,11 @@
               {% if newest_comic_pk != comic_panel.pk %}
                   {%  if next_comic_pk != -1%}
                     <div class = "col-3 engirls_font_small">
-                      <a href="{% url 'comics:view_panel' comic_pk=next_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> Next > </a>
+                      <a href="{% url 'comics:view_panel' comic_pk=next_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm shadow"> Next > </a>
                     </div>
                   {% endif %}
                   <div class = "col-3 engirls_font_small">
-                    <a href="{% url 'comics:view_panel' comic_pk=newest_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm"> Newest >> </a>
+                    <a href="{% url 'comics:view_panel' comic_pk=newest_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm shadow"> Newest >> </a>
                   </div> 
               {% endif %}
               <!-- row --> 
@@ -68,7 +67,10 @@
           <hr>                  
 
           <!-- Description -->
-          <div class="card my-4">
+          <div class = "engirls_font_norm">
+            <h3> Description: </h3>
+          </div>          
+          <div class="card rounded my-4 shadow">
             <div class="card-body">
                 {{ comic_panel.description | safe }} 
             </div>
@@ -81,31 +83,48 @@
 
          <!-- 3rd column - Comments -->
         <div class = "col-sm py-2">
+          {% if user.is_authenticated %}
           <div class = "comment_form ml-2">
-            {% if user.is_authenticated %}
-            <form action = "" method="POST"> 
-                {% csrf_token %}
-                {% for field in comment_form %}
-                  <div class = "row engirls_font_small">
-                    {{ field.label }}
-                  </div>
-                  <div class = "row">
-                    {{ field }}
-                {% endfor %}  
-                <button id="post_comment" type="submit" class="button-submit btn-outline-dark btn-sm">post</button>
-                  </div>
-            </form>
+            <p>
+              Logged as {{ user.username }}
+                
+              <a href="/logout/?next={{request.path}}"><small>Logout</small></a>
+            </p>
+            <br>
+
+              <form action = "" method="POST"> 
+                  {% csrf_token %}
+                  {% for field in comment_form %}
+                    <div class = "row engirls_font_small">
+                      {{ field.label }}
+                    </div>
+                    <div class = "row">
+                      {{ field }}
+                  {% endfor %}  
+                  <button id="post_comment" type="submit" class="button-submit btn-outline-dark btn-sm">post</button>
+                    </div>
+              </form>
+          </div>
             <!-- if user is not authenticated -->
             {% else %}
               <div class="engirls_font_small">
-                Please Login to Comment:<br>
-                <a href="{% url 'social:begin' 'facebook' %}"><img src="https://img.icons8.com/doodle/48/000000/facebook-new.png"></a>
-              </p>
+                <div class = "container" id = "social_login_container">
+                  Please Login to Comment:
+                  <div class = "row">
+                    <div class = "col-sm">
+                      <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }"><img src="https://img.icons8.com/plasticine/48/000000/google-logo.png"></a>
+                      <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }"><img src="https://img.icons8.com/doodle/48/000000/facebook-new.png"></a>
+                    </div>                    
+                  </div>
+                </div> 
+              </div>
             {% endif %}
-            </div>
             <div id = "comment_list"></div>
             <a name="comment_start"></a>
-          </div>       
+          <!-- col -->
+          </div>  
+
+        <!-- row -->     
         </div>
        
     <!-- If no comic Pk -->
@@ -162,6 +181,7 @@ $(document).ready(function(){
 <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
 {% endblock %}
+
 {% block footer %}
     {% include "footer.html" %}
 {% endblock %}

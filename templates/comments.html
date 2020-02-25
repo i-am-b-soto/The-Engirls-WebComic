@@ -9,17 +9,18 @@ https://bootsnipp.com/snippets/g68X5
 <div class= container>
 	<div class = "row">
 		<div class="col-sm">
-			<h1><small>{{ comments.paginator.count }} Comments </h1></small>
+			<h1><small class="">{{ comments.paginator.count }} Comments </small></h1>
 			<div class="comments-list">
 				{% if comments %}
 					{% for comment in comments %}
-						<div class="media engirls_font_small">
-							<small>Posted on: {{ comment.created_on|date:"d-m-Y" }} <br> by: {{ comment.name }}</small>
-			                <div class="media-comment engirls_font_norm">
-			                	<br>{{ comment.body }}
-			                </div>
+							<small>Posted on: {{ comment.created_on|date:"d-m-Y" }} by: {{ comment.name }}</small>
+							<br>
+							<div class="media">
+				                <div class="media-comment">
+				           	    	<p>{{ comment.body }}</p>
+				                </div>
 
-						</div>
+							</div>
 						<hr>
 					 {% endfor %}
 				{% else %}

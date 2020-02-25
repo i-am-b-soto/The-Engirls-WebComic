@@ -27,6 +27,7 @@
   position: relative;
   min-height: 100vh;
 }
+
 #my-content-wrap {
   padding-bottom: 100px;
 }
@@ -93,15 +94,15 @@ ul.social-network li {
   background-color: #007bb7;
 }
 
-.social-network a.icoIGin:hover {
-  background-color: #405DE6;
+.social-network a.icoIG:hover {
+  background-color: #C01ACA;
 }
 .social-network a.icoFacebook:hover i,
 .social-network a.icoLinkedin:hover i {
   color: #fff;
 }
-.social-network a.icoIGin:hover i {
-  color: #5851DB;
+.social-network a.icoIG:hover i {
+  color: #fff;
 }
 
 .social-network a.socialIcon:hover,

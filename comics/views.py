@@ -8,6 +8,7 @@ from .filters import ComicPanelFilter
 from .models import ComicPanel, Comment
 from .forms import CommentForm
 from social_django.models import UserSocialAuth
+from django.db.utils import OperationalError
 
 
 
@@ -33,7 +34,7 @@ def index(request):
 				comic_to_display = ComicPanel.objects.filter(
 					series=settings.MAIN_SERIES_NAME,
 					chapter=finalChapter
-					).order_by(F("episode").desc(nulls_last = True)).first()
+					).order_by(F("page").desc(nulls_last = True)).first()
 			
 			# If there are not chapters...
 			else:
@@ -105,7 +106,7 @@ def view_comments(request, comic_pk =-1, page=1):
 	except Exception as e:
 		print(e)
 
-	return render(request, "comics/comments.html", context = {'comments': comments_paginated, 'comic_pk': comic_pk } );
+	return render(request, "comments.html", context = {'comments': comments_paginated, 'comic_pk': comic_pk } );
 
 
 # View for specific comic
@@ -141,45 +142,45 @@ def view_panel(request, comic_pk =-1 ):
 		finalChapter = max(chapters)
 		newest_comic_pk = ComicPanel.objects.filter(
 			series = comic_panel.series, 
-			chapter=finalChapter).order_by(F("episode").desc(nulls_last=True)).first().pk
+			chapter=finalChapter).order_by(F("page").desc(nulls_last=True)).first().pk
 
 
 		firstChapter = min(chapters)
 		oldest_comic_pk = final_comic = ComicPanel.objects.filter(
-			series = comic_panel.series, chapter=firstChapter).order_by(F("episode").asc(nulls_last=True)).first().pk
+			series = comic_panel.series, chapter=firstChapter).order_by(F("page").asc(nulls_last=True)).first().pk
 
-		# Do we have an episode? Find the next, previous and first
-		if comic_panel.episode:
+		# Do we have a page? Find the next, previous and first
+		if comic_panel.page:
 
-			# Is the next episode in the current chaper?
-			if ComicPanel.objects.filter(series = comic_panel.series, chapter=comic_panel.chapter, episode = comic_panel.episode+1).exists():
+			# Is the next page in the current chaper?
+			if ComicPanel.objects.filter(series = comic_panel.series, chapter=comic_panel.chapter, page = comic_panel.page+1).exists():
 				next_comic_pk = ComicPanel.objects.all().get(
-						series=comic_panel.series, chapter=comic_panel.chapter, episode=comic_panel.episode + 1).pk 
+						series=comic_panel.series, chapter=comic_panel.chapter, page=comic_panel.page + 1).pk 
 				
-			# Is the next episode in another chaper?
+			# Is the next page in another chaper?
 			elif comic_panel.chapter +1 in chapters:
 				next_comic_pk = ComicPanel.objects.all().get(
 					series = comic_panel.series,
 					chapter = comic_panel.chapter+1, 
-					episode = ComicPanel.objects.filter(
-						chapter = comic_panel.chapter +1).order_by(F("episode").asc(nulls_last=True)).first().episode).pk
+					page = ComicPanel.objects.filter(
+						chapter = comic_panel.chapter +1).order_by(F("page").asc(nulls_last=True)).first().page).pk
 					
-			# Is the previous episode in the current chapter?
-			if ComicPanel.objects.filter(series = comic_panel.series, chapter=comic_panel.chapter, episode = comic_panel.episode -1).exists():
+			# Is the previous page in the current chapter?
+			if ComicPanel.objects.filter(series = comic_panel.series, chapter=comic_panel.chapter, page = comic_panel.page -1).exists():
 				prev_comic_pk = ComicPanel.objects.all().get(
 					series = comic_panel.series, 
 					chapter=comic_panel.chapter, 
-					episode = comic_panel.episode -1).pk
+					page = comic_panel.page -1).pk
 
-			# Is the previous episode in the previous chapter?
+			# Is the previous page in the previous chapter?
 			elif comic_panel.chapter -1 in chapters:
 
-				#Find the last episode in the previous chapter  
+				#Find the last page in the previous chapter  
 				prev_comic_pk = ComicPanel.objects.all().get(
 					series = comic_panel.series,
 					chapter=comic_panel.chapter -1, 
-					episode=ComicPanel.objects.filter(
-						chapter = comic_panel.chapter -1).order_by(F("episode").desc(nulls_last=True)).first().episode).pk
+					page=ComicPanel.objects.filter(
+						chapter = comic_panel.chapter -1).order_by(F("page").desc(nulls_last=True)).first().page).pk
 			
 	return render(request, 'comics/comic_panel_view.html',
 		context = {'comic_panel': comic_panel,

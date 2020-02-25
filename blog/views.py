@@ -50,7 +50,7 @@ def view_comments(request, post_pk =-1, page=1):
 	except Exception as e:
 		print(e)
 
-	return render(request, "blog/comments.html", context = {'comments': comments_paginated, 'post_pk': post_pk } );
+	return render(request, "comments.html", context = {'comments': comments_paginated, 'post_pk': post_pk } );
 
 class Counter():
 	_counter = 0

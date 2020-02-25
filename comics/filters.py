@@ -36,5 +36,5 @@ class ComicPanelFilter(django_filters.FilterSet):
 
 	class Meta:
 		model = ComicPanel
-		fields = ['series', 'chapter', 'episode']
+		fields = ['series', 'chapter', 'page']
 
