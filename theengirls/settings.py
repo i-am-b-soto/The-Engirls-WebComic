@@ -15,6 +15,7 @@ https://rcpaul.wordpress.com/2011/08/28/logoutredirect/
 """
 
 import os
+import dj_database_url 
 
 #### Custom values ####
 MAIN_SERIES_NAME = "main"
@@ -50,17 +51,13 @@ SECRET_KEY = 'fs-i8la@(b(tuq9!ey16qi$+a=d2&0kuc2f&k0orj0y%22kc#h'
 ####################################################
 
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 DEBUG_FILE = "Debug_Log.txt"
 
-ALLOWED_HOSTS = ['192.168.{}.{}'.format(i,j) for i in range(256) for j in range(256)]
+ALLOWED_HOSTS = ['herokudjangoapp.herokuapp.com']
 ALLOWED_HOSTS.append('localhost')
 
 # Application definition
@@ -83,6 +80,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -142,6 +140,10 @@ DATABASES = {
     }
 }
 
+prod_db  =  dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(prod_db)
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -178,6 +180,9 @@ USE_TZ = True
 ############################################
 #STATIC CONFIGURATION
 #############################################
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATIC_URL = '/static/'
 
@@ -189,6 +194,9 @@ STATICFILES_DIRS = (
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+#  Add configuration for static files storage using whitenoise
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 ###########################################d
 
 ####################################
