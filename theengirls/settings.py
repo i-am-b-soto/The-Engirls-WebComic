@@ -41,9 +41,9 @@ def getSocialInfo(filename):
         return secrets_tuple
     return ('','')
 
-FB_VALUES = getSocialInfo('facebookkeys.txt')
-SOCIAL_AUTH_FACEBOOK_KEY = FB_VALUES[0] # App ID
-SOCIAL_AUTH_FACEBOOK_SECRET = FB_VALUES[1]  # App Secret
+#FB_VALUES = getSocialInfo('facebookkeys.txt')
+SOCIAL_AUTH_FACEBOOK_KEY = os.environ.get('SOCIAL_AUTH_FACEBOOK_KEY', None) # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get('SOCIAL_AUTH_FACEBOOK_SECRET', None)  # App Secret
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
@@ -58,7 +58,7 @@ LOGOUT_URL = 'custom_logout'
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'fs-i8la@(b(tuq9!ey16qi$+a=d2&0kuc2f&k0orj0y%22kc#h'
+SECRET_KEY = os.environ.get('Django_App_Key', None) 
 ####################################################
 
 
@@ -68,7 +68,7 @@ SECRET_KEY = 'fs-i8la@(b(tuq9!ey16qi$+a=d2&0kuc2f&k0orj0y%22kc#h'
 DEBUG = False
 DEBUG_FILE = "Debug_Log.txt"
 
-ALLOWED_HOSTS = ['herokudjangoapp.herokuapp.com']
+ALLOWED_HOSTS = ['theengirls.herokuapp.com']
 ALLOWED_HOSTS.append('localhost')
 
 # Application definition
@@ -92,7 +92,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-   
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
