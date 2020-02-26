@@ -10,7 +10,6 @@ def logout_page(request):
 	logout(request)
 	return HttpResponseRedirect(request.GET.get('next', '/'))
 
-
 # Static pages...
 
 def privacy_policy(request):
