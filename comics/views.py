@@ -56,7 +56,7 @@ def view_archive(request):
 	comic_filter = ComicPanelFilter(request.GET, queryset=comic_list)
 	paginator = Paginator(comic_filter.qs, 8)
 
-	page = request.GET.get('page', 1)
+	page = request.GET.get('web_page', 1)
 	try:
 		comics = paginator.page(page)
 	except (PageNotAnInteger, TypeError):
