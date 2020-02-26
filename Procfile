@@ -1,1 +1,1 @@
-web: gunicorn theengirls/wsgi.py --log-file -
+web: gunicorn theengirls.wsgi --log-file -

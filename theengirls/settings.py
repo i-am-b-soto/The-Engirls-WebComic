@@ -194,13 +194,12 @@ USE_TZ = True
 
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     # This is where static files for the whole site will be stored
     os.path.join(BASE_DIR, 'theengirls/static/'),
-    os.path.join(BASE_DIR, 'static/'),
 )
 
 
