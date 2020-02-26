@@ -1,5 +1,12 @@
 """
+
+View App on: https://dashboard.heroku.com/apps/theengirls
+
+
+
+
 Django settings for theengirls project.
+
 
 
 Please reconfigure Social auth settings once deployed
@@ -10,6 +17,7 @@ for Facebook: https://developers.facebook.com/
 
 Logout redirect information:
 https://rcpaul.wordpress.com/2011/08/28/logoutredirect/
+
 
 
 """
