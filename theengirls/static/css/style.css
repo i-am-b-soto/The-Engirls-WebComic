@@ -3,6 +3,10 @@
   	background-color: #EEE6E4;
 }
 
+a:hover, a:active, a:focus {
+  /* styling for any way a link is about to be used */
+}
+
 .comic_panel{
   width: 100%;
   height: auto;	

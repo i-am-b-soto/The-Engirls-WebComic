@@ -16,7 +16,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from .views import error_404, privacy_policy, privacy_policy_source,logout_page 
+from .views import error_404, privacy_policy, privacy_policy_source,logout_page, about_page, about_source, meet_the_engirls, meet_the_engirls_source 
 
 urlpatterns = [
 	path('', include('comics.urls')), # Home URL
