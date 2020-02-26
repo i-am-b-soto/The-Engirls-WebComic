@@ -65,7 +65,7 @@ SECRET_KEY = os.environ.get('Django_App_Key', None)
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 DEBUG_FILE = "Debug_Log.txt"
 
 ALLOWED_HOSTS = ['theengirls.herokuapp.com']
