@@ -1,6 +1,8 @@
 *.sqlite3
-*.jpg
-*.png
-*.jpeg
 facebookkeys.txt
+media/comics*
+media/thumbnails*
 
+
+
+media/thumbnails/*

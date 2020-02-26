@@ -11,7 +11,7 @@
 ╲┃┈┈┈┈╭━┳━━━━╯
 ╲┣━━━━━━┫﻿
   -->
-    <title>TheEngirls</title>
+  <title>The Engirls</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   	
@@ -57,8 +57,11 @@
         <a class="nav-link ml-3" href="{% url 'blog:view_posts' %}">Blog</a>
       </li>
       <li class="nav-item engirls_font_norm">
-        <a class="nav-link ml-3" href="#">About</a>
-      </li>       
+        <a class="nav-link ml-3" href="{% url 'about' %}">About The Author</a>
+      </li>   
+      <li class="nav-item engirls_font_norm">
+        <a class="nav-link ml-3" href="{% url 'meet_the_engirls' %}">Meet The Engirls</a>
+      </li>           
     </ul>
   </div>
 </nav>

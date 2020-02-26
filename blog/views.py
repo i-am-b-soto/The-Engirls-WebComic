@@ -63,7 +63,7 @@ class Counter():
 
 # View post list
 def view_posts(request):
-	post_list = Post.objects.all().order_by("created_on")
+	post_list = Post.objects.all().order_by("-created_on")
 	post_filter = PostFilter(request.GET, queryset=post_list)
 	paginator = Paginator(post_filter.qs, 5)
 

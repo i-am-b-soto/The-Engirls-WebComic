@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block main_content %}
+
+{% load static %}
+<!-- Bootstrap core CSS -->
+<link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+<div class = "page-header text-center engirls_font_large">About The Author</div>
+<div class = "container">
+	<div class = "row">
+		<div class = "col-sm-lg">
+			<div class = "jumbotron shadow">
+				<div class = "">
+					<div id = "about_source"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+function render_about_source(){
+  //if( {{ comic_panel }} != null){
+    $("#about_source").load('/about_source/');
+   
+}	
+
+$(document).ready(function(){
+  render_about_source();
+});
+</script>
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}
