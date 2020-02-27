@@ -48,8 +48,9 @@ SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 
 LOGOUT_URL = 'custom_logout'
+LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = '/'
-LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 
 
