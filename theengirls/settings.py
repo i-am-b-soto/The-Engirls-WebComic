@@ -42,6 +42,7 @@ def getSocialInfo(filename):
     return ('','')
 
 #FB_VALUES = getSocialInfo('facebookkeys.txt')
+SOCIAL_AUTH_FACEBOOK_API_VERSION = '2.8'
 SOCIAL_AUTH_FACEBOOK_KEY = os.environ.get('SOCIAL_AUTH_FACEBOOK_KEY', None) # App ID
 SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get('SOCIAL_AUTH_FACEBOOK_SECRET', None)  # App Secret
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
@@ -53,8 +54,8 @@ SOCIAL_AUTH_URL_NAMESPACE = 'social'
 #AUTH_USER_MODEL = 'registration.User'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'custom_logout'
-LOGIN_REDIRECT_URL = 'login'
-LOGOUT_REDIRECT_URL = 'custom_logout'
+#LOGIN_REDIRECT_URL = 'login'
+#LOGOUT_REDIRECT_URL = 'custom_logout'
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
