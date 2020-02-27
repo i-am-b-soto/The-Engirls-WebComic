@@ -53,8 +53,8 @@ SOCIAL_AUTH_URL_NAMESPACE = 'social'
 #AUTH_USER_MODEL = 'registration.User'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'custom_logout'
-#LOGIN_REDIRECT_URL = '#'
-#LOGOUT_REDIRECT_URL = '#'
+LOGIN_REDIRECT_URL = 'login'
+LOGOUT_REDIRECT_URL = 'custom_logout'
 
 
 # SECURITY WARNING: keep the secret key used in production secret!

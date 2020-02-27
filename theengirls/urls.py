@@ -29,6 +29,7 @@ urlpatterns = [
     path('privacy_policy/', privacy_policy, name = "privacy_policy"),
     path('privacy_policy_source/', privacy_policy_source, name = "privacy_policy_source"),
     path('logout/', logout_page, name="custom_logout"),
+    #path('login')
     path('about/', about_page, name= "about"),
     path('about_source/', about_source, name= "about_source"),
     path('meet_the_engirls/', meet_the_engirls, name = "meet_the_engirls"),
