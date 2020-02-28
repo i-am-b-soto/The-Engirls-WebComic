@@ -36,8 +36,8 @@ urlpatterns = [
     path('meet_the_engirls_source/', meet_the_engirls_source, name = "meet_the_engirls_source")
 
 ]  
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # Media Files
+#if settings.DEBUG:
+#    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # Media Files
 #urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
 
 #handler404 = error_404
