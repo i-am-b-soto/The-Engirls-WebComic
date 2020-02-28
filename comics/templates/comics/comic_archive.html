@@ -84,17 +84,17 @@
 									{% if comics.number == num %}
 										<!-- If there is existing query parameters -->
 									 	{% if 'series' in request.get_full_path %}
-									 		<h5><a class="text-primary" href="{{ request.get_full_path }}&page={{ num }}" >{{ num }}</a></h5>
+									 		<h5><a class="text-primary" href="{{ request.get_full_path }}&web_page={{ num }}" >{{ num }}</a></h5>
 									 	{% else %}
-											<h5><a class="text-primary" href="{% url 'comics:view_archive' %}?page={{ num }}" >{{ num }}</a></h5>
+											<h5><a class="text-primary" href="{% url 'comics:view_archive' %}?web_page={{ num }}" >{{ num }}</a></h5>
 									 	{% endif %}
 
 										 <!-- Other page numbers -->
 									{% else %}
 										{% if 'series' in request.get_full_path %}
-											<h5><a class="text-secondary" href="{{ request.get_full_path }}&page={{ num }}">{{ num }}</a></h5>
+											<h5><a class="text-secondary" href="{{ request.get_full_path }}&web_page={{ num }}">{{ num }}</a></h5>
 										{%  else %}
-											<h5><a class="text-secondary" href="{% url 'comics:view_archive' %}?page={{ num }}" >{{ num }}</a></h5>
+											<h5><a class="text-secondary" href="{% url 'comics:view_archive' %}?web_page={{ num }}" >{{ num }}</a></h5>
 										{% endif %}
 									{% endif %}
 								</div>

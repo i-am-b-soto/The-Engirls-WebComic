@@ -1,5 +1,12 @@
 """
+
+View App on: https://dashboard.heroku.com/apps/theengirls
+
+
+
+
 Django settings for theengirls project.
+
 
 
 Please reconfigure Social auth settings once deployed
@@ -12,59 +19,92 @@ Logout redirect information:
 https://rcpaul.wordpress.com/2011/08/28/logoutredirect/
 
 
+
 """
 
 import os
+import dj_database_url
+
+########### Remove this before deploying to Heroku ###########
+from set_environ import set_environ 
+set_environ()
+###################################################
+
+def set_default_db(DATABASES):
+    if os.environ.get('on_heroku') or os.environ.get('on_heroku') == 'True':
+        prod_db  =  dj_database_url.config(conn_max_age=500)
+        DATABASES['default'].update(prod_db)
+
+
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 #### Custom values ####
 MAIN_SERIES_NAME = "main"
 #########################
 
-########### Secret Keys ################
-def getSocialInfo(filename):
-    with open(filename) as social_secrets:
-        line = social_secrets.readline()
-        line = line.split(':')
-        secrets_tuple = (line[0], line[1])
-        return secrets_tuple
-    return ('','')
 
-FB_VALUES = getSocialInfo('facebookkeys.txt')
-SOCIAL_AUTH_FACEBOOK_KEY = FB_VALUES[0] # App ID
-SOCIAL_AUTH_FACEBOOK_SECRET = FB_VALUES[1]  # App Secret
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+
+
+
+
+
+############################################
+# Enviornment variables
+#############################################
+
+#FB_VALUES = getSocialInfo('facebookkeys.txt')
+#SOCIAL_AUTH_FACEBOOK_KEY = os.environ.get('SOCIAL_AUTH_FACEBOOK_KEY', None) # App ID
+#SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get('SOCIAL_AUTH_FACEBOOK_SECRET', None)  # App Secret
+#SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_KEY', None)
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_SECRET', None)
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
+SECRET_KEY = os.environ.get('Django_App_Key', None) 
+
+AWS_ACCESS_KEY_ID = os.environ.get('AMAZON_ACCESS_KEY')
+AWS_SECRET_ACCESS_KEY =  os.environ.get('AMAZON_ACCESS_SECRET')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('S3_BUCKET_NAME')
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = 'static'
+AWS_DEFAULT_ACL = None
+AWS_S3_REGION_NAME = 'us-west-1'
+
+############################################
+# login/logout values
+#############################################
 
 
-#LOGIN_REDIRECT_URL = '/'
-#AUTH_USER_MODEL = 'registration.User'
-LOGIN_URL = 'login'
 LOGOUT_URL = 'custom_logout'
-#LOGIN_REDIRECT_URL = '#'
-#LOGOUT_REDIRECT_URL = '#'
+LOGIN_URL = '/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'fs-i8la@(b(tuq9!ey16qi$+a=d2&0kuc2f&k0orj0y%22kc#h'
-####################################################
+############################################
+# WSGI
+#############################################
 
+WSGI_APPLICATION = 'theengirls.wsgi.application'
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+############################################
+# DEBUG settings
+#############################################
 
-
-
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-DEBUG_FILE = "Debug_Log.txt"
-
-ALLOWED_HOSTS = ['192.168.{}.{}'.format(i,j) for i in range(256) for j in range(256)]
+TEMPLATE_DEBUG = True
+ALLOWED_HOSTS = ['theengirls.herokuapp.com']
 ALLOWED_HOSTS.append('localhost')
 
-# Application definition
-
+############################################
+# Installed Apps
+#############################################
 
 INSTALLED_APPS = [
     'django.contrib.staticfiles',
@@ -78,9 +118,14 @@ INSTALLED_APPS = [
     'django_filters',
     'social_django',
     'django.contrib.admin',
-    'django.contrib.auth',    
+    'django.contrib.auth', 
+    'storages',   
 
 ]
+
+############################################
+# Some Middleware...
+#############################################
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -93,9 +138,11 @@ MIDDLEWARE = [
     'social_django.middleware.SocialAuthExceptionMiddleware', #<-- Social Django
 ]
 
+############################################
+# Template processors
+#############################################
 
 ROOT_URLCONF = 'theengirls.urls'
-
 
 TEMPLATES = [
     {
@@ -117,22 +164,20 @@ TEMPLATES = [
 ]
 
 
-###### Django Social-auth #######################
+############################################
+# Social Auth
+#############################################
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.facebook.FacebookOAuth2',
-    #'social_core.backends.instagram.InstagramOAuth2', <-- Appears to be deprecated
     'django.contrib.auth.backends.ModelBackend',
 )
-####################################################
 
 
-TEMPLATE_DEBUG = True
-WSGI_APPLICATION = 'theengirls.wsgi.application'
-
-
+############################################
 # Database
+#############################################
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
@@ -142,8 +187,12 @@ DATABASES = {
     }
 }
 
+set_default_db(DATABASES)
 
-# Password validation
+
+############################################
+# Password Validation
+#############################################
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -161,8 +210,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+############################################
 # Internationalization
+#############################################
+
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
@@ -175,21 +226,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-############################################
-#STATIC CONFIGURATION
-#############################################
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (
-    # This is where static files for the whole site will be stored
-    os.path.join(BASE_DIR, 'theengirls/static/'),
-)
-
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
-###########################################d
 
 ####################################
     ##  CKEDITOR CONFIGURATION ##
@@ -206,4 +243,27 @@ CKEDITOR_CONFIGS = {
     },
 }
  
-###################################
+
+############################################
+#STATIC CONFIGURATION
+#############################################
+
+
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+
+STATICFILES_DIRS = (
+    # This is where static files for the whole site will be stored
+    os.path.join(BASE_DIR, 'theengirls/static/'),
+)
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+
+DEFAULT_FILE_STORAGE = 'theengirls.storage_backends.MediaStorage' 

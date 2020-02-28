@@ -16,7 +16,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from .views import error_404, privacy_policy, privacy_policy_source,logout_page 
+from .views import error_404, privacy_policy, privacy_policy_source,logout_page, about_page, about_source, meet_the_engirls, meet_the_engirls_source 
 
 urlpatterns = [
 	path('', include('comics.urls')), # Home URL
@@ -29,10 +29,15 @@ urlpatterns = [
     path('privacy_policy/', privacy_policy, name = "privacy_policy"),
     path('privacy_policy_source/', privacy_policy_source, name = "privacy_policy_source"),
     path('logout/', logout_page, name="custom_logout"),
+    #path('login')
+    path('about/', about_page, name= "about"),
+    path('about_source/', about_source, name= "about_source"),
+    path('meet_the_engirls/', meet_the_engirls, name = "meet_the_engirls"),
+    path('meet_the_engirls_source/', meet_the_engirls_source, name = "meet_the_engirls_source")
 
 ]  
-
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # Media Files
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # Media Files
 #urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
 
 #handler404 = error_404
