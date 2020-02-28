@@ -1,4 +1,4 @@
-# The En Girls Web Comic
+# The EnGirls Web Comic
 #### View this code at: https://theengirls.herokuapp.com/
 #### Current site: http://theengirls.com/
 
