@@ -26,8 +26,8 @@ import os
 import dj_database_url
 
 ########### Remove this before deploying to Heroku ###########
-#from set_environ import set_environ 
-#set_environ()
+from set_environ import set_environ 
+set_environ()
 ###################################################
 
 def set_default_db(DATABASES):
@@ -171,7 +171,9 @@ TEMPLATES = [
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.facebook.FacebookOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
+    #'django.contrib.auth.backends.ModelBackend', <-- Default user authentication
+    'theengirls.auth_backend.CaseInsensitiveModelBackend', # < -- Case insensetive Authentication 
+
 )
 
 
