@@ -1,24 +1,21 @@
+# The EnGirls Web Comic
+#### View this code at: https://theengirls.herokuapp.com/
+#### Current site: http://theengirls.com/
 
-Items yet to be completed:
-
-
-[Normal]
-2) Add Autocomplete on Chapter and episode in filter form
-
-
-[High]
-6) Deploy to Apache server
-
-[Normal]
-7) Add animation to comic hover on archive page
-
-[Low]
-8) When editing existing comics, don't re-upload image
+A web comic app developed for a friend to host his web comic series, The Engirls. 
 
 
+##### Technologies: 
+- Django 3.0.1
+- Python 3.6.9
+- Bootstrap 4x
+- JQuery
+- Heroku  (for public domain hosting)
+- AWS S3 (for static/media files)
 
-9) Test Google + Facebook Login once deployed
+##### List of upcoming features/pending bugs:
+- [] User name case incensitive admin login
+- [] Facebook Login (currently does not work)
 
 
-What Grant needs to know:
-dont' put incorrect html in Description/ blog 
+

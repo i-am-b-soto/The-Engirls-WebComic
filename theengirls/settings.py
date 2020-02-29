@@ -26,8 +26,8 @@ import os
 import dj_database_url
 
 ########### Remove this before deploying to Heroku ###########
-#from set_environ import set_environ 
-#set_environ()
+from set_environ import set_environ 
+set_environ()
 ###################################################
 
 def set_default_db(DATABASES):
@@ -54,10 +54,10 @@ MAIN_SERIES_NAME = "main"
 # Enviornment variables
 #############################################
 
-#FB_VALUES = getSocialInfo('facebookkeys.txt')
-#SOCIAL_AUTH_FACEBOOK_KEY = os.environ.get('SOCIAL_AUTH_FACEBOOK_KEY', None) # App ID
-#SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get('SOCIAL_AUTH_FACEBOOK_SECRET', None)  # App Secret
-#SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+#FB_VALUES 
+SOCIAL_AUTH_FACEBOOK_KEY = os.environ.get('SOCIAL_AUTH_FACEBOOK_KEY', None) # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get('SOCIAL_AUTH_FACEBOOK_SECRET', None)  # App Secret
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_KEY', None)
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_SECRET', None)
@@ -171,7 +171,9 @@ TEMPLATES = [
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.facebook.FacebookOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
+    #'django.contrib.auth.backends.ModelBackend', <-- Default user authentication
+    'theengirls.auth_backend.CaseInsensitiveModelBackend', # < -- Case insensetive Authentication 
+
 )
 
 
