@@ -1,6 +1,7 @@
 *.jpg
 *.png
 *.jpeg
+*.sqlite3
 facebookkeys.txt
 set_environ.py
 
