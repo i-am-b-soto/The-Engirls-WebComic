@@ -9,7 +9,7 @@ from .models import ComicPanel, Comment
 from .forms import CommentForm
 from social_django.models import UserSocialAuth
 from django.db.utils import OperationalError
-
+from dal import autocomplete
 
 
 # View for most recent comic
@@ -49,10 +49,32 @@ def index(request):
 		else: 
 			return view_panel(request)
 
+
+class AutoCompleteChapter(autocomplete.Select2ListView):
+	def get_list(self):
+		qs = ComicPanel.objects.all()
+		series = self.forwarded.get('series', None)
+
+		if series:
+			qs = qs.filter(series = series)
+
+		chapters_dicts = qs.values_list('chapter').distinct()
+		chapters_list = []
+		i = 0
+		for item in chapters_dicts:
+			chapters_list.append((item[0],item[0]))
+			i = i+1
+		if settings.DEBUG:
+			print("WE'RE HERE!!!")
+			
+		return chapters_list		
+		
+
+
 # View Archive
 def view_archive(request):
 
-	comic_list = ComicPanel.objects.all().order_by("uploadTime")
+	comic_list = ComicPanel.objects.all().order_by("-uploadTime")
 	comic_filter = ComicPanelFilter(request.GET, queryset=comic_list)
 	paginator = Paginator(comic_filter.qs, 8)
 

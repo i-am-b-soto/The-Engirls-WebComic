@@ -6,128 +6,115 @@
 <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 <link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
 
-{% if comics %}
 <div class = "page-header text-center engirls_font_large"> Engirls Comic Archive</div>
-<div class = "container pt-1">	
-	<div class = "row">
-		<!-- form -->
-		<div class = "col-lg-4 col-sm-12 engirls_font_small">
-			<form class="form" method="GET">
+<div class = "container py-4">	
+	<form id= "engirls_filter_form" class="form theengirls_onchange" method="GET">
+		<div class = "row pb-4">
+
 				{% csrf_token %}
-					<table class="table table-striped">
-					  <thead >
-					    <tr>
-					      <th scope="col">Filter Comics: </th>
-					     
-					    </tr>
-					  </thead>
-						  <tbody class = "">
-								{% for field in filter.form %}
-									<tr class = "shadow shadow-light">
-										<th scope="row"> {{ field.name }}</th>
-										<td class = "">{{ field }}</td>
-									</tr>
-								{% endfor %}			    	      
-						  </tbody>
-					  </table>				
-						<button type="submit" class="btn btn-outline-dark shadow">Filter</button>		 
-				</form>	
-			<!-- col -->
+				{% for field in filter.form %}	
+					<div class = "col-sm engirls_font_norm">
+						{{ field.name }}
+					</div>
+					<div class = "col-sm-3 mr-1">
+					 {{ field }}
+					</div>				
+				{% endfor %}	
+				<button id = "theengirls_submit_filter" type="submit" style = "display:none;">Filter</button>
+			
+		</div>
+	</form>	
+{% if comics %}
+
+		<!-- card deck -->
+		<div class = "card-deck">
+		{% for comic in comics %}									
+
+			<div class="col-sm-3" style = "min-width: 175px;"> 
+				<div class="card mb-sm-3 mb-md-4 mb-lg-5 shadow" style="max-width:200px; min-width:150px;" >
+						
+						{% if comic.thumbnail %}
+							<a href="{% url 'comics:view_panel' comic_pk=comic.pk %}">
+								<img class="card-img-top img-fluid" style ="max-height: 150px;" src="{{ comic.thumbnail.url }}" />
+							</a>	
+							
+						{% else %}	
+							<div class = "col text-center">
+								<a href="{% url 'comics:view_panel' comic_pk=comic.pk %}">
+									<h5 class= "engirls_font_large"> No image available</h5>
+								</a>
+							</div>
+							
+						{% endif %}
+						
+		  			<div class = "card-header engirls_font_norm"><h5> {{ comic.title }}</h5> </div>					
+				</div> 
 			</div>
 
-			<div class = "col-sm-8 col-lg-8">
+		{% endfor %}
+		</div>
 
-			<!-- main comic container container -->
-		  	<div class ="container py-4">
-				<div class = "row">
-		  			
-					<!-- card deck -->
-					<div class = "card-deck">
-					{% for comic in comics %}									
 
-						<div class="col-sm-3" style = "min-width: 175px;"> 
-							<div class="card mb-sm-3 mb-md-4 mb-lg-5 shadow" style="max-width:200px;min-width:150px;" >
-									
-									{% if comic.thumbnail %}
-										<a href="{% url 'comics:view_panel' comic_pk=comic.pk %}">
-											<img class="card-img-top img-fluid" style ="max-height: 150px;" src="{{ comic.thumbnail.url }}" />
-										</a>	
-										
-									{% else %}	
-										<div class = "col text-center">
-											<a href="{% url 'comics:view_panel' comic_pk=comic.pk %}">
-												<h5 class= "engirls_font_large"> No image available</h5>
-											</a>
-										</div>
-										
-									{% endif %}
-									
-					  			<div class = "card-header engirls_font_norm"><h5> {{ comic.title }}</h5> </div>					
-							</div> 
-						</div>
+	<!-- 3rd row -->
+	<div class = "row py-3 ml-2">
+		<div class="pagination">
+			{% if comics.paginator.num_pages > 1 %}
+		  	<div class = "col-xs-1 col-md-2 col-lg-3 engirls_font_norm">
+		      	#
+		     </div>
+				{% for num in comics.paginator.page_range %}
+					<div class = "col-xs-1 col-md-2 col-lg-3 engirls_font_norm">
+						<!-- Current page number -->
+						{% if comics.number == num %}
+							<!-- If there is existing query parameters -->
+						 	{% if 'series' in request.get_full_path %}
+						 		<h5><a class="text-primary" href="{{ request.get_full_path }}&web_page={{ num }}" >{{ num }}</a></h5>
+						 	{% else %}
+								<h5><a class="text-primary" href="{% url 'comics:view_archive' %}?web_page={{ num }}" >{{ num }}</a></h5>
+						 	{% endif %}
 
-					{% endfor %}
-					</div>
-				<!-- comic row -->
-				</div>
-
-				<!-- 3rd row -->
-				<div class = "row py-3 ml-2">
-					<div class="pagination">
-						{% if comics.paginator.num_pages > 1 %}
-					  	<div class = "col-xs-1 col-md-2 col-lg-3 engirls_font_norm">
-					      	#
-					     </div>
-							{% for num in comics.paginator.page_range %}
-								<div class = "col-xs-1 col-md-2 col-lg-3 engirls_font_norm">
-									<!-- Current page number -->
-									{% if comics.number == num %}
-										<!-- If there is existing query parameters -->
-									 	{% if 'series' in request.get_full_path %}
-									 		<h5><a class="text-primary" href="{{ request.get_full_path }}&web_page={{ num }}" >{{ num }}</a></h5>
-									 	{% else %}
-											<h5><a class="text-primary" href="{% url 'comics:view_archive' %}?web_page={{ num }}" >{{ num }}</a></h5>
-									 	{% endif %}
-
-										 <!-- Other page numbers -->
-									{% else %}
-										{% if 'series' in request.get_full_path %}
-											<h5><a class="text-secondary" href="{{ request.get_full_path }}&web_page={{ num }}">{{ num }}</a></h5>
-										{%  else %}
-											<h5><a class="text-secondary" href="{% url 'comics:view_archive' %}?web_page={{ num }}" >{{ num }}</a></h5>
-										{% endif %}
-									{% endif %}
-								</div>
-							{% endfor %}
+							 <!-- Other page numbers -->
+						{% else %}
+							{% if 'series' in request.get_full_path %}
+								<h5><a class="text-secondary" href="{{ request.get_full_path }}&web_page={{ num }}">{{ num }}</a></h5>
+							{%  else %}
+								<h5><a class="text-secondary" href="{% url 'comics:view_archive' %}?web_page={{ num }}" >{{ num }}</a></h5>
+							{% endif %}
 						{% endif %}
 					</div>
-				</div>
-			
-			<!-- comic container-->
-			</div>								
-		<!-- main col -->
+				{% endfor %}
+			{% endif %}
 		</div>
-	<!-- main row -->
 	</div>
-<!--main container -->
-</div>
+
+								
+
 
 <!-- if no comics -->
 {% else %}
-<div class="container py-3">
+
 	<div class = row>
 		<div class = "col-sm-3"></div>
  		<div class = "col-sm engirls_font_large text-center"> Looks like there are no comics :( </div>
 		<div class = "col-sm-3"></div>	
 	</div>	
-</div>	
+	
 {% endif %}
 
-
-
+<!-- comic container-->
+</div>
+{{ form.media }}
  <!-- Bootstrap core JavaScript -->
- <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
- <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script>
+$( ".theengirls_onchange" ).change(function() {
+  $("#theengirls_submit_filter").click();
+});	
+
+
+</script>
+</script>
 
 {% endblock %}
 

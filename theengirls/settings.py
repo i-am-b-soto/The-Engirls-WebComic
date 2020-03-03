@@ -111,6 +111,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'dal',
+    'dal_select2',      
     'ckeditor',
     'ckeditor_uploader',
     'comics',
@@ -119,7 +121,8 @@ INSTALLED_APPS = [
     'social_django',
     'django.contrib.admin',
     'django.contrib.auth', 
-    'storages',   
+    'storages',
+ 
 
 ]
 
