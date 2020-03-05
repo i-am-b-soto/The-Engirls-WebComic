@@ -99,7 +99,7 @@ WSGI_APPLICATION = 'theengirls.wsgi.application'
 
 DEBUG = True
 TEMPLATE_DEBUG = True
-ALLOWED_HOSTS = ['theengirls.herokuapp.com', '192.168.1.115']
+ALLOWED_HOSTS = ['theengirls.herokuapp.com', '192.168.1.3']
 ALLOWED_HOSTS.append('localhost')
 
 ############################################

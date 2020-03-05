@@ -6,62 +6,76 @@
 <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 <link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
 
-<div class = "page-header text-center engirls_font_large"> Engirls Comic Archive</div>
-<div class = "container py-4">	
-	<form id= "engirls_filter_form" class="form theengirls_onchange" method="GET">
-		<div class = "row pb-4">
 
+<div class = "container-fluid">	
+	<div class = "page-header text-center engirls_font_large"> Engirls Comic Archive</div>		
+	<div class = "row flex-xl-nowrap">
+
+		<div class="px-2 pb-2">
+			<form id= "engirls_filter_form" class="form theengirls_onchange" method="GET">
+				 	
 				{% csrf_token %}
 				{% for field in filter.form %}	
-					<div class = "col-sm-1 engirls_font_norm">
+					<div class = "engirls_font_norm col-sm-1" id="field_name_{{ field.name }}">
 						{{ field.name }}
 					</div>
-					<div class = "col-sm-1 mr-1">
+					<div class = "col-sm-2">
 					 {{ field }}
 					</div>				
 				{% endfor %}	
 				<button id = "theengirls_submit_filter" type="submit" style = "display:none;">Filter</button>
-			
+					
+			</form>	
 		</div>
-	</form>	
-{% if comics %}
+
 
 		<!-- card deck -->
 		<div class = "card-deck col-lg-12">
-		{% for comic in comics %}									
-
-			<div class="col-sm-3" style = "min-width: 175px;"> 
-				<div class="card mb-sm-3 mb-md-4 mb-lg-5 shadow" style="max-width:200px; min-width:150px;" >
-						
-						{% if comic.thumbnail %}
-							<a href="{% url 'comics:view_panel' comic_pk=comic.pk %}">
-								<img class="card-img-top img-fluid" style ="max-height: 150px;" src="{{ comic.thumbnail.url }}" />
-							</a>	
+			{% for comic in comics %}									
+				<div class="col-sm-3" style = "min-width: 175px;"> 
+					<div class="card mb-sm-3 mb-md-4 mb-lg-5 shadow" style="max-width:200px; min-width:100px;" >
 							
-						{% else %}	
-							<div class = "col text-center">
+							{% if comic.thumbnail %}
 								<a href="{% url 'comics:view_panel' comic_pk=comic.pk %}">
-									<h5 class= "engirls_font_large"> No image available</h5>
-								</a>
-							</div>
+									<img class="card-img-top img-fluid" style ="max-height: 200px;" src="{{ comic.thumbnail.url }}" />
+								</a>	
+								
+							{% else %}	
+								<div class = "col text-center">
+									<a href="{% url 'comics:view_panel' comic_pk=comic.pk %}">
+										<h5 class= "engirls_font_large"> No image available</h5>
+									</a>
+								</div>
+								
+							{% endif %}
 							
-						{% endif %}
-						
-		  			<div class = "card-header engirls_font_norm"><h5> {{ comic.title }}</h5> </div>					
-				</div> 
-			</div>
-
-		{% endfor %}
+			  			<div class = "card-header engirls_font_norm"><h5> {{ comic.title }}</h5> </div>					
+					</div> 
+				</div>
+			{% endfor %}
 		</div>
 
+	</div>
+	<!-- if no comics -->
+	{% if not comics %}
 
+		<div class = row>
+			<div class = "col-sm-3"></div>
+	 		<div class = "col-sm engirls_font_large text-center"> Looks like there are no comics :( </div>
+			<div class = "col-sm-3"></div>	
+		</div>	
+		
+	{% endif %}
+
+	<hr>
 	<!-- 3rd row -->
 	<div class = "row py-3 ml-2">
-		<div class="pagination">
-			{% if comics.paginator.num_pages > 1 %}
-		  	<div class = "col-xs-1 col-md-2 col-lg-3 engirls_font_norm">
-		      	#
+
+		<div class="pagination d-flex align-items-center">
+		  	<div class = "col-xs-2 col-md-3 col-lg-4 mr-2 engirls_font_norm">
+		      	Pages: 
 		     </div>
+			{% if comics.paginator.num_pages > 1 %}
 				{% for num in comics.paginator.page_range %}
 					<div class = "col-xs-1 col-md-2 col-lg-3 engirls_font_norm">
 						<!-- Current page number -->
@@ -87,19 +101,6 @@
 		</div>
 	</div>
 
-<div id="testing"></div>				
-<div id="testing2"></div>
-
-<!-- if no comics -->
-{% else %}
-
-	<div class = row>
-		<div class = "col-sm-3"></div>
- 		<div class = "col-sm engirls_font_large text-center"> Looks like there are no comics :( </div>
-		<div class = "col-sm-3"></div>	
-	</div>	
-	
-{% endif %}
 
 <!-- comic container-->
 </div>
@@ -170,7 +171,13 @@ $(document).ready(function(){
 	    	//chapters_list.push(id);
 	    }
 		$("#id_chapter").append("<option value=\'\' selected= \'\' >All</option>" );
-		$("#id_chapter").val(cur_chapter);
+		// Make sure series is not null
+		//if(urlParams.get('series') != '' && urlParams.get('series') != null) {
+			$("#id_chapter").val(cur_chapter);
+		//}else {
+		//	$("#id_chapter").val('');
+		//}
+		
 
 		return false;
 
@@ -187,12 +194,48 @@ $(document).ready(function(){
 		    	$("#id_page").append("<option value=\'"+id+ "\' selected= \'\' >" +name+ "</option>" );
 		    }
 			$("#id_page").append("<option value=\'\' selected= \'\' >All</option>" );
-			$("#id_page").val(cur_page);			
-
+			
+			// Make sure chapter is not null
+			//if(urlParams.get('chapter') != null && urlParams.get('chapter') != '' ) {
+				$("#id_page").val(cur_page);
+			//}else{
+			//	$("#id_page").val('');
+			//}
+						
 		});
 
 		return false;
 	}); 
+	//alert($("#id_chapter").val())
+	// Toggle display of filter form
+	// If series not selected...
+	if(urlParams.get('series') == null || urlParams.get('series') == '')
+	{
+		// Hide Chapter, page if series is not selected
+		$("#field_name_chapter").css("display", "None");
+		$("#id_chapter").css("display", "None");
+
+		$("#field_name_page").css("display", "None");
+		$("#id_page").css("display", "None");
+
+	// If series is selected
+	}else{
+		// Show chapter otherwise
+		$("#field_name_chapter").css("display", "show");
+		$("#id_chapter").css("display", "show");
+	}
+
+	if( urlParams.get('chapter') == null || urlParams.get('chapter') == '') {
+
+		$("#field_name_page").css("display", "None");
+		$("#id_page").css("display", "None");	
+		//alert("Chapter is null" + $("#id_chapter").val());
+	}else if ( (urlParams.get('series') != null && urlParams.get('series') != '')  && (urlParams.get('chapter') != null && urlParams.get('chapter') != '')) {
+		//alert("chapter is not null!");
+		$("#field_name_page").css("display", "show");
+		$("#id_page").css("display", "show");
+	}
+
 
 	return false;
 });
@@ -200,6 +243,15 @@ $(document).ready(function(){
 // Every time filter form changes, submit the form
 $(".theengirls_onchange" ).change(function() {
 	// Cluck cubmit
+
+	if($("#id_series").val() == null || $("#id_series").val() == '') {
+		$("#id_chapter").val('');
+		$("#id_page").val('');
+	}
+
+	if($("#id_chapter").val() == null || $("#id_chapter").val() == '') {
+		$("#id_page").val('');
+	}	
 	$("#theengirls_submit_filter").click();
 });	
 
