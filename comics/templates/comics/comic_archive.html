@@ -13,10 +13,10 @@
 
 				{% csrf_token %}
 				{% for field in filter.form %}	
-					<div class = "col-sm engirls_font_norm">
+					<div class = "col-sm-1 engirls_font_norm">
 						{{ field.name }}
 					</div>
-					<div class = "col-sm-3 mr-1">
+					<div class = "col-sm-1 mr-1">
 					 {{ field }}
 					</div>				
 				{% endfor %}	
@@ -27,7 +27,7 @@
 {% if comics %}
 
 		<!-- card deck -->
-		<div class = "card-deck">
+		<div class = "card-deck col-lg-12">
 		{% for comic in comics %}									
 
 			<div class="col-sm-3" style = "min-width: 175px;"> 
@@ -87,8 +87,8 @@
 		</div>
 	</div>
 
-								
-
+<div id="testing"></div>				
+<div id="testing2"></div>
 
 <!-- if no comics -->
 {% else %}
@@ -103,13 +103,104 @@
 
 <!-- comic container-->
 </div>
-{{ form.media }}
+
  <!-- Bootstrap core JavaScript -->
 <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 <script>
-$( ".theengirls_onchange" ).change(function() {
-  $("#theengirls_submit_filter").click();
+
+// retreive list of chapters given series
+function get_chapters(){
+	//alert("click click, bitch");
+	return $.ajax({
+		url: '/auto_complete_chapter/',
+		type: 'GET',
+		data: {
+		  'series': $("#id_series").val(),
+		},
+		dataType: 'json',
+		success: function(data) {
+			//alert("success!")     		
+		},
+		error: function(data) {
+			//alert("Error")
+		},
+	  });
+	  //return false;
+};
+
+// Retreive list of pages given series and chapter
+function get_pages(){
+	//alert("click click, bitch");
+	return $.ajax({
+		url: '/auto_complete_page/',
+		type: 'GET',
+		data: {
+		  'series': $("#id_series").val(),
+		  'chapter': $("#id_chapter").val(),
+		},
+		dataType: 'json',
+		success: function(data) {
+			//alert("success!")     		
+		},
+		error: function(data) {
+			//alert("Error")
+		},
+	  });
+	  //return false;
+};
+
+// Chapter and page values must be loaded via ajax
+$(document).ready(function(){
+
+	$("#id_chapter").empty();
+	$('#id_page').empty();
+	const urlParams = new URLSearchParams(window.location.search);
+
+	// 1) get chapters
+	get_chapters().done(function(data){ 
+
+		// alert("We done bitch")
+		const cur_chapter = urlParams.get('chapter');
+		//var chapters_list = []
+	    for( var item in data) {
+	        var id = data[item]['id'];
+	        var name = data[item]['name'];
+	    	$("#id_chapter").append("<option value=\'"+id+ "\' selected= \'\' >" +name+ "</option>" );
+	    	//chapters_list.push(id);
+	    }
+		$("#id_chapter").append("<option value=\'\' selected= \'\' >All</option>" );
+		$("#id_chapter").val(cur_chapter);
+
+		return false;
+
+	// 2) get pages
+	}).done(function(results) {
+		//alert("Second done!");
+		// Get our pages
+		get_pages().done(function(data){ 
+			//alert("Done getting pages");
+			const cur_page = urlParams.get('page');
+		    for( var item in data) {
+		        var id = data[item]['id'];
+		        var name = data[item]['name'];
+		    	$("#id_page").append("<option value=\'"+id+ "\' selected= \'\' >" +name+ "</option>" );
+		    }
+			$("#id_page").append("<option value=\'\' selected= \'\' >All</option>" );
+			$("#id_page").val(cur_page);			
+
+		});
+
+		return false;
+	}); 
+
+	return false;
+});
+
+// Every time filter form changes, submit the form
+$(".theengirls_onchange" ).change(function() {
+	// Cluck cubmit
+	$("#theengirls_submit_filter").click();
 });	
 
 
