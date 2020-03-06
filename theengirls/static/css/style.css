@@ -32,7 +32,27 @@
   padding-bottom: 100px;
 }
 
-/*FOOTER*/
+
+
+/*
+  CARD ANIMATION
+*/
+
+.card{
+  cursor:pointer;
+  transition:all .4s ease-in-out;
+}
+
+.card:hover{
+  transform:scale(1.05);
+  box-shadow:10px 10px 10px #888888;
+}
+
+
+
+/*
+FOOTER
+*/
 
 footer {
   background: #EEE6E4;

@@ -11,21 +11,21 @@
 	<div class = "page-header text-center engirls_font_large"> Engirls Comic Archive</div>		
 	<div class = "row flex-xl-nowrap">
 
-		<div class="px-2 pb-2">
-			<form id= "engirls_filter_form" class="form theengirls_onchange" method="GET">
-				 	
-				{% csrf_token %}
-				{% for field in filter.form %}	
-					<div class = "engirls_font_norm col-sm-1" id="field_name_{{ field.name }}">
-						{{ field.name }}
-					</div>
-					<div class = "col-sm-2">
-					 {{ field }}
-					</div>				
-				{% endfor %}	
-				<button id = "theengirls_submit_filter" type="submit" style = "display:none;">Filter</button>
-					
-			</form>	
+		<div class="px-2 pb-4">
+			<div class = "shadow rounded">
+				<form id= "engirls_filter_form" class="form theengirls_onchange" method="GET">
+					 	
+					{% csrf_token %}
+					{% for field in filter.form %}	
+						<div class = "engirls_font_norm col-sm-2" id="field_name_{{ field.name }}">
+							{{ field.name }}
+						 {{ field }}
+						</div>				
+					{% endfor %}	
+					<button id = "theengirls_submit_filter" type="submit" style = "display:none;">Filter</button>
+						
+				</form>	
+			</div>
 		</div>
 
 
