@@ -38,12 +38,22 @@
   CARD ANIMATION
 */
 
+.jumbotron{
+  cursor:pointer;
+  transition:all .4s ease-in-out;
+}
+
+.jumbotron:hover, .jumbotron:active{
+  transform:scale(1.05);
+  box-shadow:10px 10px 10px #888888;
+}
+
 .card{
   cursor:pointer;
   transition:all .4s ease-in-out;
 }
 
-.card:hover .card:active{
+.card:hover, .card:active{
   transform:scale(1.05);
   box-shadow:10px 10px 10px #888888;
 }
