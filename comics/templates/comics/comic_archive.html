@@ -6,128 +6,258 @@
 <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 <link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
 
-{% if comics %}
-<div class = "page-header text-center engirls_font_large"> Engirls Comic Archive</div>
-<div class = "container pt-1">	
-	<div class = "row">
-		<!-- form -->
-		<div class = "col-lg-4 col-sm-12 engirls_font_small">
-			<form class="form" method="GET">
-				{% csrf_token %}
-					<table class="table table-striped">
-					  <thead >
-					    <tr>
-					      <th scope="col">Filter Comics: </th>
-					     
-					    </tr>
-					  </thead>
-						  <tbody class = "">
-								{% for field in filter.form %}
-									<tr class = "shadow shadow-light">
-										<th scope="row"> {{ field.name }}</th>
-										<td class = "">{{ field }}</td>
-									</tr>
-								{% endfor %}			    	      
-						  </tbody>
-					  </table>				
-						<button type="submit" class="btn btn-outline-dark shadow">Filter</button>		 
+
+<div class = "container-fluid">	
+	<div class = "page-header text-center engirls_font_large"> Engirls Comic Archive</div>		
+	<div class = "row flex-xl-nowrap">
+
+		<div class="px-2 pb-4">
+			<div class = "shadow rounded">
+				<form id= "engirls_filter_form" class="form theengirls_onchange" method="GET">
+					 	
+					{% csrf_token %}
+					{% for field in filter.form %}	
+						<div class = "engirls_font_norm col-sm-2" id="field_name_{{ field.name }}">
+							{{ field.name }}
+						 {{ field }}
+						</div>				
+					{% endfor %}	
+					<button id = "theengirls_submit_filter" type="submit" style = "display:none;">Filter</button>
+						
 				</form>	
-			<!-- col -->
 			</div>
+		</div>
 
-			<div class = "col-sm-8 col-lg-8">
 
-			<!-- main comic container container -->
-		  	<div class ="container py-4">
-				<div class = "row">
-		  			
-					<!-- card deck -->
-					<div class = "card-deck">
-					{% for comic in comics %}									
-
-						<div class="col-sm-3" style = "min-width: 175px;"> 
-							<div class="card mb-sm-3 mb-md-4 mb-lg-5 shadow" style="max-width:200px;min-width:150px;" >
-									
-									{% if comic.thumbnail %}
-										<a href="{% url 'comics:view_panel' comic_pk=comic.pk %}">
-											<img class="card-img-top img-fluid" style ="max-height: 150px;" src="{{ comic.thumbnail.url }}" />
-										</a>	
-										
-									{% else %}	
-										<div class = "col text-center">
-											<a href="{% url 'comics:view_panel' comic_pk=comic.pk %}">
-												<h5 class= "engirls_font_large"> No image available</h5>
-											</a>
-										</div>
-										
-									{% endif %}
-									
-					  			<div class = "card-header engirls_font_norm"><h5> {{ comic.title }}</h5> </div>					
-							</div> 
-						</div>
-
-					{% endfor %}
-					</div>
-				<!-- comic row -->
-				</div>
-
-				<!-- 3rd row -->
-				<div class = "row py-3 ml-2">
-					<div class="pagination">
-						{% if comics.paginator.num_pages > 1 %}
-					  	<div class = "col-xs-1 col-md-2 col-lg-3 engirls_font_norm">
-					      	#
-					     </div>
-							{% for num in comics.paginator.page_range %}
-								<div class = "col-xs-1 col-md-2 col-lg-3 engirls_font_norm">
-									<!-- Current page number -->
-									{% if comics.number == num %}
-										<!-- If there is existing query parameters -->
-									 	{% if 'series' in request.get_full_path %}
-									 		<h5><a class="text-primary" href="{{ request.get_full_path }}&web_page={{ num }}" >{{ num }}</a></h5>
-									 	{% else %}
-											<h5><a class="text-primary" href="{% url 'comics:view_archive' %}?web_page={{ num }}" >{{ num }}</a></h5>
-									 	{% endif %}
-
-										 <!-- Other page numbers -->
-									{% else %}
-										{% if 'series' in request.get_full_path %}
-											<h5><a class="text-secondary" href="{{ request.get_full_path }}&web_page={{ num }}">{{ num }}</a></h5>
-										{%  else %}
-											<h5><a class="text-secondary" href="{% url 'comics:view_archive' %}?web_page={{ num }}" >{{ num }}</a></h5>
-										{% endif %}
-									{% endif %}
+		<!-- card deck -->
+		<div class = "card-deck col-lg-12">
+			{% for comic in comics %}									
+				<div class="col-sm-3" style = "min-width: 175px;"> 
+					<div class="card mb-sm-3 mb-md-4 mb-lg-5 shadow" style="max-width:200px; min-width:100px;" >
+							
+							{% if comic.thumbnail %}
+								<a href="{% url 'comics:view_panel' comic_pk=comic.pk %}">
+									<img class="card-img-top img-fluid" style ="max-height: 200px;" src="{{ comic.thumbnail.url }}" />
+								</a>	
+								
+							{% else %}	
+								<div class = "col text-center">
+									<a href="{% url 'comics:view_panel' comic_pk=comic.pk %}">
+										<h5 class= "engirls_font_large"> No image available</h5>
+									</a>
 								</div>
-							{% endfor %}
+								
+							{% endif %}
+							
+			  			<div class = "card-header engirls_font_norm"><h5> {{ comic.title }}</h5> </div>					
+					</div> 
+				</div>
+			{% endfor %}
+		</div>
+
+	</div>
+	<!-- if no comics -->
+	{% if not comics %}
+
+		<div class = row>
+			<div class = "col-sm-3"></div>
+	 		<div class = "col-sm engirls_font_large text-center"> Looks like there are no comics :( </div>
+			<div class = "col-sm-3"></div>	
+		</div>	
+		
+	{% endif %}
+
+	<hr>
+	<!-- 3rd row -->
+	<div class = "row py-3 ml-2">
+
+		<div class="pagination d-flex align-items-center">
+		  	<div class = "col-xs-2 col-md-3 col-lg-4 mr-2 engirls_font_norm">
+		      	Pages: 
+		     </div>
+			{% if comics.paginator.num_pages > 1 %}
+				{% for num in comics.paginator.page_range %}
+					<div class = "col-xs-1 col-md-2 col-lg-3 engirls_font_norm">
+						<!-- Current page number -->
+						{% if comics.number == num %}
+							<!-- If there is existing query parameters -->
+						 	{% if 'series' in request.get_full_path %}
+						 		<h5><a class="text-primary" href="{{ request.get_full_path }}&web_page={{ num }}" >{{ num }}</a></h5>
+						 	{% else %}
+								<h5><a class="text-primary" href="{% url 'comics:view_archive' %}?web_page={{ num }}" >{{ num }}</a></h5>
+						 	{% endif %}
+
+							 <!-- Other page numbers -->
+						{% else %}
+							{% if 'series' in request.get_full_path %}
+								<h5><a class="text-secondary" href="{{ request.get_full_path }}&web_page={{ num }}">{{ num }}</a></h5>
+							{%  else %}
+								<h5><a class="text-secondary" href="{% url 'comics:view_archive' %}?web_page={{ num }}" >{{ num }}</a></h5>
+							{% endif %}
 						{% endif %}
 					</div>
-				</div>
-			
-			<!-- comic container-->
-			</div>								
-		<!-- main col -->
+				{% endfor %}
+			{% endif %}
 		</div>
-	<!-- main row -->
 	</div>
-<!--main container -->
+
+
+<!-- comic container-->
 </div>
 
-<!-- if no comics -->
-{% else %}
-<div class="container py-3">
-	<div class = row>
-		<div class = "col-sm-3"></div>
- 		<div class = "col-sm engirls_font_large text-center"> Looks like there are no comics :( </div>
-		<div class = "col-sm-3"></div>	
-	</div>	
-</div>	
-{% endif %}
-
-
-
  <!-- Bootstrap core JavaScript -->
- <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
- <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script>
+
+// retreive list of chapters given series
+function get_chapters(){
+	//alert("click click, bitch");
+	return $.ajax({
+		url: '/auto_complete_chapter/',
+		type: 'GET',
+		data: {
+		  'series': $("#id_series").val(),
+		},
+		dataType: 'json',
+		success: function(data) {
+			//alert("success!")     		
+		},
+		error: function(data) {
+			//alert("Error")
+		},
+	  });
+	  //return false;
+};
+
+// Retreive list of pages given series and chapter
+function get_pages(){
+	//alert("click click, bitch");
+	return $.ajax({
+		url: '/auto_complete_page/',
+		type: 'GET',
+		data: {
+		  'series': $("#id_series").val(),
+		  'chapter': $("#id_chapter").val(),
+		},
+		dataType: 'json',
+		success: function(data) {
+			//alert("success!")     		
+		},
+		error: function(data) {
+			//alert("Error")
+		},
+	  });
+	  //return false;
+};
+
+// Chapter and page values must be loaded via ajax
+$(document).ready(function(){
+
+	$("#id_chapter").empty();
+	$('#id_page').empty();
+	const urlParams = new URLSearchParams(window.location.search);
+
+	// 1) get chapters
+	get_chapters().done(function(data){ 
+
+		// alert("We done bitch")
+		const cur_chapter = urlParams.get('chapter');
+		//var chapters_list = []
+	    for( var item in data) {
+	        var id = data[item]['id'];
+	        var name = data[item]['name'];
+	    	$("#id_chapter").append("<option value=\'"+id+ "\' selected= \'\' >" +name+ "</option>" );
+	    	//chapters_list.push(id);
+	    }
+		$("#id_chapter").append("<option value=\'\' selected= \'\' >All</option>" );
+		// Make sure series is not null
+		//if(urlParams.get('series') != '' && urlParams.get('series') != null) {
+			$("#id_chapter").val(cur_chapter);
+		//}else {
+		//	$("#id_chapter").val('');
+		//}
+		
+
+		return false;
+
+	// 2) get pages
+	}).done(function(results) {
+		//alert("Second done!");
+		// Get our pages
+		get_pages().done(function(data){ 
+			//alert("Done getting pages");
+			const cur_page = urlParams.get('page');
+		    for( var item in data) {
+		        var id = data[item]['id'];
+		        var name = data[item]['name'];
+		    	$("#id_page").append("<option value=\'"+id+ "\' selected= \'\' >" +name+ "</option>" );
+		    }
+			$("#id_page").append("<option value=\'\' selected= \'\' >All</option>" );
+			
+			// Make sure chapter is not null
+			//if(urlParams.get('chapter') != null && urlParams.get('chapter') != '' ) {
+				$("#id_page").val(cur_page);
+			//}else{
+			//	$("#id_page").val('');
+			//}
+						
+		});
+
+		return false;
+	}); 
+	//alert($("#id_chapter").val())
+	// Toggle display of filter form
+	// If series not selected...
+	if(urlParams.get('series') == null || urlParams.get('series') == '')
+	{
+		// Hide Chapter, page if series is not selected
+		$("#field_name_chapter").css("display", "None");
+		$("#id_chapter").css("display", "None");
+
+		$("#field_name_page").css("display", "None");
+		$("#id_page").css("display", "None");
+
+	// If series is selected
+	}else{
+		// Show chapter otherwise
+		$("#field_name_chapter").css("display", "show");
+		$("#id_chapter").css("display", "show");
+	}
+
+	if( urlParams.get('chapter') == null || urlParams.get('chapter') == '') {
+
+		$("#field_name_page").css("display", "None");
+		$("#id_page").css("display", "None");	
+		//alert("Chapter is null" + $("#id_chapter").val());
+	}else if ( (urlParams.get('series') != null && urlParams.get('series') != '')  && (urlParams.get('chapter') != null && urlParams.get('chapter') != '')) {
+		//alert("chapter is not null!");
+		$("#field_name_page").css("display", "show");
+		$("#id_page").css("display", "show");
+	}
+
+
+	return false;
+});
+
+// Every time filter form changes, submit the form
+$(".theengirls_onchange" ).change(function() {
+	// Cluck cubmit
+
+	if($("#id_series").val() == null || $("#id_series").val() == '') {
+		$("#id_chapter").val('');
+		$("#id_page").val('');
+	}
+
+	if($("#id_chapter").val() == null || $("#id_chapter").val() == '') {
+		$("#id_page").val('');
+	}	
+	$("#theengirls_submit_filter").click();
+});	
+
+
+</script>
+</script>
 
 {% endblock %}
 

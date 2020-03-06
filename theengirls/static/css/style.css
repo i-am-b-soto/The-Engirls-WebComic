@@ -1,15 +1,15 @@
 
 .theengirls_background{
-  	background-color: #EEE6E4;
+    background-color: #EEE6E4;
 }
 
 .comic_panel{
   width: 100%;
-  height: auto;	
+  height: auto; 
 }
 
 .engirls_font_small{
-	font-family: 'Neucha', cursive;
+  font-family: 'Neucha', cursive;
   font-size: 15px;
 }
 
@@ -19,8 +19,8 @@
 }
 
 .engirls_font_large{
-	font-family: 'Neucha', cursive;
-	font-size: 40px;
+  font-family: 'Neucha', cursive;
+  font-size: 40px;
 }
 
 #my-page-container {
@@ -32,7 +32,27 @@
   padding-bottom: 100px;
 }
 
-/*FOOTER*/
+
+
+/*
+  CARD ANIMATION
+*/
+
+.card{
+  cursor:pointer;
+  transition:all .4s ease-in-out;
+}
+
+.card:hover .card:active{
+  transform:scale(1.05);
+  box-shadow:10px 10px 10px #888888;
+}
+
+
+
+/*
+FOOTER
+*/
 
 footer {
   background: #EEE6E4;
@@ -67,7 +87,7 @@ footer a:hover {
 }
 
 
-/*SOCİAL İCONS*/
+/**/
 
 /* footer social icons */
 

@@ -1,6 +1,7 @@
 import django_filters
 from .models import ComicPanel
 from django.conf import settings
+from dal import autocomplete
 
 """
 References:  
@@ -13,28 +14,36 @@ To get chapter and episode to be based off series:
 	https://stackoverflow.com/questions/49174420/how-to-filter-a-modelmultiplechoicefield-based-on-another-field
 
 """
+
+
 def getUniqueSeries():
 	series_dicts = ComicPanel.objects.all().values_list('series').distinct()
-	series_list = []
-	i = 0
-	for item in series_dicts:
-		series_list.append((item[0],item[0]))
-		if settings.DEBUG:
-			pass
-		i = i+1
+	return [(item[0], item[0]) for item in series_dicts]
 
-	return series_list
+def getUniqueChapters():
+	chapters_dicts = ComicPanel.objects.all().values_list('chapter').distinct()
+	return [(item[0], item[0]) for item in chapters_dicts]
+
+def getUniquePages():
+	pages_dicts = ComicPanel.objects.all().values_list('page').distinct()
+	return [(item[0],item[0]) for item in pages_dicts]		
 
 class ComicPanelFilter(django_filters.FilterSet):
 	#chapter = NumberFilter(field_name='chapter', lookup_expr='gt')
 
 	series = django_filters.ChoiceFilter(choices = getUniqueSeries)
-	# The following does not have the intended resulrs; options in the form of: ('main',), ('None',)... etc
-	#series=django_filters.ModelChoiceFilter(queryset=ComicPanel.objects.all().values_list('series').distinct())
-
-
+	#chapter = django_filters.ChoiceFilter(widget = autocomplete.ListSelect2(url='/comics/auto_complete_chapter/', forward='series') )
+	chapter = django_filters.ChoiceFilter( choices = getUniqueChapters)
+	page = django_filters.ChoiceFilter(choices = getUniquePages)
 
 	class Meta:
 		model = ComicPanel
 		fields = ['series', 'chapter', 'page']
 
+
+	def __init__(self, *args, **kwargs):
+		super(ComicPanelFilter, self).__init__(*args, **kwargs)
+		#print(self.request)
+			
+		#print(self.filters['series'].)
+		#self.filters['chapter'].choices = getUniqueChapters(self.filters['series'].selected)

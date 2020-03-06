@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, JsonResponse
 from django.conf import settings
 from django.db.models import F
 from .filters import ComicPanelFilter
@@ -9,7 +9,7 @@ from .models import ComicPanel, Comment
 from .forms import CommentForm
 from social_django.models import UserSocialAuth
 from django.db.utils import OperationalError
-
+from dal import autocomplete
 
 
 # View for most recent comic
@@ -49,10 +49,60 @@ def index(request):
 		else: 
 			return view_panel(request)
 
+
+"""
+Return dictionary of chapters per series
+I.E. 
+
+{
+	"1.0": {
+		"id":1.0,
+		"name": 1.0
+	},
+	"2.0":{ ... }
+}
+"""
+def auto_complete_chapter(request):
+	series = request.GET.get('series', None)
+	data = {}
+
+	if series:
+		chapters_list = []	
+		if series:
+			chapters_dicts = ComicPanel.objects.filter(series = series).values_list('chapter').distinct()
+			chapters_list = [(item[0],item[0]) for item in chapters_dicts]
+			data = { chapter[0]: {'id': chapter[0], 'name': chapter[1] } for chapter in chapters_list}	
+
+	return JsonResponse(data)
+
+def auto_complete_page(request):
+	series = request.GET.get('series', None)
+	chapter = request.GET.get('chapter', None)
+	data = {}
+
+	if series and chapter:
+		pages_dicts = ComicPanel.objects.filter(series = series, chapter = chapter).values_list('page').distinct()
+		page_list = [(item[0], item[0]) for item in pages_dicts]
+		data = {page[0]: {'id':page[0], 'name':page[1]} for page in page_list}
+
+	return JsonResponse(data)
+		
+
+
 # View Archive
 def view_archive(request):
 
-	comic_list = ComicPanel.objects.all().order_by("uploadTime")
+	comic_list = ComicPanel.objects.all()
+	filter_list = {}
+	if request.GET.get('series', None):
+		filter_list['series__exact'] = request.GET.get('series')
+	if request.GET.get('chapter', None):
+		filter_list['chapter__exact'] = request.GET.get('chapter')
+	if request.GET.get('page', None):
+		filter_list['page__exact'] = request.GET.get('page')
+
+	comic_list = comic_list.filter(**filter_list)
+
 	comic_filter = ComicPanelFilter(request.GET, queryset=comic_list)
 	paginator = Paginator(comic_filter.qs, 8)
 
