@@ -20,7 +20,7 @@
                 <tr>
                   {% for field in filter.form %}
                     <th scope="col">{{ field }}</th>
-                    <th scope="col"> <button type="submit" class="btn btn-outline-dark">Filter</button>  </th>
+                    <th scope="col"> <button type="submit" id="id_submit_category" class="" style ="display:None;" >Filter</button>  </th>
                   {% endfor %} 
                 </tr>
               </thead>
@@ -102,7 +102,11 @@
  <!-- Bootstrap core JavaScript -->
  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-
+<script>
+  $("#id_category" ).change(function() {
+    $("#id_submit_category").click();
+  });
+</script>
 {% endblock %}
 
 {% block footer %}

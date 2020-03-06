@@ -68,7 +68,7 @@ SECRET_KEY = os.environ.get('Django_App_Key', None)
 AWS_ACCESS_KEY_ID = os.environ.get('AMAZON_ACCESS_KEY')
 AWS_SECRET_ACCESS_KEY =  os.environ.get('AMAZON_ACCESS_SECRET')
 AWS_STORAGE_BUCKET_NAME = os.environ.get('S3_BUCKET_NAME')
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_CUSTOM_DOMAIN = '%s.s3-us-west-1.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
