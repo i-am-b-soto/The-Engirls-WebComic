@@ -25,9 +25,21 @@
         <!-- row -->
       </div>
       <div class="row">
-
         <div class="col-sm-8">
+          <!-- FB Share. 
+            More info here: https://developers.facebook.com/docs/plugins/share-button/#
+          -->
+          <meta property="og:url"           content="{{ request.get_path }}" />
+          <meta property="og:type"          content="website" />
+          <meta property="og:title"         content="The Engirls" />
+          <meta property="og:description"   content="Check out this engirls page!" />
+          <meta property="og:image"         content="{{ comic_panel.image.url }}" />         
             <!-- Preview Image -->
+        <div class="fb-share-button" data-href="{{ request.get_path }}" data-layout="button_count" data-size="small">
+          <a target="{{ request.get_path }}" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a>
+        </div> 
+
+
           <div class="shadow">
             
               <img class="rounded img-fluid" src="{{ comic_panel.image.url }}" title = "{{ comic_panel.caption }}" >
@@ -173,9 +185,10 @@ $(document).ready(function(){
   render_comment_list();
 });
 
-
  
 </script>
+
+
 <!-- Bootstrap core JavaScript -->
 <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
