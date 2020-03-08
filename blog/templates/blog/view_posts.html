@@ -33,18 +33,18 @@
         <div class = "col-sm-12">
              <a href = "{% url 'blog:view_post' post_pk=post.pk %}" style = "color:inherit;">
               <div class="jumbotron jumbotron-fluid shadow rounded" style = "background-color: #F7F6F6;" >
+                <div class = "pl-3"> <p>Category: {{ post.category }}<p> </div>    
+                <br>
                 <div class = "text-center">
                  
-                    <h1 class = "engirls_font_large">{{ post.title }}</h1>
-                    <div class = "engirls_font_small"> Created on: {{ post.created_on }} </div>    
+                    <h1 class = "engirls_font_large"><p>{{ post.title }}</p></h1>
+                    <div class = "engirls_font_small"> Created on: {{ post.created_on }} </div>   
+                    <div class = "engirls_font_small mx-2">
+                      {{ post.body|striptags|truncatewords:50 }}
+                    </div> 
                 </div>                
-                    <div class = engirls_font_small>
-                    {{ post.body|striptags|truncatewords:50 }}
-                  </div>
-                  <span class = "engirls_font_small pull-left pl-3"> Category: {{ post.category }} <br> </span>                
-                  <br>                  
+                                            
                 </div>
-              </div>
             </a>
         </div>
       {% endfor %}
