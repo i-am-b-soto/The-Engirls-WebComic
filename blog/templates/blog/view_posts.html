@@ -6,13 +6,13 @@
 <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
 {% if posts %}
-<div class = "page-header text-center engirls_font_large"> Engirls Blog</div>
-<div class = "container"> 
+<div class = "page-header text-center engirls_font_large pb-4"> Engirls Blog</div>
+<div class = "container container-fluid"> 
 
-  <div class = "row rounded" style = "background-color:#f9f8f8;">
+  <div class = "row" style = "">
 
     <div class = "col-sm-3 py-2 engirls_font_norm">
-        Selected Category:
+        Category:
         <form class="form" method="GET">
           {% csrf_token %}
             <table class="table table-striped table-borderless">
@@ -32,14 +32,17 @@
         <!-- Content section -->
         <div class = "col-sm-12">
              <a href = "{% url 'blog:view_post' post_pk=post.pk %}" style = "color:inherit;">
-              <div class="jumbotron jumbotron-fluid rounded shadow" >
-                <div class = "mx-sm-3 text-center">
+              <div class="jumbotron jumbotron-fluid shadow rounded" style = "background-color: #F7F6F6;" >
+                <div class = "text-center">
                  
                     <h1 class = "engirls_font_large">{{ post.title }}</h1>
-                    <div class = "engirls_font_small"> Category: {{ post.category }} <br>
-                      <span class="label label-success">Created on: {{ post.created_on }}</span>    
-                    </div>
+                    <div class = "engirls_font_small"> Created on: {{ post.created_on }} </div>    
+                </div>                
+                    <div class = engirls_font_small>
                     {{ post.body|striptags|truncatewords:50 }}
+                  </div>
+                  <span class = "engirls_font_small pull-left pl-3"> Category: {{ post.category }} <br> </span>                
+                  <br>                  
                 </div>
               </div>
             </a>

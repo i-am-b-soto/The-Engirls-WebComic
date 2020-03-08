@@ -92,7 +92,7 @@ def auto_complete_page(request):
 # View Archive
 def view_archive(request):
 
-	comic_list = ComicPanel.objects.all()
+	comic_list = ComicPanel.objects.order_by('series', 'chapter', 'page')
 	filter_list = {}
 	if request.GET.get('series', None):
 		filter_list['series__exact'] = request.GET.get('series')
