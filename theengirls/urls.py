@@ -19,21 +19,22 @@ from django.conf import settings
 from .views import error_404, privacy_policy, privacy_policy_source,logout_page, about_page, about_source, meet_the_engirls, meet_the_engirls_source 
 
 urlpatterns = [
-	path('', include('comics.urls')), # Home URL
-	path('comics/', include('comics.urls')), # Comic app URLS
-	path('blog/',include('blog.urls')),
-	path('admin/', admin.site.urls), # Django Admin URLS
-    path('accounts/', include('django.contrib.auth.urls')), # Django User Auth URLS
-    path('oauth/', include('social_django.urls', namespace='social')),  # Social App URLS 
-    path('ckeditor/', include('ckeditor_uploader.urls')), # CK Editor
-    path('privacy_policy/', privacy_policy, name = "privacy_policy"),
-    path('privacy_policy_source/', privacy_policy_source, name = "privacy_policy_source"),
-    path('logout/', logout_page, name="custom_logout"),
+	path('', include('comics.urls')) # Home URL
+	,path('comics/', include('comics.urls')) # Comic app URLS
+	,path('blog/',include('blog.urls'))
+    ,path('comments/', include('comments.urls'))
+	,path('admin/', admin.site.urls) # Django Admin URLS
+    ,path('accounts/', include('django.contrib.auth.urls')) # Django User Auth URLS
+    ,path('oauth/', include('social_django.urls', namespace='social'))  # Social App URLS 
+    ,path('ckeditor/', include('ckeditor_uploader.urls')) # CK Editor
+    ,path('privacy_policy/', privacy_policy, name = "privacy_policy")
+    ,path('privacy_policy_source/', privacy_policy_source, name = "privacy_policy_source")
+    ,path('logout/', logout_page, name="custom_logout")
     #path('login')
-    path('about/', about_page, name= "about"),
-    path('about_source/', about_source, name= "about_source"),
-    path('meet_the_engirls/', meet_the_engirls, name = "meet_the_engirls"),
-    path('meet_the_engirls_source/', meet_the_engirls_source, name = "meet_the_engirls_source")
+    ,path('about/', about_page, name= "about")
+    ,path('about_source/', about_source, name= "about_source")
+    ,path('meet_the_engirls/', meet_the_engirls, name = "meet_the_engirls")
+    ,path('meet_the_engirls_source/', meet_the_engirls_source, name = "meet_the_engirls_source")
 
 ]  
 #if settings.DEBUG:

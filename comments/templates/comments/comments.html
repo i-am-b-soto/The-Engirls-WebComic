@@ -13,7 +13,7 @@ https://bootsnipp.com/snippets/g68X5
 			<div class="comments-list">
 				{% if comments %}
 					{% for comment in comments %}
-							<small>Posted on: {{ comment.created_on|date:"d-m-Y" }} by: {{ comment.name }}</small>
+							<small>Posted on: {{ comment.created_on|date:"d-m-Y" }} by: {{ comment.user.first_name }}</small>
 							<br>
 							<div class="media">
 				                <div class="media-comment">

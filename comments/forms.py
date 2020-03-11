@@ -1,6 +1,6 @@
 from django import forms 
 
-from .models import Comment, Post
+from .models import Comment
 #from dal import autocomplete
 
 
@@ -9,8 +9,12 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ('body',)
         widgets = {
-          'body': forms.Textarea(attrs={'rows':3, 'cols':40}),
+          'body': forms.Textarea(attrs={'rows':2, 'cols':20}),
         }
     def __init__(self, *args, **kwargs):
         super(CommentForm, self).__init__(*args, **kwargs)
         self.fields['body'].label = "Comment:" 
+
+
+
+

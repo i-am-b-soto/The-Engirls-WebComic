@@ -98,7 +98,7 @@
 // Render the list of comments via ajax
 function render_comment_list(page_num=1){
   
-    $("#comment_list").load('/blog/comments/{{ post.pk }}/' + page_num + '/');
+    $("#comment_list").load('/comments/post/{{ post.pk }}/' + page_num + '/');
   
 }
 
@@ -107,7 +107,7 @@ $("#post_comment").on('click', function(e) {
     e.preventDefault();
     var form = $(this).closest("form");
      $.ajax({
-            url: '/blog/comments/{{ post.pk }}/1/',
+            url: '/comments/post/{{ post.pk }}/1/',
             type: 'POST',
             data: form.serialize()
         }).done(function(data) {
