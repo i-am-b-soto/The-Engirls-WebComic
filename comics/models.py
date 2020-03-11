@@ -160,6 +160,7 @@ class ComicPanel(models.Model):
 		super(ComicPanel, self).save()
 
 
+"""
 # in future projects this should really be its own app
 class Comment(models.Model):
     ComicPanel = models.ForeignKey(ComicPanel,on_delete=models.CASCADE,related_name='comments')
@@ -172,4 +173,4 @@ class Comment(models.Model):
         return 'Comment {} by {}'.format(self.body, self.name)
 
 
-
+"""

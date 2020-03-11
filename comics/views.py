@@ -5,7 +5,7 @@ from django.http import HttpResponse, Http404, JsonResponse
 from django.conf import settings
 from django.db.models import F
 from .filters import ComicPanelFilter
-from .models import ComicPanel, Comment
+from .models import ComicPanel#, Comment
 from comments.forms import CommentForm
 from social_django.models import UserSocialAuth
 from django.db.utils import OperationalError

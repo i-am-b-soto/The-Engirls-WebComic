@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import ComicPanel, Comment
+from .models import ComicPanel
 
 
 @admin.register(ComicPanel)
@@ -15,10 +15,6 @@ class ComicPanelAdmin(admin.ModelAdmin):
 	#autocomplete_fields['tag__tag']
 	
 
-@admin.register(Comment)
-class CommentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'ComicPanel', 'created_on')
-    list_filter = ('created_on','name')
 
 
 

@@ -2,39 +2,89 @@
 <!DOCTYPE html>
 <!-- Comment body based off bootstrap snippet: 
 https://bootsnipp.com/snippets/g68X5
+
+and
+
+https://bootsnipp.com/snippets/ZkexO
 -->
-<HTML lang="en">		 
+<HTML lang="en">
+
+
 
 <body>
 <div class= container>
-	<div class = "row">
-		<div class="col-sm">
-			<h1><small class="">{{ comments.paginator.count }} Comments </small></h1>
-			<div class="comments-list">
+
+	<div class="post-comments">
+
+
+
+			    <!-- first comment -->
+				<h2 class = "engirls_font_large">{{ comments.paginator.count }} Comments </h2>
+
 				{% if comments %}
 					{% for comment in comments %}
-							<small>Posted on: {{ comment.created_on|date:"d-m-Y" }} by: {{ comment.user.first_name }}</small>
-							<br>
-							<div class="media">
-				                <div class="media-comment">
-				           	    	<p>{{ comment.body }}</p>
-				                </div>
+						<div class = "row">
+						  	<div class="media">
+
+						  	<div class= container>		    
+						  		<div class = "row">
+								    <div class="media-heading">
+								      <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> 
+								      	{{ comment.created_on|date:"d-m-Y" }} by: {{ comment.user.first_name }}
+								      <span class="badge badge-primary">Likes - TODO</span>
+								    </div>
+							    </div> 
+
+
+							    <div class = "row">
+								    <div class="media-body">
+									    <p> {{ comment.body }} </p>
+
+									    <div class="comment-meta">
+									        <span><a href="#">delete</a></span>
+									        <a class="" role="button" data-toggle="collapse" href="#replyCommentt" aria-expanded="false" aria-controls="collapseExample">reply</a>
+									    </div>
+								    </div>
+								</div>
+
+								<div class = "row">
+							    	<!-- replies -->
+									<div class="media">
+										<div class = "container">
+											<div class="media-heading">
+												TODO: 
+												<span class="badge badge-primary">Likes - todo</span> 
+											</div>
+											<div class="media-body">
+												<small><p>second comment</p></small>
+												<div class="comment-meta">
+													<span><a href="#">delete</a></span>
+													<span>
+														<a class="" role="button" data-toggle="collapse" href="#replyCommentThree" aria-expanded="false" aria-controls="collapseExample">reply</a>
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 
 							</div>
-						<hr>
-					 {% endfor %}
+						     <!-- media -->
+						    </div>
+
+
+						<!-- row -->
+						</div>   
+					{% endfor %}
+
 				{% else %}
-			    <div class = "media engirls_font_norm">
-			    	 Start a conversation?
-			    	 <hr>
-			  	</div>
+					<h1 class = "engirls_font_large" >Start a conversation? </h1>  	
 				{% endif %}
-			<!-- end comment list -->
-			</div>
-		<!-- end col -->	
-		</div>
-	<!-- end row -->
+
+
+	<!-- post container -->
 	</div>
+
 
 	<div class = row>
 		<div class= "col-sm-3">
@@ -56,7 +106,7 @@ https://bootsnipp.com/snippets/g68X5
 					{% endfor %}
 				{% endif %}
 			</ul>
-		</div>
+
 	</div>	
 
 <!-- end container -->
@@ -64,7 +114,6 @@ https://bootsnipp.com/snippets/g68X5
 
 
 
-	
 
 </body>
 
@@ -76,5 +125,8 @@ $(".my_pagination_submit").on('click', function(e) {
 
       return false;
   });
+
+
+
 </script>
 

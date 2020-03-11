@@ -101,6 +101,7 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = ['theengirls.herokuapp.com', '192.168.1.129']
 ALLOWED_HOSTS.append('localhost')
+ALLOWED_HOSTS.append('localhost:8000')
 
 ############################################
 # Installed Apps

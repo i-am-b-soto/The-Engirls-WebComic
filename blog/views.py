@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.exceptions import ObjectDoesNotExist
 from comments.forms import CommentForm
-from .models import Post, Comment
+from .models import Post #, Comment
 from .filters import PostFilter
 from django.http import HttpResponse, Http404
 

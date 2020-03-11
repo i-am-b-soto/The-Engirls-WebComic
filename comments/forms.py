@@ -16,5 +16,10 @@ class CommentForm(forms.ModelForm):
         self.fields['body'].label = "Comment:" 
 
 
-
+#Just use comment form for now
+class ReplyForm(forms.ModelForm):
+	body = forms.CharField(max_length = 3000)
+	class Meta:
+		model = Comment
+		fields = ('body',)
 
