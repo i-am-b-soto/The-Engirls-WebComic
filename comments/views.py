@@ -6,6 +6,7 @@ from .forms import CommentForm, ReplyForm
 from django.http import HttpResponse, HttpResponseBadRequest, Http404, JsonResponse, HttpResponseForbidden
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 
 # comments/blog/blog_pk/page
 def view_post_comments(request, post_pk=-1, page=1):
@@ -56,12 +57,12 @@ def view_post_comments(request, post_pk=-1, page=1):
 
 
 # View the replies in a comment
-def view_conversations(request, comment_pk):
+def view_conversations(request, comment_pk=-1):
 	reply_form = None 
 	replies = []
 
 	try:
-		comment = Comment.object.All().get(pk=comment_pk)
+		comment = Comment.objects.all().get(pk=comment_pk)
 	except ObjectDoesNotExist as e:
 		raise Http404
 

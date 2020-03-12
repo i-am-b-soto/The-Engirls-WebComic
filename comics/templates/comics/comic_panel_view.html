@@ -162,7 +162,6 @@
 function render_comment_list(page_num=1){
   //if( {{ comic_panel }} != null){
     $("#comment_list").load('/comments/comics/{{ comic_panel.pk }}/' + page_num + '/');
-   
 }
 
 // Post and render the comment list upon clickin the post comment button

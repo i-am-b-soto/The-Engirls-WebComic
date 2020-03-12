@@ -48,24 +48,12 @@ https://bootsnipp.com/snippets/ZkexO
 								</div>
 
 								<div class = "row">
-							    	<!-- replies -->
-									<div class="media">
-										<div class = "container">
-											<div class="media-heading">
-												TODO: 
-												<span class="badge badge-primary">Likes - todo</span> 
-											</div>
-											<div class="media-body">
-												<small><p>second comment</p></small>
-												<div class="comment-meta">
-													<span><a href="#">delete</a></span>
-													<span>
-														<a class="" role="button" data-toggle="collapse" href="#replyCommentThree" aria-expanded="false" aria-controls="collapseExample">reply</a>
-													</span>
-												</div>
-											</div>
-										</div>
+
+									<div class = "replies">
+										<input type="hidden" id="replies_id_{{ comment.pk }}" name = "name_replies_input" value="{{ comment.pk }}">
+										<div name = "name_replies_load"></div>
 									</div>
+
 								</div>
 
 							</div>
@@ -126,6 +114,50 @@ $(".my_pagination_submit").on('click', function(e) {
       return false;
   });
 
+/*
+	Fire Ajax get request to comments/view_conversations/num
+*/
+function render_replies_list(comment_pk){
+  	
+  	var replies_id = "#replies_id_" + comment_pk;
+	$(replies_id).load('comments/view_conversations/' + comment_pk);
+	alert("We loaded shit");
+}
+
+// Post and render the comment list upon clickin the post comment button
+/*
+$("#post_comment").on('click', function(e) {
+    e.preventDefault();
+    var form = $(this).closest("form");
+     $.ajax({
+            url: '/comments/comics/{{ comic_panel.pk }}/1/',
+            type: 'POST',
+            data: form.serialize()
+        }).done(function(data) {
+          $('#id_body').val('');
+          render_comment_list();
+        });
+      return false;
+  });
+
+
+$(document).ready(function(){
+  render_comment_list();
+});
+*/
+$(document).ready(function(){
+  $( ".replies" ).each(function( i ) {
+  	
+  	// Grab Comment pk from replies elements
+    var reply_input = $(this).find("input[name='name_replies_input']");
+    var comment_pk = reply_input.val();
+    alert(comment_pk);
+    reply_input.next().load('comments/view_conversations/' + comment_pk);
+
+  });
+
+
+});
 
 
 </script>
