@@ -9,14 +9,10 @@ https://bootsnipp.com/snippets/ZkexO
 -->
 <HTML lang="en">
 
-
-
 <body>
 <div class= container>
 
 	<div class="post-comments">
-
-
 
 			    <!-- first comment -->
 				<h2 class = "engirls_font_large">{{ comments.paginator.count }} Comments </h2>
@@ -30,8 +26,9 @@ https://bootsnipp.com/snippets/ZkexO
 						  		<div class = "row">
 								    <div class="media-heading">
 								      <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> 
+								      <span class="badge badge-primary">
 								      	{{ comment.created_on|date:"d-m-Y" }} by: {{ comment.user.first_name }}
-								      <span class="badge badge-primary">Likes - TODO</span>
+								      </span>
 								    </div>
 							    </div> 
 
@@ -42,27 +39,45 @@ https://bootsnipp.com/snippets/ZkexO
 
 									    <div class="comment-meta">
 									        <span><a href="#">delete</a></span>
-									        <a class="" role="button" data-toggle="collapse" href="#replyCommentt" aria-expanded="false" aria-controls="collapseExample">reply</a>
-									    </div>
+									        <span><a href ="#"> Like-#</a> </span>
+									        <a data-toggle="collapse" data-target="#id_collapsible_{{ comment.pk }}" aria-expanded="false" aria-controls="collapseExample" href="#">reply</a>
+									    </div>								
+
 								    </div>
 								</div>
 
-								<div class = "row">
-
-									<div class = "replies">
-										<input type="hidden" id="replies_id_{{ comment.pk }}" name = "name_replies_input" value="{{ comment.pk }}">
-										<div name = "name_replies_load"></div>
+								<div id="id_collapsible_{{ comment.pk }}" class="collapse">
+									<div class = "row">
+										<div class = "media">
+											<form action = "{% url 'comments:view_conversations' comment_pk=comment.pk %}" method="POST"> 
+											  {% csrf_token %}
+											  <input type="hidden" id="id_form_replies_{{ comment.pk }}" name = "name_form_replies_input" value="{{ comment.pk }}" readonly>
+											  {% for field in reply_form %}
+											    <div class = "row engirls_font_small">
+											      {{ field.label }}
+											    </div>
+											    <div class = "row">
+											      {{ field }}
+											  	{% endfor %}  
+											  <button id="post_reply_{{ comment.pk }}" type="submit" class="button-submit btn-outline-dark btn-sm my_reply_button">post</button>
+											    </div>
+											</form>
+										</div>
 									</div>
-
 								</div>
 
+								<div class = "replies">
+									<input type="hidden" id="id_replies_{{ comment.pk }}" name = "name_replies_input" value="{{ comment.pk }}" readonly>
+									<!-- Load replies here -->
+									<div id = "id_replies_load_{{ comment.pk}}" name = "name_replies_load"></div>
+								</div>								
+
+							<!-- container -->
 							</div>
-						     <!-- media -->
-						    </div>
-
-
-						<!-- row -->
-						</div>   
+						<!-- media -->
+						</div>
+					<!-- row -->
+					</div>   
 					{% endfor %}
 
 				{% else %}
@@ -105,7 +120,12 @@ https://bootsnipp.com/snippets/ZkexO
 
 </body>
 
+
 <script type="text/javascript">
+
+/* pagination submit 
+   render_comment_list is located in comic_panel_view.html
+*/
 $(".my_pagination_submit").on('click', function(e) {
     e.preventDefault();
     page_num = $.trim($(this).text());
@@ -114,50 +134,50 @@ $(".my_pagination_submit").on('click', function(e) {
       return false;
   });
 
-/*
-	Fire Ajax get request to comments/view_conversations/num
-*/
-function render_replies_list(comment_pk){
-  	
-  	var replies_id = "#replies_id_" + comment_pk;
-	$(replies_id).load('comments/view_conversations/' + comment_pk);
-	alert("We loaded shit");
+/* Given comment_pk, load replies div */
+function load_replies(comment_pk, cur_set = 1){
+	var div_name = "#id_replies_load_" + comment_pk;
+	$(div_name).load('/comments/view_conversations/' + comment_pk + '/' + cur_set + '/');
 }
 
-// Post and render the comment list upon clickin the post comment button
-/*
-$("#post_comment").on('click', function(e) {
+/* Document ready...  */
+$(document).ready(function(){
+
+	// Iterate over all replies classes
+	// Load replies for all comments
+  $( ".replies" ).each(function( i ) {
+    var reply_input = $(this).find("input[name='name_replies_input']");
+    var comment_pk = reply_input.val();
+    load_replies(comment_pk);
+
+  }).promise().done(function(data){
+
+  });
+
+  return false;
+});
+
+/* modify on click event for replies 
+   re-render all comments upon submit
+*/
+$(".my_reply_button").on('click', function(e) {
     e.preventDefault();
     var form = $(this).closest("form");
+    var comment_pk = form.find("input[name='name_form_replies_input']").val();
      $.ajax({
-            url: '/comments/comics/{{ comic_panel.pk }}/1/',
+            url: '/comments/view_conversations/'+comment_pk +'/1/',
             type: 'POST',
             data: form.serialize()
-        }).done(function(data) {
-          $('#id_body').val('');
-          render_comment_list();
+        }).done(function(data){
+        	//Re-render the entire comment list in case comment moved up 
+        	//render_comment_list();
+        	$('#id_body').val('');
+        	load_replies(comment_pk);
+        }).done(function(data){
+
         });
       return false;
   });
-
-
-$(document).ready(function(){
-  render_comment_list();
-});
-*/
-$(document).ready(function(){
-  $( ".replies" ).each(function( i ) {
-  	
-  	// Grab Comment pk from replies elements
-    var reply_input = $(this).find("input[name='name_replies_input']");
-    var comment_pk = reply_input.val();
-    alert(comment_pk);
-    reply_input.next().load('comments/view_conversations/' + comment_pk);
-
-  });
-
-
-});
 
 
 </script>

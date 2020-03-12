@@ -10,30 +10,44 @@ https://bootsnipp.com/snippets/ZkexO
 
 
 <body>
+
+
 <!-- replies -->
-<div class="media">
-	<div class = "container">
-		<div class="media-heading">
-			TODO: 
-			<span class="badge badge-primary">Likes - todo</span> 
-		</div>
-		<div class="media-body">
-			<small><p>second comment</p></small>
-			<div class="comment-meta">
-				<span><a href="#">delete</a></span>
-				<span>
-					<a class="" role="button" data-toggle="collapse" href="#replyCommentThree" aria-expanded="false" aria-controls="collapseExample">reply</a>
-				</span>
+{% if replies %}
+	{% for reply in replies %}
+		<div class = row>
+			<div class="media">
+				<div class = "container">
+					<div class="media-heading">
+						{{ reply.created_on |date:"d-m-Y"}} by: {{ reply.user.first_name }}
+					</div>
+
+					<div class="media-body">
+							<p> {{ reply.body }}</p>
+						<div class="comment-meta">
+							<span><a href="#">delete</a></span>
+							<span><a href ="#"> Like-#</a></span>
+						</div>	
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
-</div>
+	{% endfor %}
+
+	{% if not retreived_all %}
+		<div class = "row">
+			<div class = "replies_view_more">
+				<input type="hidden" name="name_view_more_comment_pk" value="{{ comment_pk }}" readonly>
+				<input type="hidden" name="name_view_more_cur_set" value="{{ cur_set }}" readonly>
+				<a id = "id_view_more_{{ comment_pk }}" href="#">View More</a>
+			</div>
+		</div>
+	{% endif %}
+
+{% endif %}
+
 </body>
 
-
-<style>
-
-</style>
 
 <body>
 
@@ -41,4 +55,24 @@ https://bootsnipp.com/snippets/ZkexO
 
 
 <script>
+/* Call load_replies with incremented_cur_Set 
+   load_replies is found in comments.html
+*/
+
+$(document).ready(function(){
+   	// After loading all the replies, we need to give 
+   	// View more buttons proper functionality  	
+	$(".replies_view_more").each(function(i){
+	    // Retreive hidden input values
+	    var comment_pk = $(this).find("input[name='name_view_more_comment_pk']").val();
+	    var cur_set = Number($(this).find("input[name='name_view_more_cur_set']").val());
+	    var view_more_id = "#id_view_more_" + comment_pk;
+		// Set appropriate object with appropriate on click function
+		$(view_more_id).on('click', function(e) {
+		    e.preventDefault();
+		    next_set = cur_set + 1;
+		    load_replies(comment_pk, next_set);
+		  });	    
+	});
+});
 </script>

@@ -11,6 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 # comments/blog/blog_pk/page
 def view_post_comments(request, post_pk=-1, page=1):
 	comments_paginated = []
+	reply_form = ReplyForm()
 
 	try:
 		p = Post.objects.all().get(pk=post_pk)
@@ -53,13 +54,14 @@ def view_post_comments(request, post_pk=-1, page=1):
 	except Exception as e:
 		print(e)
 
-	return render(request, "comments/comments.html", context = {'comments': comments_paginated } );	
+	return render(request, "comments/comments.html", context = {'comments': comments_paginated, 'reply_form':reply_form } );	
 
 
 # View the replies in a comment
-def view_conversations(request, comment_pk=-1):
+def view_conversations(request, comment_pk=-1, cur_set = 1 ):
 	reply_form = None 
 	replies = []
+	retreived_all = True
 
 	try:
 		comment = Comment.objects.all().get(pk=comment_pk)
@@ -67,12 +69,31 @@ def view_conversations(request, comment_pk=-1):
 		raise Http404
 
 	if request.method == 'GET':
-		reply_form = ReplyForm()
-		replies = comment.comment_comments.all()
+		num_to_retreive = cur_set * 3
+		total_replies = comment.comment_comments.all().count()
+		
+		if num_to_retreive >= total_replies:
+			num_to_retreive = total_replies
+			retreived_all = True
+		else:
+			retreived_all = False
 
-		return render(request, "comments/replies.html", context = {'replies':replies, 'reply_form': reply_form})
+		replies = comment.comment_comments.all()[:num_to_retreive]
+		
+
+		return render(request, "comments/replies.html", context = {
+			'replies':replies, 
+			'comment_pk': comment_pk, 
+			'cur_set': cur_set, 
+			'retreived_all' : retreived_all 
+			})
+
 
 	if request.method == 'POST' and request.user.is_authenticated:
+
+		#if settings.DEBUG:
+		#	print("I made it to the post") 
+
 		reply_form = ReplyForm(request.POST)
 		if reply_form.is_valid():
 			new_reply = reply_form.save(commit=False)
@@ -97,6 +118,7 @@ def view_conversations(request, comment_pk=-1):
 # comments/comics/comic_pk/page
 def view_comic_comments(request, comic_pk =-1, page=1):
 	comments_paginated = []
+	reply_form = ReplyForm()
 
 
 	try:
@@ -108,7 +130,7 @@ def view_comic_comments(request, comic_pk =-1, page=1):
 
 		comment_form = CommentForm(request.POST)
 		if settings.DEBUG:
-			print(comment_form.errors)
+			print("Comment Form Errors: " + str(comment_form.errors))
 		if comment_form.is_valid():
 			# Create Comment object but don't save to database yet
 			new_comment = comment_form.save(commit=False)
@@ -124,6 +146,7 @@ def view_comic_comments(request, comic_pk =-1, page=1):
 		else:
 			if settings.DEBUG:
 				print("Comment form is not valid! HACKER!!! HACKKERRRR!")
+
 			return HttpResponseBadRequest("bad request processing comment")
 
 	if not request.user.is_authenticated:
@@ -143,4 +166,4 @@ def view_comic_comments(request, comic_pk =-1, page=1):
 	except Exception as e:
 		print(e)
 
-	return render(request, "comments/comments.html", context = {'comments': comments_paginated } );
+	return render(request, "comments/comments.html", context = {'comments': comments_paginated ,'reply_form':reply_form} );

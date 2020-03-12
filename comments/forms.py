@@ -13,7 +13,7 @@ class CommentForm(forms.ModelForm):
         }
     def __init__(self, *args, **kwargs):
         super(CommentForm, self).__init__(*args, **kwargs)
-        self.fields['body'].label = "Comment:" 
+        self.fields['body'].label = "Say Something:" 
 
 
 #Just use comment form for now
@@ -23,3 +23,6 @@ class ReplyForm(forms.ModelForm):
 		model = Comment
 		fields = ('body',)
 
+	def __init__(self, *args, **kwargs):
+		super(ReplyForm, self).__init__(*args, **kwargs)
+		self.fields['body'].label = "" 
