@@ -2,6 +2,7 @@
 {% block main_content %}
 
 {% load static %}
+
 <link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
 
   <!-- Page Content -->
@@ -37,8 +38,11 @@
           <a target="{{ request.get_path }}" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a>
         </div> 
 
+
           <div class="shadow">
-              <img class="rounded img-fluid" src="{{ comic_panel.image.url }}" title = "{{ comic_panel.caption }}" >  
+            
+              <img class="rounded img-fluid" src="{{ comic_panel.image.url }}" title = "{{ comic_panel.caption }}" >
+            
           </div>
           <hr>  
 

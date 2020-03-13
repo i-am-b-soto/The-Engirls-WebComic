@@ -7,6 +7,7 @@ from django.http import HttpResponse, HttpResponseBadRequest, Http404, JsonRespo
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils import timezone
 
 # comments/blog/blog_pk/page
 def view_post_comments(request, post_pk=-1, page=1):
@@ -101,15 +102,19 @@ def view_conversations(request, comment_pk=-1, cur_set = 1 ):
 			new_reply.user = request.user 
 			new_reply.save()
 
+			# Updated comment
+			comment.updated_on = timezone.now()
+			comment.save()
+
 			# On success 
 			return HttpResponse("Successfully created a new reply!") 
 
 		# If form is not valid
 		else:
-			return HttpResponseBadRequest("Issu processing reply")
+			return HttpResponseBadRequest("Issue processing reply")
 
 	# If user is not authenticated
-	if not request.user.is_authenticated:
+	if request.method == 'POST' and not request.user.is_authenticated:
 		return HttpResponseForbidden("Cannot post comment without login")
 
 
@@ -129,9 +134,11 @@ def view_comic_comments(request, comic_pk =-1, page=1):
 	if request.method == 'POST' and request.user.is_authenticated:
 
 		comment_form = CommentForm(request.POST)
+		
 		if settings.DEBUG:
 			print("Comment Form Errors: " + str(comment_form.errors))
 		if comment_form.is_valid():
+
 			# Create Comment object but don't save to database yet
 			new_comment = comment_form.save(commit=False)
 			# Assign the current post to the comment
