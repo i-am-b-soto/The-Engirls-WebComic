@@ -13,10 +13,10 @@ class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE) 
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now_add = True, null = True)
+    updated_on = models.DateTimeField(auto_now = True, null = True)
 
     class Meta:
-        ordering = ('-updated_on', '-created_on')
+        ordering = ('-updated_on',)
 
     #Reference: https://stackoverflow.com/questions/53085645/django-one-of-2-fields-must-not-be-null
     #def clean(self):

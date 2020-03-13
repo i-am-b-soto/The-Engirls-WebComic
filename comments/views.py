@@ -41,7 +41,7 @@ def view_post_comments(request, post_pk=-1, page=1):
 	if request.method == 'POST' and not request.user.is_authenticated:
 		return HttpResponseForbidden("Cannot post comment without login")
 		
-	comments = p.post_comments.all().order_by("-created_on")
+	comments = p.post_comments.all()
 
 	# Show 5 per page
 	paginator = Paginator(comments, settings.COMMENTS_PER_PAGE)
@@ -159,7 +159,7 @@ def view_comic_comments(request, comic_pk =-1, page=1):
 	if request.method == 'POST' and not request.user.is_authenticated:
 		return HttpResponseForbidden("Cannot post comment without login")
 
-	comments = cp.comic_panel_comments.all().order_by("-created_on")
+	comments = cp.comic_panel_comments.all()
 
 	paginator = Paginator(comments, settings.COMMENTS_PER_PAGE)
 

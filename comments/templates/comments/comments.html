@@ -27,7 +27,7 @@ https://bootsnipp.com/snippets/ZkexO
 								    <div class="media-heading">
 								      <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> 
 								      <span class="badge badge-primary">
-								      	{{ comment.created_on|date:"d-m-Y" }} by: {{ comment.user.first_name }}
+								      	{{ comment.created_on|date:"d-m-Y" }} by: {{ comment.user.username }}
 								      </span>
 								    </div>
 							    </div> 
@@ -38,33 +38,42 @@ https://bootsnipp.com/snippets/ZkexO
 									    <p> {{ comment.body }} </p>
 
 									    <div class="comment-meta">
-									        <span><a href="#">delete</a></span>
-									        <span><a href ="#"> like-#</a> </span>
-									        <a data-toggle="collapse" href="#id_collapsible_{{ comment.pk }}">reply</a>
+									    	{% if user.is_authenticated %}
+									    		{% if comment.user == user %}
+									        		<span><a href="#">delete</a></span>
+									        	{% endif %}
+									        	<span><a href ="#"> like-#</a> </span>
+							
+									        	<a data-toggle="collapse" href="#id_collapsible_{{ comment.pk }}">reply</a>
+									        {% endif %}
 									    </div>								
 
 								    </div>
 								</div>
 
-								<div id="id_collapsible_{{ comment.pk }}" class="collapse">
-									<div class = "row">
-										<div class = "media">
-											<form action = "{% url 'comments:view_conversations' comment_pk=comment.pk %}" method="POST"> 
-											  {% csrf_token %}
-											  <input type="hidden" id="id_form_replies_{{ comment.pk }}" name = "name_form_replies_input" value="{{ comment.pk }}" readonly>
-											  {% for field in reply_form %}
-											    <div class = "row engirls_font_small">
-											      {{ field.label }}
-											    </div>
-											    <div class = "row">
-											      {{ field }}
-											  	{% endfor %}  
-											  <button id="post_reply_{{ comment.pk }}" type="submit" class="button-submit btn-outline-dark btn-sm my_reply_button">post</button>
-											    </div>
-											</form>
+								{% if user.is_authenticated %}
+									<div id="id_collapsible_{{ comment.pk }}" class="collapse">
+										<div class = "row">
+											<div class = "media">
+												
+												<form action = "{% url 'comments:view_conversations' comment_pk=comment.pk %}" method="POST"> 
+												  {% csrf_token %}
+												  <input type="hidden" id="id_form_replies_{{ comment.pk }}" name = "name_form_replies_input" value="{{ comment.pk }}" readonly>
+												  {% for field in reply_form %}
+												    <div class = "row engirls_font_small">
+												      {{ field.label }}
+												    </div>
+												    <div class = "row">
+												      {{ field }}
+												  	{% endfor %}  
+												  <button id="post_reply_{{ comment.pk }}" type="submit" class="button-submit btn-outline-dark btn-sm my_reply_button">post</button>
+												    </div>
+												</form>
+												
+											</div>
 										</div>
 									</div>
-								</div>
+								{% endif %}
 
 								<div class = "replies">
 									<input type="hidden" id="id_replies_{{ comment.pk }}" name = "name_replies_input" value="{{ comment.pk }}" readonly>
