@@ -37,7 +37,7 @@ def view_post_comments(request, post_pk=-1, page=1):
 				print("Comment form is not valid! HACKER!!! HACKKERRRR!")
 			return HttpResponseBadRequest("bad request processing comment")
 	
-	if not request.user.is_authenticated:
+	if request.method == 'POST' and not request.user.is_authenticated:
 		return HttpResponseForbidden("Cannot post comment without login")
 		
 	comments = p.post_comments.all().order_by("-created_on")
@@ -149,12 +149,11 @@ def view_comic_comments(request, comic_pk =-1, page=1):
 
 			return HttpResponseBadRequest("bad request processing comment")
 
-	if not request.user.is_authenticated:
+	if request.method == 'POST' and not request.user.is_authenticated:
 		return HttpResponseForbidden("Cannot post comment without login")
 
 	comments = cp.comic_panel_comments.all().order_by("-created_on")
 
-	# Show 5 per page
 	paginator = Paginator(comments, settings.COMMENTS_PER_PAGE)
 
 	try:
