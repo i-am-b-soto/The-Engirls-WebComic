@@ -78,8 +78,9 @@ $(document).ready(function(){
 	    var cur_set = Number($(this).find("input[name='name_view_more_cur_set']").val());
 	    var view_more_id = "#id_view_more_" + comment_pk;
 		// Set appropriate object with appropriate on click function
-		$(view_more_id).on('click', function(e) {
+		$(view_more_id).unbind().click( function(e) {
 		    e.preventDefault();
+		    $(this).off('click');
 		    next_set = cur_set + 1;
 		    load_replies(comment_pk, next_set);
 		    // Set reply input to null
@@ -91,28 +92,32 @@ $(document).ready(function(){
 		var comment_pk = $(this).find("input[name='name_comment_delete']").val();
 		var delete_comment_button = "#id_comment_delete_"+comment_pk;
 		
-		//alert("hmmm..." + delete_comment_button)
-		$(delete_comment_button).on('click',function(e){
-		 e.preventDefault();
-	     //alert("I'm going to delete this fucker ");
-	     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-	     $.ajax({
-	            url: '/comments/delete_comment/'+comment_pk +'/',
-	            type: 'POST',
-	            contentType: 'application/json',
-				headers:{
-				"X-CSRFToken": csrftoken
-				},    
-	            data: {  }
-	        }).done(function(data){
-	        	// Re-render comment list
-				render_comment_list();
-				//return false;
-	        }).fail(function(data){
+		$(delete_comment_button).unbind().click(function(e){
+		 	e.stopPropagation();
+		 	e.preventDefault();
+		 	var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+		 	
+		 	if(confirm ('Delete this comment? ')) {
+	    	//alert("I'm going to delete this fucker ");
+	    
+		     $.ajax({
+		            url: '/comments/delete_comment/'+comment_pk +'/',
+		            type: 'POST',
+		            contentType: 'application/json',
+					headers:{
+					"X-CSRFToken": csrftoken
+					},    
+		            data: {  }
+		        }).done(function(data){
+		        	// Re-render comment list
+					render_comment_list();
+					//return false;
+		        }).fail(function(data){
 
-	        	//alert("What the fuck...");
-	        	//return false;
-	        });
+		        	//alert("What the fuck...");
+		        	//return false;
+		        });
+	    	}
 
 	        return false;
 		});
