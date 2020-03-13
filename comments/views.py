@@ -8,8 +8,11 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import ensure_csrf_cookie
 
-# comments/blog/blog_pk/page
+
+# Handles Posts to Blog comments and views
 def view_post_comments(request, post_pk=-1, page=1):
 	comments_paginated = []
 	reply_form = ReplyForm()
@@ -57,8 +60,42 @@ def view_post_comments(request, post_pk=-1, page=1):
 
 	return render(request, "comments/comments.html", context = {'comments': comments_paginated, 'reply_form':reply_form } );	
 
+"""
+	Delete a comment
 
-# View the replies in a comment
+	request must:
+		1) Must have valid comment object pk
+		2) Must be post request
+		3) Must have an authenticated user
+		4) Must have an authenticated user that matches the comment's user
+"""
+
+def delete_comment(request, comment_pk =-1):
+	try: 
+		comment = Comment.objects.all().get(pk=comment_pk)
+	except ObjectDoesNotExist as e:
+		if settings.DEBUG:
+			print("You fucked up with the comment pk")
+		raise Http404
+
+	if request.method == 'POST' and request.user.is_authenticated:
+		if comment.user != request.user:
+			return HttpResponseForbidden("Authenticated user does not match object user")
+		
+		comment.delete()
+
+		return HttpResponse("Successfully deleted comment")
+
+	elif request.method == 'POST' and not request.user.is_authenticated:
+		return HttpResponseForbidden("User is not authenticated")
+
+	elif request.method is not 'POST':
+		return HttpResponseBadRequest("Bad request")
+
+
+
+# View the replies in a comment, Post a comment
+@ensure_csrf_cookie
 def view_conversations(request, comment_pk=-1, cur_set = 1 ):
 	reply_form = None 
 	replies = []
@@ -120,7 +157,7 @@ def view_conversations(request, comment_pk=-1, cur_set = 1 ):
 
 
 
-# comments/comics/comic_pk/page
+# Handles comic panel comment view and posts to comments
 def view_comic_comments(request, comic_pk =-1, page=1):
 	comments_paginated = []
 	reply_form = ReplyForm()

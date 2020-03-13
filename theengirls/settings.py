@@ -35,6 +35,11 @@ def set_default_db(DATABASES):
         prod_db  =  dj_database_url.config(conn_max_age=500)
         DATABASES['default'].update(prod_db)
 
+def set_CSRF_COOKIE_SECURE():
+    if os.environ.get('on_heroku'):
+        return True
+    else:
+        return False
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -195,6 +200,7 @@ DATABASES = {
 }
 
 set_default_db(DATABASES)
+CSRF_COOKIE_SECURE = set_CSRF_COOKIE_SECURE()
 
 
 ############################################

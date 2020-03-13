@@ -40,7 +40,10 @@ https://bootsnipp.com/snippets/ZkexO
 									    <div class="comment-meta">
 									    	{% if user.is_authenticated %}
 									    		{% if comment.user == user %}
-									        		<span><a href="#">delete</a></span>
+												<span class = "delete_comment">
+													<input type="hidden" name="name_comment_delete" value="{{ comment.pk }}" readonly>	
+													<a id= "id_comment_delete_{{ comment.pk }}" href="#">delete</a>
+												</span>
 									        	{% endif %}
 									        	<span><a href ="#"> like-#</a> </span>
 							
@@ -149,7 +152,7 @@ function load_replies(comment_pk, cur_set = 1){
 	$(div_name).load('/comments/view_conversations/' + comment_pk + '/' + cur_set + '/');
 }
 
-/* Document ready...  */
+/* On Document ready load all replies  */
 $(document).ready(function(){
 
 	// Iterate over all replies classes
@@ -178,9 +181,7 @@ $(".my_reply_button").on('click', function(e) {
             type: 'POST',
             data: form.serialize()
         }).done(function(data){
-        	//Re-render the entire comment list in case comment moved up 
-        	//render_comment_list();
-        	//$('#id_body').val('');
+        	// Set reply input to nothing
         	$(".reply_input_body").val("");
         	load_replies(comment_pk);
         }).done(function(data){
