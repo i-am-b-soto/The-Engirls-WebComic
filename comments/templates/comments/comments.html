@@ -171,7 +171,8 @@ $(".my_reply_button").on('click', function(e) {
         }).done(function(data){
         	//Re-render the entire comment list in case comment moved up 
         	//render_comment_list();
-        	$('#id_body').val('');
+        	//$('#id_body').val('');
+        	$(".reply_input_body").val("");
         	load_replies(comment_pk);
         }).done(function(data){
 

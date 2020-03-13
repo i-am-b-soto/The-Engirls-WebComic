@@ -18,7 +18,7 @@ class CommentForm(forms.ModelForm):
 
 #Just use comment form for now
 class ReplyForm(forms.ModelForm):
-	body = forms.CharField(max_length = 3000)
+	body = forms.CharField(max_length = 3000, widget=forms.TextInput(attrs={'class':'reply_input_body'}))
 	class Meta:
 		model = Comment
 		fields = ('body',)

@@ -71,7 +71,10 @@ $(document).ready(function(){
 		$(view_more_id).on('click', function(e) {
 		    e.preventDefault();
 		    next_set = cur_set + 1;
+		    $(".reply_input_body").val("");
 		    load_replies(comment_pk, next_set);
+		    // Set reply input to null
+		    
 		  });	    
 	});
 });
