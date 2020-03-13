@@ -42,6 +42,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 #### Custom values ####
 MAIN_SERIES_NAME = "main"
+COMMENTS_PER_PAGE = 5
 #########################
 
 

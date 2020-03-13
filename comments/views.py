@@ -16,7 +16,7 @@ def view_post_comments(request, post_pk=-1, page=1):
 	try:
 		p = Post.objects.all().get(pk=post_pk)
 	except ObjectDoesNotExist as e:
-		print("fuck") 
+		#print("fuck") 
 		raise Http404
 
 	if request.method == 'POST' and request.user.is_authenticated:
@@ -43,7 +43,7 @@ def view_post_comments(request, post_pk=-1, page=1):
 	comments = p.post_comments.all().order_by("-created_on")
 
 	# Show 5 per page
-	paginator = Paginator(comments, 10)
+	paginator = Paginator(comments, settings.COMMENTS_PER_PAGE)
 
 	try:
 		comments_paginated = paginator.page(page)
@@ -155,7 +155,7 @@ def view_comic_comments(request, comic_pk =-1, page=1):
 	comments = cp.comic_panel_comments.all().order_by("-created_on")
 
 	# Show 5 per page
-	paginator = Paginator(comments, 10)
+	paginator = Paginator(comments, settings.COMMENTS_PER_PAGE)
 
 	try:
 		comments_paginated = paginator.page(page)

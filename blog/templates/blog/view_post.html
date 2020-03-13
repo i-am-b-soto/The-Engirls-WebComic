@@ -3,7 +3,6 @@
 
 {% load static %}
 <!-- Bootstrap core CSS -->
-<link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 <link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
 
 
@@ -25,10 +24,11 @@
 
       <div class="row">
         <div class="col-sm-12">
-          <div class="card my-4 shadow">
-            <div class="card-body">
+          
+          <div class = "shadow rounded px-4 py-4" style= "background-color: #FAFAFA; display:inline-block; width:100%">
+           <!-- <div class="card-body"> -->
                 {{ post.body | safe }} 
-            </div>
+            <!-- </div> -->
           </div>
         </div> 
 
@@ -124,9 +124,6 @@ $(document).ready(function(){
 
  
 </script>
-<!-- Bootstrap core JavaScript -->
-<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
 {% endblock %}
 {% block footer %}

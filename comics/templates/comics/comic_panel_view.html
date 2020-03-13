@@ -2,8 +2,6 @@
 {% block main_content %}
 
 {% load static %}
-<!-- Bootstrap core CSS -->
-<link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 <link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
 
   <!-- Page Content -->
@@ -39,11 +37,8 @@
           <a target="{{ request.get_path }}" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a>
         </div> 
 
-
           <div class="shadow">
-            
-              <img class="rounded img-fluid" src="{{ comic_panel.image.url }}" title = "{{ comic_panel.caption }}" >
-            
+              <img class="rounded img-fluid" src="{{ comic_panel.image.url }}" title = "{{ comic_panel.caption }}" >  
           </div>
           <hr>  
 
@@ -82,10 +77,10 @@
           <div class = "engirls_font_norm">
             <h3> Description: </h3>
           </div>          
-          <div class="card rounded my-4 shadow">
-            <div class="card-body">
+          <div class = "shadow rounded px-4 py-4" style= "background-color: #FAFAFA; width:100%;">
+            <!-- <div class="card-body"> -->
                 {{ comic_panel.description | safe }} 
-            </div>
+            <!-- </div> -->
 
             <!-- card -->
           </div>
@@ -187,10 +182,6 @@ $(document).ready(function(){
  
 </script>
 
-
-<!-- Bootstrap core JavaScript -->
-<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
 {% endblock %}
 
