@@ -39,10 +39,11 @@ https://bootsnipp.com/snippets/ZkexO
 
 									    <!-- Likes, Delete, Replies -->
 									    <div class="comment-meta">
+								        	<div class = "like_comment">
+									        	<input type = "hidden" name = "name_comment_like" value = "{{ comment.pk }}" readonly>
+									        </div>	
+
 									    	{% if user.is_authenticated %}
-									        	<div class = "like_comment">
-									        		<input type = "hidden" name = "name_comment_like" value = "{{ comment.pk }}" readonly>
-									        	</div>
 
 									    		{% if comment.user == user %}
 													<div class = "delete_comment">
@@ -50,10 +51,10 @@ https://bootsnipp.com/snippets/ZkexO
 													</div>
 													<span><a id= "id_comment_delete_{{ comment.pk }}" href="#">delete</a></span>
 									        	{% endif %}
-
+												<span><a data-toggle="collapse" href="#id_collapsible_{{ comment.pk }}">reply</a></span>
 
 									        	<span><a id ="id_num_likes_{{ comment.pk }}" href = "#">like</a></span>
-									        	<span><a data-toggle="collapse" href="#id_collapsible_{{ comment.pk }}">reply</a></span>
+									        	
 									        {% endif %}
 									        <span><a id ="id_num_likes_display_{{ comment.pk }}"> </a></span>
 									    </div>								

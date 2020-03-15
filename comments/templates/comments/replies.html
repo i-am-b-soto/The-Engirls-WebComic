@@ -25,10 +25,10 @@ https://bootsnipp.com/snippets/ZkexO
 					<div class="media-body">
 							<p class = "reply"> {{ reply.body }}</p>
 						<div class="comment-meta">
+				        	<div class = "like_comment">
+				        		<input type = "hidden" name = "name_comment_like" value = "{{ reply.pk }}" readonly>
+				        	</div>							
 							{% if user.is_authenticated %}
-					        	<div class = "like_comment">
-					        		<input type = "hidden" name = "name_comment_like" value = "{{ reply.pk }}" readonly>
-					        	</div>
 
 								{% if user == reply.user %}									
 												
