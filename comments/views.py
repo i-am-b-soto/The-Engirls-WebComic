@@ -6,7 +6,7 @@ from .forms import CommentForm, ReplyForm
 from django.http import HttpResponse, HttpResponseBadRequest, Http404, JsonResponse, HttpResponseForbidden
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -20,7 +20,6 @@ def view_post_comments(request, post_pk=-1, page=1):
 	try:
 		p = Post.objects.all().get(pk=post_pk)
 	except ObjectDoesNotExist as e:
-		#print("fuck") 
 		raise Http404
 
 	if request.method == 'POST' and request.user.is_authenticated:
@@ -61,7 +60,33 @@ def view_post_comments(request, post_pk=-1, page=1):
 	return render(request, "comments/comments.html", context = {'comments': comments_paginated, 'reply_form':reply_form } )	
 
 
+"""
+	retreive like count for a comment
 
+	request must:
+		1) Must have valid comment object pk -> return 404 otherwise
+		2) Must be post request -> return 400 otherwise
+		3) If GET request and valid comment -> return JSON output of count
+"""
+def num_likes(request, comment_pk=-1):
+	try:
+		comment = Comment.objects.all().get(pk=comment_pk)
+	except ObjectDoesNotExist as e:
+		if settings.DEBUG:
+			print("Couldn't find comment")
+		raise Http404
+
+	if request.method == 'GET':
+		like_count = Comment_Like.objects.filter(Comment = comment).count()
+		return JsonResponse({'count':like_count})
+
+	return HttpResponseBadRequest("Bad Request for this URL")
+
+
+"""
+Like a Comment 
+
+"""
 def like_comment(request,comment_pk=-1):
 	try:
 		comment = Comment.objects.all().get(pk=comment_pk)
@@ -71,9 +96,31 @@ def like_comment(request,comment_pk=-1):
 		raise Http404
 
 	if request.method == 'POST' and request.user.is_authenticated:
-		pass
+		comment_like = None
+		# Does the like already exist? Remove it
+		if Comment_Like.objects.filter(Comment = comment, user = request.user).exists():
+			
+			try:
+				comment_like = Comment_Like.objects.all().get(Comment = comment, user = request.user)
+			# There should only be one match... but just in case
+			except MultipleObjectsReturned as e:
+				return HttpResponseBadRequest("Server error processing likes")
+			
+			comment_like.delete()
+		
+		# This is a new like. Add it. Update the comment
+		else:
+			comment_like = Comment_Like.objects.create(Comment = comment, user = request.user)
+			comment.updated_on = timezone.now()
+			comment.save()
 
-	return HttpResponse("Success")
+	elif request.method == 'POST' and not request.user.is_authenticated:
+		return HttpResponseForbidden("Unauthenticated user")
+
+	elif request.method != 'POST':
+		return HttpResponseBadRequest("What the fuck are you trying to do?")
+
+	return HttpResponse("")
 
 
 
@@ -86,7 +133,6 @@ def like_comment(request,comment_pk=-1):
 		3) Must have an authenticated user
 		4) Must have an authenticated user that matches the comment's user
 """
-
 def delete_comment(request, comment_pk =-1):
 	try: 
 		comment = Comment.objects.all().get(pk=comment_pk)

@@ -30,5 +30,5 @@ class Comment(models.Model):
 
 class Comment_Like(models.Model):
 	Comment = models.ForeignKey('Comment', on_delete = models.CASCADE, related_name = 'likes')
-	count = models.IntegerField()
+	count = models.IntegerField(blank = True, null = True)
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) 

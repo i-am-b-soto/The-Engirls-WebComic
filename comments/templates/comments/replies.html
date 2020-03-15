@@ -23,21 +23,27 @@ https://bootsnipp.com/snippets/ZkexO
 					</div>
 
 					<div class="media-body">
-							<p> {{ reply.body }}</p>
+							<p class = "reply"> {{ reply.body }}</p>
 						<div class="comment-meta">
 							{% if user.is_authenticated %}
-								{% if user == reply.user %}
-									
+					        	<div class = "like_comment">
+					        		<input type = "hidden" name = "name_comment_like" value = "{{ reply.pk }}" readonly>
+					        	</div>
+
+								{% if user == reply.user %}									
 												
-								<span class = "delete_comment">
+								<div class = "delete_comment">
 									<input type="hidden" name="name_comment_delete" value="{{ reply.pk }}" readonly>	
-									<a id= "id_comment_delete_{{ reply.pk }}" href="#">delete</a>
-								</span>
-										
+								</div>
+								<span><a id= "id_comment_delete_{{ reply.pk }}" href="#">delete</a></span>
 
 								{% endif %}
-								<span><a href ="#"> like-#</a></span>
+
+					        	<span><a id ="id_num_likes_{{ reply.pk }}" href = "#">like</a></span> 
+					        				        	
+
 							{% endif %}
+							<span><a id ="id_num_likes_display_{{ reply.pk }}"> </a></span>		
 						</div>	
 					</div>
 				</div>
@@ -67,18 +73,63 @@ https://bootsnipp.com/snippets/ZkexO
 
 <script>
 
-
+// Load value of comments/num_likes/comment_pk into div
+function load_num_likes(comment_pk){
+	var div_id = "#id_num_likes_display_"+comment_pk;
+	$.getJSON( '/comments/num_likes/' + comment_pk + '/', function( data ) {
+		 $.each( data, function( key, val ) {
+		 		$(div_id).html('<span class="badge badge-success">' + val + '</span>');
+		 		if(val <= 0){
+		 			$(div_id).html('');
+		 		}
+		 	
+		 });
+	});
+}
 
 $(document).ready(function(){
-   	// Give View more buttons proper functionality  
+	var csrftoken = $("[name=csrfmiddlewaretoken]").val();
 
+	// Load all comment counts + set button to like/dislike
+	$(".like_comment").each(function(i){
+		var comment_pk = $(this).find("input[name='name_comment_like']").val();
+		load_num_likes(comment_pk);
+		var like_comment_id = "#id_num_likes_" + comment_pk;
+		// Set button with appropriate functionality
+		$(like_comment_id).unbind().click(function(e){
+			e.stopPropagation();
+			e.preventDefault();
+			//alert("Hello");
+		     $.ajax({
+		            url: '/comments/like_comment/'+comment_pk +'/',
+		            type: 'POST',
+		            contentType: 'application/json',
+					headers:{
+					"X-CSRFToken": csrftoken
+					},    
+		            data: {  }
+		        }).done(function(data){
+		        	
+					load_num_likes(comment_pk);
+
+					//return false;
+		        }).fail(function(data){
+
+		        	//alert("What the fuck...");
+		        	//return false;
+		        });			
+		});
+	});
+
+
+   	// Give View more buttons proper functionality  
 	$(".replies_view_more").each(function(i){
 	    // Retreive hidden input values
 	    var comment_pk = $(this).find("input[name='name_view_more_comment_pk']").val();
 	    var cur_set = Number($(this).find("input[name='name_view_more_cur_set']").val());
 	    var view_more_id = "#id_view_more_" + comment_pk;
 		// Set appropriate object with appropriate on click function
-		$(view_more_id).unbind().click( function(e) {
+		$(view_more_id).unbind().click(function(e) {
 		    e.preventDefault();
 		    $(this).off('click');
 		    next_set = cur_set + 1;
@@ -88,6 +139,7 @@ $(document).ready(function(){
 	});
 
 
+	// Give Delete Comment button proper funcionality
 	$('.delete_comment').each(function(i){
 		var comment_pk = $(this).find("input[name='name_comment_delete']").val();
 		var delete_comment_button = "#id_comment_delete_"+comment_pk;
@@ -95,7 +147,7 @@ $(document).ready(function(){
 		$(delete_comment_button).unbind().click(function(e){
 		 	e.stopPropagation();
 		 	e.preventDefault();
-		 	var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+		 	
 		 	
 		 	if(confirm ('Delete this comment? ')) {
 	    	//alert("I'm going to delete this fucker ");
