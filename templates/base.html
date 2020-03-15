@@ -15,15 +15,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0,width=device-width">
   
-  	
-<!-- Bootstrap css -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+  <!-- To Load custom Static files. Use this: --> 
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" /> 
 
 <!-- JQuery -->
 <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 
-<!-- popper JS -->
+<!-- popper -->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 
 <!-- bootstrap js -->
@@ -32,10 +32,9 @@
 <!-- Google fonts -->
 <link href="https://fonts.googleapis.com/css?family=Neucha&display=swap" rel="stylesheet">
 
-  
-  <!-- To Load custom Static files. Use this: --> 
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" /> 
+<!-- Bootstrap css -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 
 
 </head>

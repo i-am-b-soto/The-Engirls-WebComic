@@ -6,6 +6,8 @@
 <link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
 
 
+
+
 <div class = "container-fluid">	
 	<div class = "page-header text-center pb-4 engirls_font_large"> Engirls Comic Archive</div>		
 	<div class = "row flex-xl-nowrap">
@@ -16,6 +18,7 @@
 				<form id= "engirls_filter_form" class="form theengirls_onchange" method="GET">
 					 	
 					{% csrf_token %}
+
 					{% for field in filter.form %}	
 						<div class = "engirls_font_norm col-sm-2 pb-1" id="field_name_{{ field.name }}">
 						 {{ field.name }}
@@ -150,9 +153,11 @@ function get_pages(){
 
 // Chapter and page values must be loaded via ajax
 $(document).ready(function(){
+	// To style all selects
 
 	$("#id_chapter").empty();
 	$('#id_page').empty();
+	//$('select').selectpicker();
 	const urlParams = new URLSearchParams(window.location.search);
 
 	// 1) get chapters

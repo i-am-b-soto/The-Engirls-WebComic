@@ -22,6 +22,7 @@ https://bootsnipp.com/snippets/ZkexO
 						<div class = "row">
 						  	<div class="media">
 
+						  	<!-- Header -->
 						  	<div class= container>		    
 						  		<div class = "row">
 								    <div class="media-heading">
@@ -32,21 +33,23 @@ https://bootsnipp.com/snippets/ZkexO
 								    </div>
 							    </div> 
 
-
 							    <div class = "row">
 								    <div class="media-body">
 									    <p> {{ comment.body }} </p>
 
+									    <!-- Likes, Delete, Replies -->
 									    <div class="comment-meta">
 									    	{% if user.is_authenticated %}
+									    		
 									    		{% if comment.user == user %}
-												<span class = "delete_comment">
-													<input type="hidden" name="name_comment_delete" value="{{ comment.pk }}" readonly>	
-													<a id= "id_comment_delete_{{ comment.pk }}" href="#">delete</a>
-												</span>
+													<span class = "delete_comment">
+														<input type="hidden" name="name_comment_delete" value="{{ comment.pk }}" readonly>	
+														<a id= "id_comment_delete_{{ comment.pk }}" href="#">delete</a>
+													</span>
 									        	{% endif %}
+
 									        	<span><a href ="#"> like-#</a> </span>
-							
+
 									        	<a data-toggle="collapse" href="#id_collapsible_{{ comment.pk }}">reply</a>
 									        {% endif %}
 									    </div>								
@@ -54,6 +57,7 @@ https://bootsnipp.com/snippets/ZkexO
 								    </div>
 								</div>
 
+								<!-- Reply Form -->
 								{% if user.is_authenticated %}
 									<div id="id_collapsible_{{ comment.pk }}" class="collapse">
 										<div class = "row">
@@ -151,10 +155,12 @@ function load_replies(comment_pk, cur_set = 1){
 	var div_name = "#id_replies_load_" + comment_pk;
 	$(div_name).load('/comments/view_conversations/' + comment_pk + '/' + cur_set + '/');
 }
-
+//$('.collapse').toggle();
 /* On Document ready load all replies  */
 $(document).ready(function(){
 
+
+ // $(".collapse").collapse();
 	// Iterate over all replies classes
 	// Load replies for all comments
   $( ".replies" ).each(function( i ) {

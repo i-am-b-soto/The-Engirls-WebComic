@@ -58,7 +58,24 @@ def view_post_comments(request, post_pk=-1, page=1):
 	except Exception as e:
 		print(e)
 
-	return render(request, "comments/comments.html", context = {'comments': comments_paginated, 'reply_form':reply_form } );	
+	return render(request, "comments/comments.html", context = {'comments': comments_paginated, 'reply_form':reply_form } )	
+
+
+
+def like_comment(request,comment_pk=-1):
+	try:
+		comment = Comment.objects.all().get(pk=comment_pk)
+	except ObjectDoesNotExist as e:
+		if settings.DEBBUG:
+			print("You fucked up with comment pk on like_comment")
+		raise Http404
+
+	if request.method == 'POST' and request.user.is_authenticated:
+		pass
+
+	return HttpResponse("Success")
+
+
 
 """
 	Delete a comment

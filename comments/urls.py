@@ -8,6 +8,7 @@ urlpatterns = [
    ,path('view_conversations/<int:comment_pk>/<int:cur_set>/', views.view_conversations, name = 'view_conversations')
    ,path('view_conversations/<int:comment_pk>/', views.view_conversations, name = 'view_conversations')
    ,path('delete_comment/<int:comment_pk>/',views.delete_comment, name = 'delete_comment')
+   ,path('like_comment/<int:comment_pk>/',views.like_comment, name = 'like_comment')
 
 ]
 
