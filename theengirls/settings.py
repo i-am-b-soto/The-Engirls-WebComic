@@ -35,6 +35,11 @@ def set_default_db(DATABASES):
         prod_db  =  dj_database_url.config(conn_max_age=500)
         DATABASES['default'].update(prod_db)
 
+def set_CSRF_COOKIE_SECURE():
+    if os.environ.get('on_heroku'):
+        return True
+    else:
+        return False
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -42,6 +47,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 #### Custom values ####
 MAIN_SERIES_NAME = "main"
+COMMENTS_PER_PAGE = 5
+MAX_COMMENTS_PER_USER_PER_PAGE = 25
 #########################
 
 
@@ -57,7 +64,7 @@ MAIN_SERIES_NAME = "main"
 #FB_VALUES 
 SOCIAL_AUTH_FACEBOOK_KEY = os.environ.get('SOCIAL_AUTH_FACEBOOK_KEY', None) # App ID
 SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get('SOCIAL_AUTH_FACEBOOK_SECRET', None)  # App Secret
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+#SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_KEY', None)
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_SECRET', None)
@@ -101,6 +108,7 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = ['theengirls.herokuapp.com', '192.168.1.129']
 ALLOWED_HOSTS.append('localhost')
+ALLOWED_HOSTS.append('localhost:8000')
 
 ############################################
 # Installed Apps
@@ -117,6 +125,7 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'comics',
     'blog',
+    'comments',
     'django_filters',
     'social_django',
     'django.contrib.admin',
@@ -192,6 +201,7 @@ DATABASES = {
 }
 
 set_default_db(DATABASES)
+CSRF_COOKIE_SECURE = set_CSRF_COOKIE_SECURE()
 
 
 ############################################

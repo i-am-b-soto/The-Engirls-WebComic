@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Post, Comment
+from .models import Post
 
 
 @admin.register(Post)
@@ -11,11 +11,6 @@ class PostAdmin(admin.ModelAdmin):
 	search_fields = ('title',)
 	#autocomplete_fields['tag__tag']
 	
-
-@admin.register(Comment)
-class BlogCommentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'body', 'Post', 'created_on')
-    list_filter = ('created_on','name')
 
 
 

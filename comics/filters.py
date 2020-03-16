@@ -2,6 +2,7 @@ import django_filters
 from .models import ComicPanel
 from django.conf import settings
 from dal import autocomplete
+from django import forms 
 
 """
 References:  
@@ -12,6 +13,11 @@ Adding choices: https://stackoverflow.com/questions/1455415/using-django-filter-
 
 To get chapter and episode to be based off series: 
 	https://stackoverflow.com/questions/49174420/how-to-filter-a-modelmultiplechoicefield-based-on-another-field
+
+
+Attempting to make the filters look beautiful. If successful answer this Stack overflow question:
+https://stackoverflow.com/questions/28961056/adding-external-widget-to-django-filters
+
 
 """
 
@@ -31,14 +37,15 @@ def getUniquePages():
 class ComicPanelFilter(django_filters.FilterSet):
 	#chapter = NumberFilter(field_name='chapter', lookup_expr='gt')
 
-	series = django_filters.ChoiceFilter(choices = getUniqueSeries)
+	series = django_filters.ChoiceFilter(choices = getUniqueSeries, widget=forms.Select(attrs={}) )
 	#chapter = django_filters.ChoiceFilter(widget = autocomplete.ListSelect2(url='/comics/auto_complete_chapter/', forward='series') )
-	chapter = django_filters.ChoiceFilter( choices = getUniqueChapters)
-	page = django_filters.ChoiceFilter(choices = getUniquePages)
+	chapter = django_filters.ChoiceFilter( choices = getUniqueChapters , widget=forms.Select(attrs={}))
+	page = django_filters.ChoiceFilter(choices = getUniquePages , widget=forms.Select(attrs={}))
 
 	class Meta:
 		model = ComicPanel
 		fields = ['series', 'chapter', 'page']
+
 
 
 	def __init__(self, *args, **kwargs):
@@ -46,4 +53,4 @@ class ComicPanelFilter(django_filters.FilterSet):
 		#print(self.request)
 			
 		#print(self.filters['series'].)
-		#self.filters['chapter'].choices = getUniqueChapters(self.filters['series'].selected)
+		#self.filters['series'].label = ""

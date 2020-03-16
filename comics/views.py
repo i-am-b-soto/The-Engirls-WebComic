@@ -5,8 +5,8 @@ from django.http import HttpResponse, Http404, JsonResponse
 from django.conf import settings
 from django.db.models import F
 from .filters import ComicPanelFilter
-from .models import ComicPanel, Comment
-from .forms import CommentForm
+from .models import ComicPanel#, Comment
+from comments.forms import CommentForm
 from social_django.models import UserSocialAuth
 from django.db.utils import OperationalError
 from dal import autocomplete
@@ -116,6 +116,8 @@ def view_archive(request):
 
 	return render(request, 'comics/comic_archive.html', context = {'filter': comic_filter, 'comics': comics})	
 
+"""
+Deprecated: 
 
 # Load our comments
 def view_comments(request, comic_pk =-1, page=1):
@@ -157,7 +159,7 @@ def view_comments(request, comic_pk =-1, page=1):
 		print(e)
 
 	return render(request, "comments.html", context = {'comments': comments_paginated, 'comic_pk': comic_pk } );
-
+"""
 
 # View for specific comic
 def view_panel(request, comic_pk =-1 ):

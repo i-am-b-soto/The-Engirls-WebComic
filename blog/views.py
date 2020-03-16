@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.exceptions import ObjectDoesNotExist
-from .forms import CommentForm
-from .models import Post, Comment
+from comments.forms import CommentForm
+from .models import Post #, Comment
 from .filters import PostFilter
 from django.http import HttpResponse, Http404
 
@@ -10,7 +10,8 @@ from django.http import HttpResponse, Http404
 # Blog Views
 ###########################################################################
 
-
+"""
+Deprecated
 # Load our comments
 def view_comments(request, post_pk =-1, page=1):
 	comments_paginated = []
@@ -51,7 +52,7 @@ def view_comments(request, post_pk =-1, page=1):
 		print(e)
 
 	return render(request, "comments.html", context = {'comments': comments_paginated, 'post_pk': post_pk } );
-
+"""
 class Counter():
 	_counter = 0
 	def increment(self):

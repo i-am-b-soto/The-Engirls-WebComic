@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<!-- Comment body based off bootstrap snippet: 
+https://bootsnipp.com/snippets/g68X5
+
+and:
+
+https://bootsnipp.com/snippets/ZkexO
+-->
+<HTML lang="en">	
+
+
+<body>
+
+
+<!-- replies -->
+{% if max_comments %}
+		<p class = "text-warning"> You have reached the maximum alloted comments for this Item </p>
+{% endif %}
+{% if replies %}
+	{% for reply in replies %}
+		<div class = row>
+			<div class="media">
+				<div class = "container">
+					<div class="media-heading">
+						{{ reply.created_on |date:"d-m-Y"}} by: {{ reply.user.username }}
+					</div>
+
+					<div class="media-body">
+							<p class = "reply"> {{ reply.body }}</p>
+						<div class="comment-meta">
+				        	<div class = "like_comment">
+				        		<input type = "hidden" name = "name_comment_like" value = "{{ reply.pk }}" readonly>
+				        	</div>							
+							{% if user.is_authenticated %}
+
+								{% if user == reply.user %}									
+												
+								<div class = "delete_comment">
+									<input type="hidden" name="name_comment_delete" value="{{ reply.pk }}" readonly>	
+								</div>
+								<span><a id= "id_comment_delete_{{ reply.pk }}" href="#">delete</a></span>
+
+								{% endif %}
+
+					        	<span><a id ="id_num_likes_{{ reply.pk }}" href = "#">like</a></span> 
+					        				        	
+
+							{% endif %}
+							<span><a id ="id_num_likes_display_{{ reply.pk }}"> </a></span>		
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+
+	{% if not retreived_all %}
+		<div class = "row">
+			<div class = "replies_view_more">
+				<input type="hidden" name="name_view_more_comment_pk" value="{{ comment_pk }}" readonly>
+				<input type="hidden" name="name_view_more_cur_set" value="{{ cur_set }}" readonly>
+				<a id = "id_view_more_{{ comment_pk }}" href="#">View More</a>
+			</div>
+		</div>
+	{% endif %}
+
+{% endif %}
+
+</body>
+
+
+<body>
+
+</body>
+
+
+<script>
+
+// Load value of comments/num_likes/comment_pk into div
+function load_num_likes(comment_pk){
+	var div_id = "#id_num_likes_display_"+comment_pk;
+	$.getJSON( '/comments/num_likes/' + comment_pk + '/', function( data ) {
+		 $.each( data, function( key, val ) {
+		 		$(div_id).html('<span class="badge badge-success">' + val + '</span>');
+		 		if(val <= 0){
+		 			$(div_id).html('');
+		 		}
+		 	
+		 });
+	});
+}
+
+$(document).ready(function(){
+	var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+
+	// Load all comment counts + set button to like/dislike
+	$(".like_comment").each(function(i){
+		var comment_pk = $(this).find("input[name='name_comment_like']").val();
+		load_num_likes(comment_pk);
+		var like_comment_id = "#id_num_likes_" + comment_pk;
+		// Set button with appropriate functionality
+		$(like_comment_id).unbind().click(function(e){
+			e.stopPropagation();
+			e.preventDefault();
+			//alert("Hello");
+		     $.ajax({
+		            url: '/comments/like_comment/'+comment_pk +'/',
+		            type: 'POST',
+		            contentType: 'application/json',
+					headers:{
+					"X-CSRFToken": csrftoken
+					},    
+		            data: {  }
+		        }).done(function(data){
+		        	
+					load_num_likes(comment_pk);
+
+					//return false;
+		        }).fail(function(data){
+
+		        	//alert("What the fuck...");
+		        	//return false;
+		        });			
+		});
+	});
+
+
+   	// Give View more buttons proper functionality  
+	$(".replies_view_more").each(function(i){
+	    // Retreive hidden input values
+	    var comment_pk = $(this).find("input[name='name_view_more_comment_pk']").val();
+	    var cur_set = Number($(this).find("input[name='name_view_more_cur_set']").val());
+	    var view_more_id = "#id_view_more_" + comment_pk;
+		// Set appropriate object with appropriate on click function
+		$(view_more_id).unbind().click(function(e) {
+		    e.preventDefault();
+		    $(this).off('click');
+		    next_set = cur_set + 1;
+		    load_replies(comment_pk, next_set);
+		    // Set reply input to null
+		  });	    
+	});
+
+
+	// Give Delete Comment button proper funcionality
+	$('.delete_comment').each(function(i){
+		var comment_pk = $(this).find("input[name='name_comment_delete']").val();
+		var delete_comment_button = "#id_comment_delete_"+comment_pk;
+		
+		$(delete_comment_button).unbind().click(function(e){
+		 	e.stopPropagation();
+		 	e.preventDefault();
+		 	
+		 	
+		 	if(confirm ('Delete this comment? ')) {
+	    	//alert("I'm going to delete this fucker ");
+	    
+		     $.ajax({
+		            url: '/comments/delete_comment/'+comment_pk +'/',
+		            type: 'POST',
+		            contentType: 'application/json',
+					headers:{
+					"X-CSRFToken": csrftoken
+					},    
+		            data: {  }
+		        }).done(function(data){
+		        	// Re-render comment list
+					render_comment_list();
+					//return false;
+		        }).fail(function(data){
+
+		        	//alert("What the fuck...");
+		        	//return false;
+		        });
+	    	}
+
+	        return false;
+		});
+	});
+
+
+});
+</script>

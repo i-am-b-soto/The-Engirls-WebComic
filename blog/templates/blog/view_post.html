@@ -3,7 +3,6 @@
 
 {% load static %}
 <!-- Bootstrap core CSS -->
-<link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 <link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
 
 
@@ -13,7 +12,6 @@
     {% if post %}
 
       <div class="row">
-
         <div class="col">        
           <!-- Title -->
           <div class="mt-4 engirls_font_large">
@@ -26,10 +24,11 @@
 
       <div class="row">
         <div class="col-sm-12">
-          <div class="card my-4 shadow">
-            <div class="card-body">
+          
+          <div class = "shadow rounded px-4 py-4" style= "background-color: #FAFAFA; display:inline-block; width:100%">
+           <!-- <div class="card-body"> -->
                 {{ post.body | safe }} 
-            </div>
+            <!-- </div> -->
           </div>
         </div> 
 
@@ -98,7 +97,7 @@
 // Render the list of comments via ajax
 function render_comment_list(page_num=1){
   
-    $("#comment_list").load('/blog/comments/{{ post.pk }}/' + page_num + '/');
+    $("#comment_list").load('/comments/post/{{ post.pk }}/' + page_num + '/');
   
 }
 
@@ -107,7 +106,7 @@ $("#post_comment").on('click', function(e) {
     e.preventDefault();
     var form = $(this).closest("form");
      $.ajax({
-            url: '/blog/comments/{{ post.pk }}/1/',
+            url: '/comments/post/{{ post.pk }}/1/',
             type: 'POST',
             data: form.serialize()
         }).done(function(data) {
@@ -125,9 +124,6 @@ $(document).ready(function(){
 
  
 </script>
-<!-- Bootstrap core JavaScript -->
-<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
 {% endblock %}
 {% block footer %}

@@ -2,8 +2,6 @@
 {% block main_content %}
 
 {% load static %}
-<!-- Bootstrap core CSS -->
-<link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
 {% if posts %}
 <div class = "page-header text-center engirls_font_large pb-4"> Engirls Blog</div>
@@ -33,7 +31,7 @@
         <div class = "col-sm-12">
              <a href = "{% url 'blog:view_post' post_pk=post.pk %}" style = "color:inherit;">
               <div class="jumbotron jumbotron-fluid shadow rounded" style = "background-color: #F7F6F6;" >
-                <div class = "pl-3"> <p>Category: {{ post.category }}<p> </div>    
+                <div class = "pl-3"><span class="badge badge-primary"> Category: {{ post.category }}</span> </div>    
                 <br>
                 <div class = "text-center">
                  
@@ -102,9 +100,6 @@
 {% endif %}
 
 
- <!-- Bootstrap core JavaScript -->
- <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
- <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 <script>
   $("#id_category" ).change(function() {
     $("#id_submit_category").click();

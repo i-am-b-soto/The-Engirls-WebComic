@@ -1,0 +1,211 @@
+  
+<!DOCTYPE html>
+<!-- Comment body based off bootstrap snippet: 
+https://bootsnipp.com/snippets/g68X5
+
+and
+
+https://bootsnipp.com/snippets/ZkexO
+-->
+<HTML lang="en">
+
+<body>
+<div class= container>
+
+	<div class="post-comments">
+
+			    <!-- first comment -->
+				<h2 class = "engirls_font_large">{{ comments.paginator.count }} Comments </h2>
+            	
+            	{% if max_comments %}
+              		<p class = "text-warning"> You have reached the maximum alloted comments for this Item </p>
+            	{% endif %}
+
+				{% if comments %}
+					{% for comment in comments %}
+						<div class = "row">
+						  	<div class="media">
+
+						  	<!-- Header -->
+						  	<div class= container>		    
+						  		<div class = "row">
+								    <div class="media-heading">
+								      
+								      <span class>
+								      	<b>{{ comment.created_on|date:"d-m-Y" }}</b> by: <b>{{ comment.user.username }}</b>
+								      </span>
+								    </div>
+							    </div> 
+
+							    <div class = "row">
+								    <div class="media-body">
+									    <p class = engirls_font_norm> {{ comment.body }} </p>
+
+									    <!-- Likes, Delete, Replies -->
+									    <div class="comment-meta">
+								        	<div class = "like_comment">
+									        	<input type = "hidden" name = "name_comment_like" value = "{{ comment.pk }}" readonly>
+									        </div>	
+
+									    	{% if user.is_authenticated %}
+
+									    		{% if comment.user == user %}
+													<div class = "delete_comment">
+														<input type="hidden" name="name_comment_delete" value="{{ comment.pk }}" readonly>	
+													</div>
+													<span><a id= "id_comment_delete_{{ comment.pk }}" href="#">delete</a></span>
+									        	{% endif %}
+												<span><a data-toggle="collapse" href="#id_collapsible_{{ comment.pk }}">reply</a></span>
+
+									        	<span><a id ="id_num_likes_{{ comment.pk }}" href = "#">like</a></span>
+									        	
+									        {% endif %}
+									        <span><a id ="id_num_likes_display_{{ comment.pk }}"> </a></span>
+									    </div>								
+
+								    </div>
+								</div>
+
+								<!-- Reply Form -->
+								{% if user.is_authenticated %}
+									<div id="id_collapsible_{{ comment.pk }}" class="collapse">
+										<div class = "row">
+											<div class = "media">
+												
+												<form action = "{% url 'comments:view_conversations' comment_pk=comment.pk %}" method="POST"> 
+												  {% csrf_token %}
+												  <input type="hidden" id="id_form_replies_{{ comment.pk }}" name = "name_form_replies_input" value="{{ comment.pk }}" readonly>
+												  {% for field in reply_form %}
+												    <div class = "row engirls_font_small">
+												      {{ field.label }}
+												    </div>
+												    <div class = "row">
+												      {{ field }}
+												  	{% endfor %}  
+												  <button id="post_reply_{{ comment.pk }}" type="submit" class="button-submit btn-outline-dark btn-sm my_reply_button">post</button>
+												    </div>
+												</form>
+												
+											</div>
+										</div>
+									</div>
+								{% endif %}
+
+								<!-- Load replies -->
+								<div class = "replies">
+									<input type="hidden" id="id_replies_{{ comment.pk }}" name = "name_replies_input" value="{{ comment.pk }}" readonly>
+									<!-- Load replies here -->
+									<div id = "id_replies_load_{{ comment.pk}}" name = "name_replies_load"></div>
+								</div>								
+
+							<!-- container -->
+							</div>
+						<!-- media -->
+						</div>
+					<!-- row -->
+					</div>   
+					{% endfor %}
+
+				{% else %}
+					<h1 class = "engirls_font_large" >Start a conversation? </h1>  	
+				{% endif %}
+
+
+	<!-- post container -->
+	</div>
+
+
+	<div class = row>
+		<div class= "col-sm-3">
+			<ul class="pagination">
+				{% if comments.paginator.num_pages > 1 %}
+					<div class = "col-xs-1 col-md-2 col-lg-3 engirls_font_norm">
+						#
+					</div>
+					{% for num in comments.paginator.page_range %}
+						<div class = "col-xs-1 col-md-2 col-lg-3 engirls_font_norm">
+						{% if comments.number == num %}
+							<!-- <button class="button-submit pagination_submit btn-outline-light btn-sm"> {{ num }}</button> -->
+							 <a class="text-primary my_pagination_submit" href="#" > {{ num }} </a> 
+						{% else %}
+							<!-- <button class="button-submit pagination_submit btn-outline-dark btn-sm"> {{ num }}</button> -->
+							<a class="text-secondary my_pagination_submit"  href = "#">{{ num }}</a> 
+						{% endif %}
+						</div>
+					{% endfor %}
+				{% endif %}
+			</ul>
+
+	</div>	
+
+<!-- end container -->
+</div>
+
+
+
+
+</body>
+
+
+<script type="text/javascript">
+
+/* pagination submit 
+   render_comment_list is located in comic_panel_view.html
+*/
+$(".my_pagination_submit").on('click', function(e) {
+    e.preventDefault();
+    page_num = $.trim($(this).text());
+    render_comment_list(page_num);
+
+      return false;
+  });
+
+/* Given comment_pk, load replies div */
+function load_replies(comment_pk, cur_set = 1){
+	var div_name = "#id_replies_load_" + comment_pk;
+	$(div_name).load('/comments/view_conversations/' + comment_pk + '/' + cur_set + '/');
+}
+//$('.collapse').toggle();
+/* On Document ready load all replies  */
+$(document).ready(function(){
+
+
+ // $(".collapse").collapse();
+	// Iterate over all replies classes
+	// Load replies for all comments
+  $( ".replies" ).each(function( i ) {
+    var reply_input = $(this).find("input[name='name_replies_input']");
+    var comment_pk = reply_input.val();
+    load_replies(comment_pk);
+
+  }).promise().done(function(data){
+
+  });
+
+  return false;
+});
+
+/* modify on click event for replies 
+   re-render all comments upon submit
+*/
+$(".my_reply_button").on('click', function(e) {
+    e.preventDefault();
+    var form = $(this).closest("form");
+    var comment_pk = form.find("input[name='name_form_replies_input']").val();
+     $.ajax({
+            url: '/comments/view_conversations/'+comment_pk +'/1/',
+            type: 'POST',
+            data: form.serialize()
+        }).done(function(data){
+        	// Set reply input to nothing
+        	$(".reply_input_body").val("");
+        	load_replies(comment_pk);
+        }).done(function(data){
+
+        });
+      return false;
+  });
+
+
+</script>
+
