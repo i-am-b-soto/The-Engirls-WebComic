@@ -1,3 +1,40 @@
+/*******************
+  Comments + Replies
+*********************/
+.post-comments {
+  padding-bottom: 9px;
+  margin: 5px 0 5px;
+}
+
+
+.post-comments .comment-meta {
+  border-bottom: 1px solid #FFF;
+  margin-bottom: 10px;
+}
+
+.post-comments .media {
+  border-left: 1px dotted #FFF;
+  border-bottom: 1px dotted #FFF;
+  margin-bottom: 10px;
+  padding-left: 15px;
+}
+
+.post-comments .media-heading {
+  color: grey;
+}
+
+.post-comments .comment-meta a {
+  color: grey;
+  font-weight: bolder;
+  margin-right: 5px;
+}
+
+.post-comments .reply {
+  color: #7A797A;
+}
+/********************************/
+
+
 
 .theengirls_background{
     background-color: #EEE6E4;
