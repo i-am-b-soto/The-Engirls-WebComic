@@ -13,16 +13,25 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 
 # Handles Posts to Blog comments and views
+@ensure_csrf_cookie
 def view_post_comments(request, post_pk=-1, page=1):
 	comments_paginated = []
 	reply_form = ReplyForm()
+	max_comments = False
 
 	try:
 		p = Post.objects.all().get(pk=post_pk)
 	except ObjectDoesNotExist as e:
 		raise Http404
 
+	if request.user.is_authenticated and Comment.objects.filter(user = request.user, Post = p).count() >= settings.MAX_COMMENTS_PER_USER_PER_PAGE:
+		max_comments = True
+
 	if request.method == 'POST' and request.user.is_authenticated:
+
+		if max_comments:
+			return HttpResponseForbidden("You've reached the maximum allotted comments for this item :/")	
+
 		comment_form = CommentForm(request.POST)
 		if comment_form.is_valid():
 			# Create Comment object but don't save to database yet
@@ -35,12 +44,13 @@ def view_post_comments(request, post_pk=-1, page=1):
 			new_comment.save()
 
 			return HttpResponse("Success")
+		
 		else:
 			if settings.DEBUG:
 				print("Comment form is not valid! HACKER!!! HACKKERRRR!")
 			return HttpResponseBadRequest("bad request processing comment")
 	
-	if request.method == 'POST' and not request.user.is_authenticated:
+	elif request.method == 'POST' and not request.user.is_authenticated:
 		return HttpResponseForbidden("Cannot post comment without login")
 		
 	comments = p.post_comments.all()
@@ -57,7 +67,11 @@ def view_post_comments(request, post_pk=-1, page=1):
 	except Exception as e:
 		print(e)
 
-	return render(request, "comments/comments.html", context = {'comments': comments_paginated, 'reply_form':reply_form } )	
+	#template =  "comments/max_comments_posted.html" if max_comments else "comments/comment_comments.html"
+	return render(request, "comments/comments.html", context = {
+		'comments': comments_paginated, 
+		'reply_form':reply_form, 
+		'max_comments':max_comments } )	
 
 
 """
@@ -163,11 +177,16 @@ def view_conversations(request, comment_pk=-1, cur_set = 1 ):
 	reply_form = None 
 	replies = []
 	retreived_all = True
+	max_comments = False
 
 	try:
 		comment = Comment.objects.all().get(pk=comment_pk)
 	except ObjectDoesNotExist as e:
 		raise Http404
+
+	# Check to see if user has exceeded maximum number of comments
+	if request.user.is_authenticated and Comment.objects.filter(user = request.user, Comment = comment).count() >= settings.MAX_COMMENTS_PER_USER_PER_PAGE:
+		max_comments = True
 
 	if request.method == 'GET':
 		num_to_retreive = cur_set * 3
@@ -181,12 +200,12 @@ def view_conversations(request, comment_pk=-1, cur_set = 1 ):
 
 		replies = comment.comment_comments.all()[:num_to_retreive]
 		
-
 		return render(request, "comments/replies.html", context = {
 			'replies':replies, 
 			'comment_pk': comment_pk, 
 			'cur_set': cur_set, 
-			'retreived_all' : retreived_all 
+			'retreived_all' : retreived_all ,
+			'max_comments':max_comments
 			})
 
 
@@ -194,6 +213,9 @@ def view_conversations(request, comment_pk=-1, cur_set = 1 ):
 
 		#if settings.DEBUG:
 		#	print("I made it to the post") 
+
+		if max_comments:
+			return HttpResponse("Reached maximum number of comments alloted for this item")			
 
 		reply_form = ReplyForm(request.POST)
 		if reply_form.is_valid():
@@ -219,24 +241,30 @@ def view_conversations(request, comment_pk=-1, cur_set = 1 ):
 
 
 
-
 # Handles comic panel comment view and posts to comments
 def view_comic_comments(request, comic_pk =-1, page=1):
 	comments_paginated = []
 	reply_form = ReplyForm()
-
+	max_comments = False
 
 	try:
 		cp = ComicPanel.objects.all().get(pk=comic_pk)
 	except ObjectDoesNotExist as e: 
 		raise Http404
 
+	# Check if user has exceeded max comments for this post
+	if request.user.is_authenticated and Comment.objects.filter(user = request.user, ComicPanel = cp).count() >= settings.MAX_COMMENTS_PER_USER_PER_PAGE:
+		max_comments = True
+
 	if request.method == 'POST' and request.user.is_authenticated:
+		
+		if max_comments:
+			return HttpResponse("Maximum number of comments reached for item")
 
 		comment_form = CommentForm(request.POST)
-		
 		if settings.DEBUG:
 			print("Comment Form Errors: " + str(comment_form.errors))
+
 		if comment_form.is_valid():
 
 			# Create Comment object but don't save to database yet
@@ -256,11 +284,10 @@ def view_comic_comments(request, comic_pk =-1, page=1):
 
 			return HttpResponseBadRequest("bad request processing comment")
 
-	if request.method == 'POST' and not request.user.is_authenticated:
+	elif request.method == 'POST' and not request.user.is_authenticated:
 		return HttpResponseForbidden("Cannot post comment without login")
 
 	comments = cp.comic_panel_comments.all()
-
 	paginator = Paginator(comments, settings.COMMENTS_PER_PAGE)
 
 	try:
@@ -272,4 +299,7 @@ def view_comic_comments(request, comic_pk =-1, page=1):
 	except Exception as e:
 		print(e)
 
-	return render(request, "comments/comments.html", context = {'comments': comments_paginated ,'reply_form':reply_form} );
+	return render(request, "comments/comments.html", context = {
+		'comments': comments_paginated ,
+		'reply_form':reply_form, 
+		'max_comments':max_comments} );

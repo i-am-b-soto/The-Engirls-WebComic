@@ -13,6 +13,9 @@ https://bootsnipp.com/snippets/ZkexO
 
 
 <!-- replies -->
+{% if max_comments %}
+		<p class = "text-warning"> You have reached the maximum alloted comments for this Item </p>
+{% endif %}
 {% if replies %}
 	{% for reply in replies %}
 		<div class = row>

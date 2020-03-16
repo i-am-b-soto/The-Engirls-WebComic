@@ -16,6 +16,10 @@ https://bootsnipp.com/snippets/ZkexO
 
 			    <!-- first comment -->
 				<h2 class = "engirls_font_large">{{ comments.paginator.count }} Comments </h2>
+            	
+            	{% if max_comments %}
+              		<p class = "text-warning"> You have reached the maximum alloted comments for this Item </p>
+            	{% endif %}
 
 				{% if comments %}
 					{% for comment in comments %}

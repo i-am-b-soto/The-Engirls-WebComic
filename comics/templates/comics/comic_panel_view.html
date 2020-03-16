@@ -101,6 +101,11 @@
                 
               <a href="/logout/?next={{request.path}}"><small>Logout</small></a>
             </p>
+
+            {% if max_comments %}
+              <p class = "text-warning"> You have reached the maximum alloted comments for this Item </p>
+            {% endif %}
+
             <br>
 
               <form action = "" method="POST"> 
