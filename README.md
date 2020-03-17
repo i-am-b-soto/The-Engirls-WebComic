@@ -1,4 +1,7 @@
 # The EnGirls Web Comic
+<a href="https://circleci.com/gh/badges/shields/tree/master">
+<img src="https://img.shields.io/circleci/project/github/badges/shields/master" alt="build status"></a>
+
 #### View this code at: https://theengirls.herokuapp.com/
 #### Current site: http://theengirls.com/
 
@@ -14,8 +17,9 @@ A web comic app developed for a friend to host his web comic series, The Engirls
 - AWS S3 (for static/media files)
 
 ##### List of upcoming features/pending bugs:
-- [] User name case incensitive admin login
-- [] Facebook Login (currently does not work)
+-[] Youtube Video embedding 
+-[] Youtube like button
+-[] Landing page
 
 
 
