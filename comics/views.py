@@ -96,9 +96,9 @@ def view_archive(request):
 	filter_list = {}
 	if request.GET.get('series', None):
 		filter_list['series__exact'] = request.GET.get('series')
-	if request.GET.get('chapter', None):
+	if request.GET.get('chapter', None) and request.GET.get('chapter') is not 'null':
 		filter_list['chapter__exact'] = request.GET.get('chapter')
-	if request.GET.get('page', None):
+	if request.GET.get('page', None) and request.GET.get('page') is not 'null':
 		filter_list['page__exact'] = request.GET.get('page')
 
 	comic_list = comic_list.filter(**filter_list)
