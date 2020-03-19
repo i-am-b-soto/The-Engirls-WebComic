@@ -11,9 +11,9 @@
 ╲┃┈┈┈┈╭━┳━━━━╯
 ╲┣━━━━━━┫﻿
   -->
-  <title>The Engirls</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0,width=device-width">
+<title>The Engirls</title>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0,width=device-width">
   
 
   <!-- To Load custom Static files. Use this: --> 
@@ -36,47 +36,24 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 
-
 </head>
 
-<!-- TODO: Move this to the main css -->
-<style>
-
-.post-comments {
-  padding-bottom: 9px;
-  margin: 5px 0 5px;
-}
-
-
-.post-comments .comment-meta {
-  border-bottom: 1px solid #FFF;
-  margin-bottom: 10px;
-}
-
-.post-comments .media {
-  border-left: 1px dotted #FFF;
-  border-bottom: 1px dotted #FFF;
-  margin-bottom: 10px;
-  padding-left: 15px;
-}
-
-.post-comments .media-heading {
-  color: grey;
-}
-
-.post-comments .comment-meta a {
-  color: grey;
-  font-weight: bolder;
-  margin-right: 5px;
-}
-
-.post-comments .reply {
-  color: #7A797A;
-} 
-
-</style> 
-
 <body class="theengirls_background">
+
+<!-- move this to style.css before deploy -->
+<style>
+      iframe {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        border: 0 none;
+        box-sizing: border-box;
+    }
+</style>
+
 <!-- FB Share -->
 <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v6.0"></script>
@@ -92,23 +69,21 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-3">
+      <ul class="navbar-nav mr-3" id ="id_the_engirls_nav">
+
         <li class="nav-item engirls_font_norm">
-          <a class="nav-link ml-3" href="{% url 'comics:comic_index' %}">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link ml-3" href="{% url 'comics:comic_index' %}"> Home <span class="sr-only">(current)</span></a>
         </li>
+
         <li class="nav-item engirls_font_norm">
-          <a class="nav-link ml-3" href="{% url 'comics:view_archive' %}">Archive </a>
+          <a class="nav-link ml-3" href="{% url 'comics:view_archive' %}"> Archive </a>
         </li>
+
         <li class="nav-item engirls_font_norm">
-          <a class="nav-link ml-3" href="{% url 'blog:view_posts' %}">Blog</a>
+          <a class="nav-link ml-3" href="{% url 'blog:view_posts' %}"> Blog </a>
         </li>
-        <li class="nav-item engirls_font_norm">
-          <a class="nav-link ml-3" href="{% url 'about' %}">About The Author</a>
-        </li>   
-        <li class="nav-item engirls_font_norm">
-          <a class="nav-link ml-3" href="{% url 'meet_the_engirls' %}">Meet The Engirls</a>
-        </li>           
-      </ul>
+      </ul> 
+
     </div>
   </nav>
 
@@ -126,13 +101,30 @@
   </div>
 </div>
 
+<script>
+// Load value of comments/num_likes/comment_pk into div
+function get_content(comment_pk){
+
+}
+
+$(document).ready(function(){
+  // Retreive dynamic content nav items
+  //alert("Doc ready! ")
+  $.getJSON( '/content/get_content/', function( data ) {
+     $.each( data, function( key, val ) {
+        $("#id_the_engirls_nav").append('<li class=\"nav-item engirls_font_norm\"> <a class=\"nav-link ml-3\" href=\"' + val +'\">' + key + '</a></li>');
+      
+     });
+  });
+
+
+
+});
+</script>
+
 </body>
 
 
 
 </html>
-
-
-
-
 

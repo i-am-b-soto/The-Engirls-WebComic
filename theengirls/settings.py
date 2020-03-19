@@ -47,7 +47,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 #### Custom values ####
 MAIN_SERIES_NAME = "main"
-COMMENTS_PER_PAGE = 5
+COMMENTS_PER_PAGE = 8
 MAX_COMMENTS_PER_USER_PER_PAGE = 25
 #########################
 
@@ -64,7 +64,7 @@ MAX_COMMENTS_PER_USER_PER_PAGE = 25
 #FB_VALUES 
 SOCIAL_AUTH_FACEBOOK_KEY = os.environ.get('SOCIAL_AUTH_FACEBOOK_KEY', None) # App ID
 SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get('SOCIAL_AUTH_FACEBOOK_SECRET', None)  # App Secret
-#SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_KEY', None)
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_SECRET', None)
@@ -126,6 +126,7 @@ INSTALLED_APPS = [
     'comics',
     'blog',
     'comments',
+    'content',
     'django_filters',
     'social_django',
     'django.contrib.admin',
