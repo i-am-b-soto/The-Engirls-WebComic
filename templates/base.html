@@ -11,9 +11,9 @@
 ╲┃┈┈┈┈╭━┳━━━━╯
 ╲┣━━━━━━┫﻿
   -->
-  <title>The Engirls</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0,width=device-width">
+<title>The Engirls</title>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0,width=device-width">
   
 
   <!-- To Load custom Static files. Use this: --> 
@@ -55,23 +55,21 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-3">
+      <ul class="navbar-nav mr-3" id ="id_the_engirls_nav">
+
         <li class="nav-item engirls_font_norm">
-          <a class="nav-link ml-3" href="{% url 'comics:comic_index' %}">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link ml-3" href="{% url 'comics:comic_index' %}"> Home <span class="sr-only">(current)</span></a>
         </li>
+
         <li class="nav-item engirls_font_norm">
-          <a class="nav-link ml-3" href="{% url 'comics:view_archive' %}">Archive </a>
+          <a class="nav-link ml-3" href="{% url 'comics:view_archive' %}"> Archive </a>
         </li>
+
         <li class="nav-item engirls_font_norm">
-          <a class="nav-link ml-3" href="{% url 'blog:view_posts' %}">Blog</a>
+          <a class="nav-link ml-3" href="{% url 'blog:view_posts' %}"> Blog </a>
         </li>
-        <li class="nav-item engirls_font_norm">
-          <a class="nav-link ml-3" href="{% url 'about' %}">About The Author</a>
-        </li>   
-        <li class="nav-item engirls_font_norm">
-          <a class="nav-link ml-3" href="{% url 'meet_the_engirls' %}">Meet The Engirls</a>
-        </li>           
-      </ul>
+      </ul> 
+
     </div>
   </nav>
 
@@ -89,13 +87,30 @@
   </div>
 </div>
 
+<script>
+// Load value of comments/num_likes/comment_pk into div
+function get_content(comment_pk){
+
+}
+
+$(document).ready(function(){
+  // Retreive dynamic content nav items
+  //alert("Doc ready! ")
+  $.getJSON( '/content/get_content/', function( data ) {
+     $.each( data, function( key, val ) {
+        $("#id_the_engirls_nav").append('<li class=\"nav-item engirls_font_norm\"> <a class=\"nav-link ml-3\" href=\"' + val +'\">' + key + '</a></li>');
+      
+     });
+  });
+
+
+
+});
+</script>
+
 </body>
 
 
 
 </html>
-
-
-
-
 

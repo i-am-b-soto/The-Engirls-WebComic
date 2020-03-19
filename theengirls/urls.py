@@ -23,6 +23,7 @@ urlpatterns = [
 	,path('comics/', include('comics.urls')) # Comic app URLS
 	,path('blog/',include('blog.urls'))
     ,path('comments/', include('comments.urls'))
+    ,path('content/',include('content.urls'))
 	,path('admin/', admin.site.urls) # Django Admin URLS
     ,path('accounts/', include('django.contrib.auth.urls')) # Django User Auth URLS
     ,path('oauth/', include('social_django.urls', namespace='social'))  # Social App URLS 
