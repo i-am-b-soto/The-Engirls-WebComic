@@ -7,6 +7,7 @@ import datetime
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils import timezone
 from django.conf import settings
+from .url_changer import change_url
 
 def getMainSeriesName():
 	return settings.MAIN_SERIES_NAME
@@ -16,10 +17,11 @@ class ComicPanel(models.Model):
 
 	title = models.CharField(max_length = 255)
 	image = models.ImageField(upload_to = 'comics/')
-	#TODO, Change this if approperiate
+	
+	youtube_url = models.URLField(max_length=250, null = True, blank = True, help_text = "Insert a Youtube URL if you want a video for a comic")
+	
 	description = RichTextUploadingField()
 	caption = models.CharField(max_length = 500)
-
 
 	series = models.CharField(max_length = 255, null = False, blank = False, default = getMainSeriesName, 
 		help_text="The default value is what the main Series Name is set to in Settings.py" )
@@ -156,6 +158,7 @@ class ComicPanel(models.Model):
 	def save(self):
 		#self.set_thumbnail_resize()
 		self.generateThumbnail()
+		self.youtube_url = change_url(self.youtube_url)
 		#self.image.open()
 		super(ComicPanel, self).save()
 

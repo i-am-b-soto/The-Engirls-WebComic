@@ -171,15 +171,12 @@ def view_panel(request, comic_pk =-1 ):
 	prev_comic_pk = -1
 	comment_form = CommentForm()
 
+	#print("comic_pk:{}".format(str(comic_pk)))
 	# Try to get comment with given pk. Return default values otherwise
 	try:
 		comic_panel = ComicPanel.objects.all().get(pk=comic_pk)
 	except ObjectDoesNotExist:
-		return render(request, 'comics/comic_panel_view.html', context = {'comic_panel': comic_panel, 'newest_comic_pk': newest_comic_pk, 'oldest_comic_pk': oldest_comic_pk,
-									'prev_comic_pk' : prev_comic_pk,
-									'next_comic_pk': next_comic_pk,
-									'comment_form': comment_form
-								  },) 
+		raise Http404
 
 	# Get chapters
 	chapter_dicts = ComicPanel.objects.filter(series = comic_panel.series).values('chapter').distinct()
@@ -189,7 +186,7 @@ def view_panel(request, comic_pk =-1 ):
 			chapters.append(item['chapter'])         
 
 	# If Chapters exists
-	if chapters:
+	if chapters and comic_panel.chapter is not None:
 
 		finalChapter = max(chapters)
 		newest_comic_pk = ComicPanel.objects.filter(
