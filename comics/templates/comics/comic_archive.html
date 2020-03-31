@@ -10,7 +10,8 @@
 	<div class = "page-header text-center pb-4 engirls_font_large"> Engirls Comic Archive</div>		
 	<p><h5><a class = "Filter_Button" href = "#" style = "color:inherit;"> Filter Comics</a></h5></p>	
 	
-	<div class = "row flex-xl-nowrap" id = "filter_form_hide_div">
+	<div class = "row flex-xl-nowrap" id = "">
+		
 		<div class="px-4 pb-4">
 			<div class = "">
 				
@@ -32,14 +33,17 @@
 
 
 		<!-- card deck -->
-		<div class = "card-deck col-sm-10">
+		<!-- Smaller viewpoerts, the cards must take up more col space. Or go out of bounds -->
+		<div class = "card-deck col-sm-12 col-md-12 col-xl-10">
 			{% for comic in comics %}									
-				<div class="col-sm-3" style = "min-width: 175px;"> 
-					<div class="card mb-sm-3 mb-md-4 mb-lg-5 shadow" style="max-width:200px; min-width:100px;" >
+				<div class="col-xl-3 col-md-4 col-sm-4" style = ""> 
+					<!-- min width... gets too small on medium sized screens --> 
+					<div class="card mb-sm-3 mb-md-4 mb-lg-5 shadow" style="" >
 							
 							{% if comic.thumbnail %}
 								<a href="{% url 'comics:view_panel' comic_pk=comic.pk %}">
-									<img class="card-img-top img-fluid" style ="max-height: 200px;" src="{{ comic.thumbnail.url }}" />
+									<!-- max height to limit comics that are too long -->
+									<img class="card-img-top img-fluid" style ="max-height: 400px;" src="{{ comic.thumbnail.url }}" />
 								</a>	
 								
 							{% else %}	
@@ -55,12 +59,14 @@
 
 			  			 <div class="card-footer text-muted">
 			  			 	 <div class = "container">
-			  			 	 	<div class = "row">
-			  			 	 		<div class = "col-sm-10">
-					  			 		<small> Series: <b>{{ comic.series }}</b> </small>
-					  			 		<small>Chapter: <b>{{ comic.chapter }}</b></small>
-					  			 		<small> Page: <b>{{ comic.page }}</b> </small>
-				  			 		</div>
+			  			 	 	<div class = "row">		
+						  			<small> Series: <b>{{ comic.series }} </b> </small> 	
+			  			 		</div>
+			  			 		<div class = "row">
+									<small>Chapter: <b>{{ comic.chapter }} </b> </small>
+			  			 		</div>
+			  			 		<div class = "row">
+									<small> Page: <b>{{ comic.page }} </b> </small>			  			 			
 			  			 		</div>
 			  			 	</div>
 			  			 	
@@ -87,12 +93,12 @@
 	<div class = "row py-3 ml-2">
 
 		<div class="pagination d-flex align-items-center">
-		  	<div class = "col-xs-2 col-md-3 col-lg-4 mr-2 engirls_font_norm">
+		  	<div class = "col-sm-4 mr-2 engirls_font_norm">
 		      	Pages: 
 		     </div>
 			{% if comics.paginator.num_pages > 1 %}
 				{% for num in comics.paginator.page_range %}
-					<div class = "col-xs-1 col-md-2 col-lg-3 engirls_font_norm">
+					<div class = "col-sm-3 engirls_font_norm">
 						<!-- Current page number -->
 						{% if comics.number == num %}
 							<!-- If there is existing query parameters -->
