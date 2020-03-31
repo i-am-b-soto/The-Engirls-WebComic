@@ -8,11 +8,12 @@
 
 <div class = "container-fluid">	
 	<div class = "page-header text-center pb-4 engirls_font_large"> Engirls Comic Archive</div>		
-	<div class = "row flex-xl-nowrap">
-
+	<p><h5><a class = "Filter_Button" href = "#" style = "color:inherit;"> Filter Comics</a></h5></p>	
+	
+	<div class = "row flex-xl-nowrap" id = "filter_form_hide_div">
 		<div class="px-4 pb-4">
 			<div class = "">
-				<p><h5>Filter Comics</h5></p>
+				
 				<form id= "engirls_filter_form" class="form theengirls_onchange" method="GET">
 					 	
 					{% csrf_token %}
@@ -50,7 +51,20 @@
 								
 							{% endif %}
 							
-			  			<div class = "card-header engirls_font_norm"><h5> {{ comic.title }}</h5> </div>					
+			  			<div class = "card-header engirls_font_norm"><h5> {{ comic.title }}</h5> </div>
+
+			  			 <div class="card-footer text-muted">
+			  			 	 <div class = "container">
+			  			 	 	<div class = "row">
+			  			 	 		<div class = "col-sm-10">
+					  			 		<small> Series: <b>{{ comic.series }}</b> </small>
+					  			 		<small>Chapter: <b>{{ comic.chapter }}</b></small>
+					  			 		<small> Page: <b>{{ comic.page }}</b> </small>
+				  			 		</div>
+			  			 		</div>
+			  			 	</div>
+			  			 	
+			  			 </div>					
 					</div> 
 				</div>
 			{% endfor %}
