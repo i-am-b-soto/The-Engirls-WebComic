@@ -1,3 +1,18 @@
+
+/*****
+iframe
+*****/
+iframe {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0 none;
+  box-sizing: border-box;
+}
+
 /*******************
   Comments + Replies
 *********************/
@@ -71,9 +86,9 @@
 
 
 
-/*
+/****************
   CARD ANIMATION
-*/
+*****************/
 
 .jumbotron{
   cursor:pointer;
@@ -97,9 +112,9 @@
 
 
 
-/*
+/************
 FOOTER
-*/
+*************/
 
 footer {
   background: #EEE6E4;
