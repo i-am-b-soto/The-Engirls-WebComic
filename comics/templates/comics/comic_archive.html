@@ -2,17 +2,19 @@
 {% block main_content %}
 
 {% load static %}
-<!-- Bootstrap core CSS -->
 <link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
+
+<style>
+
+</style>
 
 
 <div class = "container-fluid">	
-	<div class = "page-header text-center pb-4 engirls_font_large"> Engirls Comic Archive</div>		
-	<p><h5><a class = "Filter_Button" href = "#" style = "color:inherit;"> Filter Comics</a></h5></p>	
-	
-	<div class = "row flex-xl-nowrap" id = "">
+	<div class = "page-header text-center pb-2 engirls_font_large" style = ""> Engirls Comic Archive</div>		
 		
-		<div class="px-4 pb-4">
+	<!-- <hr> -->
+	<div class = "row flex-xl-nowrap" id = "">
+		<div id = "hide_filter_form" class="pl-2 pb-4" style = "">
 			<div class = "">
 				
 				<form id= "engirls_filter_form" class="form theengirls_onchange" method="GET">
@@ -23,7 +25,8 @@
 						<div class = "engirls_font_norm col-sm-2 pb-1" id="field_name_{{ field.name }}">
 						 {{ field.name }}
 						 {{ field }}
-						</div>				
+						</div>
+						<hr>
 					{% endfor %}	
 					<button id = "theengirls_submit_filter" type="submit" style = "display:none;">Filter</button>
 						
@@ -34,11 +37,11 @@
 
 		<!-- card deck -->
 		<!-- Smaller viewpoerts, the cards must take up more col space. Or go out of bounds -->
-		<div class = "card-deck col-sm-12 col-md-12 col-xl-10">
+		<div class = "card-deck col-sm-12 col-md-12 col-lg-10">
 			{% for comic in comics %}									
-				<div class="col-xl-3 col-md-4 col-sm-4" style = ""> 
+				<div class="col-lg-3 col-md-4 col-sm-5" style = ""> 
 					<!-- min width... gets too small on medium sized screens --> 
-					<div class="card mb-sm-3 mb-md-4 mb-lg-5 shadow" style="" >
+					<div class="card mb-sm-5 shadow" style="" >
 							
 							{% if comic.thumbnail %}
 								<a href="{% url 'comics:view_panel' comic_pk=comic.pk %}">
@@ -172,7 +175,10 @@ function get_pages(){
 // Chapter and page values must be loaded via ajax
 $(document).ready(function(){
 	// To style all selects
-
+	$(".Filter_Button").on("click", function(e){
+		e.preventDefault();
+		$("#hide_filter_form").toggle();
+	});
 	$("#id_chapter").empty();
 	$('#id_page').empty();
 	//$('select').selectpicker();
