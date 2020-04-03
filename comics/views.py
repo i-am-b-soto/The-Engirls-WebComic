@@ -12,7 +12,11 @@ from django.db.utils import OperationalError
 from dal import autocomplete
 
 
-# View for most recent comic
+"""
+View for most recent comic
+
+Returns views.ViewPanel(comic_pk = most recent comic_pk )
+"""
 def index(request):
 	if request.method == 'GET':
 
@@ -86,10 +90,13 @@ def auto_complete_page(request):
 		data = {page[0]: {'id':page[0], 'name':page[1]} for page in page_list}
 
 	return JsonResponse(data)
-		
+	
+"""
+View Archive
 
+GET requests only
 
-# View Archive
+"""
 def view_archive(request):
 
 	comic_list = ComicPanel.objects.order_by('series', 'chapter', 'page')
@@ -119,7 +126,12 @@ def view_archive(request):
 
 	return render(request, 'comics/comic_archive.html', context = {'filter': comic_filter, 'comics': comics})	
 
-# View for specific comic
+"""
+View for specific comic
+
+GET Requests only
+
+"""
 def view_panel(request, comic_pk =-1 ):
 
 	comic_panel = None

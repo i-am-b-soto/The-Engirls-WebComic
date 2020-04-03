@@ -51,6 +51,7 @@ class ComicPanel(models.Model):
 		return self.title
 
 	"""
+		DEPRECATED
 		Divides image size by division factor, keeping aspect ratios
 
 		returns tuple (width, height)
@@ -106,8 +107,16 @@ class ComicPanel(models.Model):
 		except IOError as e:
 			print("Error opening in memory file: " + str(e))
 			return
-		
+
+		# Crop out 1/4 the larger dimension of the image
+		if image.height >= image.width:
+			image = image.crop( tuple( (0, 0, int(round(image.width)), int(round(image.height-image.height/4)))) )
+		elif image.width > image.height:
+			image = image.crop( tuple( (0, 0 , int(round(image.width - image.width/4)), int(round(image.height)))) )
+
+		# Send the cropped image to be resized to the sandard thumbnail size
 		image = cropped_thumbnail(image)
+
 		#image.thumbnail(THUMBNAIL_SIZE, Image.ANTIALIAS)
 
 		# Save the thumbnail
