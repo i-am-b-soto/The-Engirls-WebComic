@@ -44,6 +44,7 @@ def index(request):
 			else:
 				comic_to_display = ComicPanel.objects.all().order_by("-uploadTime").first()
 
+		# If, for some reason, there is no main series
 		else:
 			comic_to_display = ComicPanel.objects.all().order_by("-uploadTime").first()
 
