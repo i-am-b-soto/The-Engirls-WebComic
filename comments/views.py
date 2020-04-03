@@ -56,7 +56,7 @@ def view_post_comments(request, post_pk=-1, page=1):
 	comments = p.post_comments.all()
 
 	# Show 5 per page
-	paginator = Paginator(comments, settings.COMMENTS_PER_PAGE)
+	paginator = Paginator(comments, settings.COMMENTS_PAGINATOR_COUNT)
 
 	try:
 		comments_paginated = paginator.page(page)
@@ -288,7 +288,7 @@ def view_comic_comments(request, comic_pk =-1, page=1):
 		return HttpResponseForbidden("Cannot post comment without login")
 
 	comments = cp.comic_panel_comments.all()
-	paginator = Paginator(comments, settings.COMMENTS_PER_PAGE)
+	paginator = Paginator(comments, settings.COMMENTS_PAGINATOR_COUNT)
 
 	try:
 		comments_paginated = paginator.page(page)

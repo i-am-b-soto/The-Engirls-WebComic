@@ -8,6 +8,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils import timezone
 from django.conf import settings
 from .url_changer import change_url
+from .CropImage import cropped_thumbnail
 
 def getMainSeriesName():
 	return settings.MAIN_SERIES_NAME
@@ -49,7 +50,12 @@ class ComicPanel(models.Model):
 	def __str__(self):
 		return self.title
 
+	"""
+		DEPRECATED
+		Divides image size by division factor, keeping aspect ratios
 
+		returns tuple (width, height)
+	"""
 	def getThumnbnailSize(self, division_fact):
 		# length > width? Should be
 		
@@ -69,15 +75,14 @@ class ComicPanel(models.Model):
 
 			return (newwidth, self.image.height/division_fact)
 
+	"""
+		Generates Thumbnail. Saves in Media location /thumbnails
+	"""
 	def generateThumbnail(self):
-		'''Generate a center-zoom square thumbnail of original image.'''
-		# Original code: https://gist.github.com/valberg/2429288
 
 	  # Set our max thumbnail size in a tuple (max width, max height)
-		THUMBNAIL_SIZE = self.getThumnbnailSize(division_fact = 3)
+		#THUMBNAIL_SIZE = self.getThumnbnailSize(division_fact = 3)
 			
-		#DJANGO_TYPE = self.image.file.content_type
-
 		if self.image.name.endswith(".jpg"):
 			PIL_TYPE = 'jpeg'
 			FILE_EXTENSION = 'jpg'
@@ -103,16 +108,19 @@ class ComicPanel(models.Model):
 			print("Error opening in memory file: " + str(e))
 			return
 
-		# We use our PIL Image object to create the thumbnail, which already
-		# has a thumbnail() convenience method that contrains proportions.
-		# Additionally, we use Image.ANTIALIAS to make the image look better.
-		# Without antialiasing the image pattern artifacts may result.
-		
-		image.thumbnail(THUMBNAIL_SIZE, Image.ANTIALIAS)
+		# Crop out 1/4 the larger dimension of the image
+		if image.height >= image.width:
+			image = image.crop( tuple( (0, 0, int(round(image.width)), int(round(image.height-image.height/4)))) )
+		elif image.width > image.height:
+			image = image.crop( tuple( (0, 0 , int(round(image.width - image.width/4)), int(round(image.height)))) )
+
+		# Send the cropped image to be resized to the sandard thumbnail size
+		image = cropped_thumbnail(image)
+
+		#image.thumbnail(THUMBNAIL_SIZE, Image.ANTIALIAS)
 
 		# Save the thumbnail
 		temp_handle = BytesIO()
-		
 		try:
 			image.save(temp_handle, PIL_TYPE)
 		except KeyError as e:

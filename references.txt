@@ -1,0 +1,23 @@
+
+References and useful links: 
+
+For resizing an image using PIL:
+-https://gist.github.com/valberg/2429288
+
+For Cropped thumbnails to be a given size:
+-https://gist.github.com/olooney/1601455
+
+For Google Developers: 
+-https://console.developers.google.com/
+
+Instructions on setting up Google Authentication: 
+-https://medium.com/trabe/oauth-authentication-in-django-with-social-auth-c67a002479c1
+
+Facebook Developers: 
+-https://developers.facebook.com/
+
+Logout redirect information:
+-https://rcpaul.wordpress.com/2011/08/28/logoutredirect/
+
+Very useful SO reference on CSS Keyframes
+-https://stackoverflow.com/questions/6805482/css3-transition-animation-on-load

@@ -7,19 +7,6 @@ View App on: https://dashboard.heroku.com/apps/theengirls
 
 Django settings for theengirls project.
 
-
-
-Please reconfigure Social auth settings once deployed
-
-for Google: https://console.developers.google.com/
-Instructions on setting up Google: https://medium.com/trabe/oauth-authentication-in-django-with-social-auth-c67a002479c1
-for Facebook: https://developers.facebook.com/
-
-Logout redirect information:
-https://rcpaul.wordpress.com/2011/08/28/logoutredirect/
-
-
-
 """
 
 import os
@@ -29,6 +16,7 @@ import dj_database_url
 #from set_environ import set_environ 
 #set_environ()
 ###################################################
+
 
 def set_default_db(DATABASES):
     if os.environ.get('on_heroku') or os.environ.get('on_heroku') == 'True':
@@ -45,16 +33,13 @@ def set_CSRF_COOKIE_SECURE():
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-#### Custom values ####
-MAIN_SERIES_NAME = "main"
-COMMENTS_PER_PAGE = 8
+#### Custom values #########################
+MAIN_SERIES_NAME = "main" # The name the website will look for to determine which comics are the main series
+COMMENTS_PAGINATOR_COUNT = 8 # Number of comments per page
 MAX_COMMENTS_PER_USER_PER_PAGE = 25
-#########################
-
-
-
-
-
+THUMBNAIL_SIZE = (330, 420)
+COMIC_PAGINATOR_COUNT = 8
+############################################
 
 
 ############################################

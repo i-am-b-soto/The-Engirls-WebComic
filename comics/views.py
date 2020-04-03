@@ -12,7 +12,11 @@ from django.db.utils import OperationalError
 from dal import autocomplete
 
 
-# View for most recent comic
+"""
+View for most recent comic
+
+Returns views.ViewPanel(comic_pk = most recent comic_pk )
+"""
 def index(request):
 	if request.method == 'GET':
 
@@ -40,6 +44,7 @@ def index(request):
 			else:
 				comic_to_display = ComicPanel.objects.all().order_by("-uploadTime").first()
 
+		# If, for some reason, there is no main series
 		else:
 			comic_to_display = ComicPanel.objects.all().order_by("-uploadTime").first()
 
@@ -86,25 +91,31 @@ def auto_complete_page(request):
 		data = {page[0]: {'id':page[0], 'name':page[1]} for page in page_list}
 
 	return JsonResponse(data)
-		
+	
+"""
+View Archive
 
+GET requests only
 
-# View Archive
+"""
 def view_archive(request):
 
 	comic_list = ComicPanel.objects.order_by('series', 'chapter', 'page')
 	filter_list = {}
+
 	if request.GET.get('series', None):
 		filter_list['series__exact'] = request.GET.get('series')
+
 	if request.GET.get('chapter', None) and request.GET.get('chapter') is not 'null':
 		filter_list['chapter__exact'] = request.GET.get('chapter')
+
 	if request.GET.get('page', None) and request.GET.get('page') is not 'null':
 		filter_list['page__exact'] = request.GET.get('page')
 
 	comic_list = comic_list.filter(**filter_list)
 
 	comic_filter = ComicPanelFilter(request.GET, queryset=comic_list)
-	paginator = Paginator(comic_filter.qs, 8)
+	paginator = Paginator(comic_filter.qs, settings.COMIC_PAGINATOR_COUNT)
 
 	page = request.GET.get('web_page', 1)
 	try:
@@ -117,51 +128,11 @@ def view_archive(request):
 	return render(request, 'comics/comic_archive.html', context = {'filter': comic_filter, 'comics': comics})	
 
 """
-Deprecated: 
+View for specific comic
 
-# Load our comments
-def view_comments(request, comic_pk =-1, page=1):
-	comments_paginated = []
+GET Requests only
 
-	try:
-		cp = ComicPanel.objects.all().get(pk=comic_pk)
-	except ObjectDoesNotExist as e: 
-		raise Http404
-
-	if request.method == 'POST' and request.user.is_authenticated:
-		comment_form = CommentForm(request.POST)
-		if comment_form.is_valid():
-			# Create Comment object but don't save to database yet
-			new_comment = comment_form.save(commit=False)
-			# Assign the current post to the comment
-			new_comment.ComicPanel = cp
-			# Save the comment to the database
-			new_comment.name = request.user.username
-
-			new_comment.save()
-
-		else:
-			if settings.DEBUG:
-				print("Comment form is not valid! HACKER!!! HACKKERRRR!")
-
-	comments = cp.comments.all().order_by("-created_on")
-
-	# Show 5 per page
-	paginator = Paginator(comments, 10)
-
-	try:
-		comments_paginated = paginator.page(page)
-	except PageNotAnInteger:
-		comments_paginated = paginator.page(1)
-	except EmptyPage:
-		comments_paginated = paginator.page(paginator.num_pages)
-	except Exception as e:
-		print(e)
-
-	return render(request, "comments.html", context = {'comments': comments_paginated, 'comic_pk': comic_pk } );
 """
-
-# View for specific comic
 def view_panel(request, comic_pk =-1 ):
 
 	comic_panel = None
