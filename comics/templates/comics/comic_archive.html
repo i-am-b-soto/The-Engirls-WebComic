@@ -6,15 +6,16 @@
 
 <style>
 
+
 </style>
 
 <div class = "container-fluid">	
-	<div class = "page-header text-center pb-2 engirls_font_large" style = ""> Engirls Comic Archive</div>		
+	<div class = "page-header text-center pb-2 engirls_font_large title_animation" style = ""> Engirls Comic Archive</div>		
 		
 	<!-- <hr> -->
 	<div class = "row flex-xl-nowrap" id = "">
-		<div id = "hide_filter_form" class="pl-2 pb-4" style = "">
-			<p><h3>Filter Comics</h3></p>
+		<div id = "" class="pl-2 pb-4 slide_left" style = "">
+			<p><b>Filter Comics</b></p>
 			<div class = "">
 				
 				<form id= "engirls_filter_form" class="form theengirls_onchange" method="GET">
@@ -78,8 +79,8 @@
 				</div>
 			{% endfor %}
 		</div>
-
 	</div>
+
 	<!-- if no comics -->
 	{% if not comics %}
 
