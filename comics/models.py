@@ -8,6 +8,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils import timezone
 from django.conf import settings
 from .url_changer import change_url
+from .CropImage import cropped_thumbnail
 
 def getMainSeriesName():
 	return settings.MAIN_SERIES_NAME
@@ -49,7 +50,11 @@ class ComicPanel(models.Model):
 	def __str__(self):
 		return self.title
 
+	"""
+		Divides image size by division factor, keeping aspect ratios
 
+		returns tuple (width, height)
+	"""
 	def getThumnbnailSize(self, division_fact):
 		# length > width? Should be
 		
@@ -69,15 +74,14 @@ class ComicPanel(models.Model):
 
 			return (newwidth, self.image.height/division_fact)
 
+	"""
+		Generates Thumbnail. Saves in Media location /thumbnails
+	"""
 	def generateThumbnail(self):
-		'''Generate a center-zoom square thumbnail of original image.'''
-		# Original code: https://gist.github.com/valberg/2429288
 
 	  # Set our max thumbnail size in a tuple (max width, max height)
-		THUMBNAIL_SIZE = self.getThumnbnailSize(division_fact = 3)
+		#THUMBNAIL_SIZE = self.getThumnbnailSize(division_fact = 3)
 			
-		#DJANGO_TYPE = self.image.file.content_type
-
 		if self.image.name.endswith(".jpg"):
 			PIL_TYPE = 'jpeg'
 			FILE_EXTENSION = 'jpg'
@@ -102,17 +106,12 @@ class ComicPanel(models.Model):
 		except IOError as e:
 			print("Error opening in memory file: " + str(e))
 			return
-
-		# We use our PIL Image object to create the thumbnail, which already
-		# has a thumbnail() convenience method that contrains proportions.
-		# Additionally, we use Image.ANTIALIAS to make the image look better.
-		# Without antialiasing the image pattern artifacts may result.
 		
-		image.thumbnail(THUMBNAIL_SIZE, Image.ANTIALIAS)
+		image = cropped_thumbnail(image)
+		#image.thumbnail(THUMBNAIL_SIZE, Image.ANTIALIAS)
 
 		# Save the thumbnail
 		temp_handle = BytesIO()
-		
 		try:
 			image.save(temp_handle, PIL_TYPE)
 		except KeyError as e:
