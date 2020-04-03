@@ -18,3 +18,6 @@ Facebook Developers:
 
 Logout redirect information:
 -https://rcpaul.wordpress.com/2011/08/28/logoutredirect/
+
+Very useful SO reference on CSS Keyframes
+-https://stackoverflow.com/questions/6805482/css3-transition-animation-on-load
