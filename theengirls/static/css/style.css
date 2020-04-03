@@ -1,18 +1,91 @@
 /******************
-  Animation
+  Animations
 *******************/
+@keyframes title {
+  0% {
+    transform: translateX(-200%);
+  }
+  25%{
+    transform: translateX(-25%);
+  }
+  30%{
+    transform:translateX(0%);
+  }
+  35%{
+    transform:translateX(6%);
+  }
+  40%{
+    transform:translateX(10%);
+  }
+  50%{
+    transform: translateX(13%);
+  }
+  75%{
+    transform: translateX(14%);
+  }
+  80%{
+    transform: translateX(-2%);
+  }
+  85%{
+    transform:translateX(-3%);
+  }
+  90%{
+    transform:translateX(-4%);
+  }
+  95%{
+    transform:translateX(1%);
+  }
+  97%{
+    transform:translateX(-1%);
+  }
+  100%{
+    transform:translateX(0);
+  }
+}
+
 @keyframes slideInFromLeft {
   0% {
     transform: translateX(-100%);
+  }
+
+  50%{
+    transform: translateX(-25%);
+  }
+  90%{
+    transform: translateX(-5%);
   }
   100% {
     transform: translateX(0);
   }
 }
 
-#hide_filter_form{
-  animation: 2s ease-out 0s 1 slideInFromLeft;
+@keyframes slideInFromTop {
+  0%{
+    transform: translateY(-100%);
+  }
+  50%{
+    transform:translateY(-25%);
+  }
+  90%{
+    transform:translateY(-5%);
+  }
+  100% {
+    transform:translateY(0);
+  }
 }
+
+.title_animation{
+   animation: 2s ease-out 0s 1 title;
+}
+
+.slide_left {
+  animation: 1s ease-out 0s 1 slideInFromLeft;
+}
+
+.slide_top {
+  animation: 1s ease-out 0s 1 slideInFromTop;
+}
+
 
 
 /*******************
