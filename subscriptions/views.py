@@ -8,6 +8,9 @@ from django.core.mail import get_connection, EmailMultiAlternatives
 from content.models import Content
 import random
 
+def custom_email(request):
+	pass
+
 def newContent(request):
 	pass
 
@@ -15,6 +18,7 @@ def unsubscribe(request):
 	return HttpResponse("Unsubscribed")
 
 def subscribe(request):
+	
 	return HttpResponse("Subscribe")
 
 
