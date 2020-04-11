@@ -3,8 +3,6 @@
 View App on: https://dashboard.heroku.com/apps/theengirls
 
 
-
-
 Django settings for theengirls project.
 
 """
@@ -15,8 +13,8 @@ import dj_database_url
 ########### Remove this before deploying to Heroku ###########
 from set_environ import set_environ 
 set_environ()
-#############################################################
 
+########## Heroku Specific Settings ##########################
 def set_default_db(DATABASES):
     if os.environ.get('on_heroku') or os.environ.get('on_heroku') == 'True':
         prod_db  =  dj_database_url.config(conn_max_age=500)
@@ -28,17 +26,46 @@ def set_CSRF_COOKIE_SECURE():
     else:
         return False
 
-
+######## Base Directory ######################################
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-#### Custom values #########################
+###########################################
+# Custom Values
+###########################################
+
 MAIN_SERIES_NAME = "main" # The name the website will look for to determine which comics are the main series
+
+CONTENT_KEY_NAMES = {
+    'LANDING_PAGE_CONTENT_NAME' : 'LANDING_PAGE_CONTENT' # The name of the 'content' the website will use to display the landing page
+    
+    ,'ERROR_404_CONTENT_NAME' : '' # The name of the 'content' the website will use to display 404 errors 
+    ,'ERROR_400_CONTENT_NAME' : '' # The Name of the 'content' the website will use to display 400 errors
+    ,'ERROR_500_CONTENT_NAME' : '' # The Name of the 'content' the website will use to display 500 errors
+
+    ,'EMAIL_THANKS_CONTENT_NAME' : 'EMAIL_THANKS_CONTENT' # The name of the 'content' the website will use when distributing thank you emails
+    ,'EMAIL_NEWS_CONTENT_NAME' : 'EMAIL_NEWS_CONTENT' # The name of the 'content' the website will use when distributing news emails
+    ,'EMAIL_UNSUBSCRIBE_NAME' : 'EMAIL_UNSUBSCRIBE' # The name of the 'content' the website will use when distributing unsubscrine emails
+}
+
+
 COMMENTS_PAGINATOR_COUNT = 8 # Number of comments per page
-MAX_COMMENTS_PER_USER_PER_PAGE = 25
-THUMBNAIL_SIZE = (330, 420)
-COMIC_PAGINATOR_COUNT = 8
-############################################
+MAX_COMMENTS_PER_USER_PER_PAGE = 25 # Maximum number of comments a user can make per page
+THUMBNAIL_SIZE = (330, 420) # Thumbnail size ** CAUTION WHEN CHANGING THIS ***
+COMIC_PAGINATOR_COUNT = 8 # Number of comics to view per archive page
+BLOG_POST_PAGINATION_COUNT =8 # Number of blog posts per page
+
+
+
+###########################################
+# Gmail 
+###########################################
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'theintrocode@gmail.com'
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
 ############################################
@@ -111,12 +138,12 @@ INSTALLED_APPS = [
     'blog',
     'comments',
     'content',
+    'subscriptions',
     'django_filters',
     'social_django',
     'django.contrib.admin',
     'django.contrib.auth', 
     'storages',
-
 ]
 
 ############################################
@@ -186,6 +213,10 @@ DATABASES = {
 }
 
 set_default_db(DATABASES)
+
+############################################
+# CSRF cookie secure
+#############################################
 CSRF_COOKIE_SECURE = set_CSRF_COOKIE_SECURE()
 
 
@@ -212,8 +243,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ############################################
 # Internationalization
 #############################################
-
-# https://docs.djangoproject.com/en/3.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -244,7 +273,8 @@ CKEDITOR_CONFIGS = {
  
 
 ############################################
-#STATIC CONFIGURATION
+# STATIC CONFIGURATION - Must be changed when 
+# deploying to different servers
 #############################################
 
 
@@ -258,11 +288,7 @@ STATICFILES_DIRS = (
 )
 
 
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-#EDIA_URL = '/media/'
-
 STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
 
 DEFAULT_FILE_STORAGE = 'theengirls.storage_backends.MediaStorage' 

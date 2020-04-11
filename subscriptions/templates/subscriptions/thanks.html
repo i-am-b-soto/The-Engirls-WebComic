@@ -1,0 +1,21 @@
+{% extends "subscriptions/email_base.html" %}
+
+{% block custom_content %}
+    {{ content.body | safe }}
+{% endblock %}
+
+
+{% block main_content %}
+<tr>
+	<td data-color="title" data-size="size title" data-min="25" data-max="45" data-link-color="link title color" data-link-style="text-decoration:none; color:#292c34;" class="title" align="center" style="font:35px/38px Arial, Helvetica, sans-serif; color:#292c34; padding:0 0 24px;">
+		Thanks for Subscribing to the Engirls!
+	</td>
+</tr>
+
+<tr>
+	<td data-color="text" data-size="size text" data-min="10" data-max="26" data-link-color="link text color" data-link-style="font-weight:bold; text-decoration:underline; color:#40aceb;" align="center" style="font:bold 16px/25px Arial, Helvetica, sans-serif; color:#888; padding:0 0 23px;">
+		Thanks for Subscribing to Theengirls.com We really appreciate it. We'll notify you of new content that comes out, and any news along the way.
+	</td>
+</tr>
+
+{% endblock %}

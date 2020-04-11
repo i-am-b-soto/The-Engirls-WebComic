@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block main_content %}
+<style>
+</style>
+	<div class = "container container-fluid">
+		<div class = "page-header text-center engirls_font_large"> <h1>Welcome to The Engirls<h1></div>
+		<div class = "row">
+			<div class = "col-sm-12">
+				{{ content.body | safe}}
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}
