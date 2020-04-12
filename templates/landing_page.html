@@ -1,15 +1,26 @@
 {% extends "base.html" %}
 {% block main_content %}
-<style>
-</style>
-	<div class = "container container-fluid">
+
+
+	<div class = "container-fluid">
 		<div class = "page-header text-center engirls_font_large"> <h1>Welcome to The Engirls<h1></div>
-		<div class = "row">
+		<div class = "row text-center" style = "width:100%;">
 			<div class = "col-sm-12">
 				{{ content.body | safe}}
 			</div>
+			<div class = "col-sm-1">
+				<img src="https://img.icons8.com/doodle/96/000000/follow--v1.png"/>
+			</div>
 		</div>
 	</div>
+
+<script>
+$(document).ready(function(){
+  //Make sure images don't become oversized... 
+  $("img").addClass("img-fluid");
+
+});
+</script>
 {% endblock %}
 {% block footer %}
     {% include "footer.html" %}
