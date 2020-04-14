@@ -39,9 +39,9 @@ MAIN_SERIES_NAME = "main" # The name the website will look for to determine whic
 CONTENT_KEY_NAMES = {
     'LANDING_PAGE_CONTENT_NAME' : 'LANDING_PAGE_CONTENT' # The name of the 'content' the website will use to display the landing page
     
-    ,'ERROR_404_CONTENT_NAME' : '' # The name of the 'content' the website will use to display 404 errors 
-    ,'ERROR_400_CONTENT_NAME' : '' # The Name of the 'content' the website will use to display 400 errors
-    ,'ERROR_500_CONTENT_NAME' : '' # The Name of the 'content' the website will use to display 500 errors
+    ,'ERROR_404_CONTENT_NAME' : 'ERROR_404_CONTENT' # The name of the 'content' the website will use to display 404 errors 
+    ,'ERROR_400_CONTENT_NAME' : 'ERROR_400_CONTENT' # The Name of the 'content' the website will use to display 400 errors
+    ,'ERROR_500_CONTENT_NAME' : 'ERROR_500_CONTENT' # The Name of the 'content' the website will use to display 500 errors
 
     ,'EMAIL_THANKS_CONTENT_NAME' : 'EMAIL_THANKS_CONTENT' # The name of the 'content' the website will use when distributing thank you emails
     ,'EMAIL_NEWS_CONTENT_NAME' : 'EMAIL_NEWS_CONTENT' # The name of the 'content' the website will use when distributing news emails
@@ -53,7 +53,7 @@ COMMENTS_PAGINATOR_COUNT = 8 # Number of comments per page
 MAX_COMMENTS_PER_USER_PER_PAGE = 25 # Maximum number of comments a user can make per page
 THUMBNAIL_SIZE = (330, 420) # Thumbnail size ** CAUTION WHEN CHANGING THIS ***
 COMIC_PAGINATOR_COUNT = 8 # Number of comics to view per archive page
-BLOG_POST_PAGINATION_COUNT =8 # Number of blog posts per page
+BLOG_POST_PAGINATION_COUNT = 5 # Number of blog posts per page
 
 
 
@@ -117,7 +117,7 @@ WSGI_APPLICATION = 'theengirls.wsgi.application'
 
 DEBUG = True
 TEMPLATE_DEBUG = True
-ALLOWED_HOSTS = ['theengirls.herokuapp.com', '192.168.1.129']
+ALLOWED_HOSTS = ['theengirls.herokuapp.com', '192.168.1.6']
 ALLOWED_HOSTS.append('localhost')
 ALLOWED_HOSTS.append('localhost:8000')
 

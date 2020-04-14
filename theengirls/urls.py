@@ -6,8 +6,10 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from .views import error_404, privacy_policy, privacy_policy_source,logout_page, about_page, about_source, meet_the_engirls, meet_the_engirls_source 
-from content import views as content_views
+from . import views
+from content import views as content_views, one_time_load
+
+one_time_load.load_default_content()
 
 urlpatterns = [
 	path('', content_views.landing_page, name = "landing_page") # Home URL
@@ -20,14 +22,14 @@ urlpatterns = [
     ,path('accounts/', include('django.contrib.auth.urls')) # Django User Auth URLS
     ,path('oauth/', include('social_django.urls', namespace='social'))  # Social App URLS 
     ,path('ckeditor/', include('ckeditor_uploader.urls')) # CK Editor
-    ,path('privacy_policy/', privacy_policy, name = "privacy_policy")
-    ,path('privacy_policy_source/', privacy_policy_source, name = "privacy_policy_source")
-    ,path('logout/', logout_page, name="custom_logout")
-    #path('login')
-    ,path('about/', about_page, name= "about")
-    ,path('about_source/', about_source, name= "about_source")
-    ,path('meet_the_engirls/', meet_the_engirls, name = "meet_the_engirls")
-    ,path('meet_the_engirls_source/', meet_the_engirls_source, name = "meet_the_engirls_source")
+    ,path('privacy_policy/', views.privacy_policy, name = "privacy_policy")
+    ,path('privacy_policy_source/', views.privacy_policy_source, name = "privacy_policy_source")
+    ,path('logout/', views.logout_page, name="custom_logout")
+    #,path('about/', about_page, name= "about")
+    #,path('about_source/', about_source, name= "about_source")
+    #,path('meet_the_engirls/', meet_the_engirls, name = "meet_the_engirls")
+    #,path('meet_the_engirls_source/', meet_the_engirls_source, name = "meet_the_engirls_source")
+
 
 ]  
 #if settings.DEBUG:

@@ -3,12 +3,22 @@ from .models import Content
 from django.http import HttpResponse, HttpResponseBadRequest, Http404, JsonResponse, HttpResponseForbidden
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
+from subscriptions.forms import SubscriptionForm
+
+"""
+	Load the default content 
+"""
+def load_default_content(request):
+	for content_name in settings.CONTENT_KEY_NAMES.values():
+		html_name = "{}_default.html".format(content_name.lower())
+
 
 """
 Return content titles in a json with this form:
 { 
 	Content_Title : content_url,
 }
+ Must be a GET request
 """
 def get_content(request):
 	
@@ -18,12 +28,14 @@ def get_content(request):
 	
 	return HttpResponseBadRequest("Must be a GET Request to access this resource")
 
-
+"""
+	GET request method for most content
+"""
 def content_view(request, content_pk=-1):
 	content = None
 	
 	if request.method != 'GET':
-		return HttpResponseBadRequest("Must be a GET Request to access this reource")
+		return HttpResponseBadRequest("Must be a GET Request to access this resource")
 
 	try:
 		content = Content.objects.all().get(pk = content_pk)
@@ -32,10 +44,20 @@ def content_view(request, content_pk=-1):
 
 	return render(request, "content/content.html", context = {'content':content})
 
+"""
+	Specifically used for the landing page
+"""
 def landing_page(request):
 	lp = None
+	if request.method != 'GET':
+		return HttpResponseBadRequest("Must be a GET Request to access this resource")
 	try: 
 		lp = Content.objects.all().get(title = settings.CONTENT_KEY_NAMES.get('LANDING_PAGE_CONTENT_NAME', None))
 	except Content.DoesNotExist:
-		print("Landing page object does not exist")
-	return render(request, "landing_page.html", context = {"content":lp})
+		print("Did not find landing page content")
+
+	subscription_form = SubscriptionForm()
+
+	return render(request, "landing_page.html", context = {"content":lp , "subscription_form": subscription_form})
+
+

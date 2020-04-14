@@ -1,23 +1,106 @@
 {% extends "base.html" %}
 {% block main_content %}
 
+	<style>
+		.theengirls-border-right{
+			border-right: 5px solid rgba(28,110,164,0.09);
+			border-radius: 0px 22px 0px 0px;
+		}
+		.theengirls-border-bottom {
+		
+			border-bottom: 5px solid rgba(28,110,164,0.09);
+			border-radius: 0px 22px 0px 0px;
 
+		}
+	</style>
 	<div class = "container-fluid">
-		<div class = "page-header text-center engirls_font_large"> <h1>Welcome to The Engirls<h1></div>
-		<div class = "row text-center" style = "width:100%;">
+		<div class = "row">
 			<div class = "col-sm-12">
+				<div class = "page-header engirls_font_large"> 
+					<div class = "text-center well">
+						<h1>Welcome to The Engirls</h1>				
+					</div> 
+				</div>
+				
+			</div>			
+		</div>
+		
+		<div class = "row" style = "overflow: hidden;">
+			<!-- Custom content goes here -->
+			<div class = "col-sm theengirls-border-right" id="center-me">
 				{{ content.body | safe}}
 			</div>
-			<div class = "col-sm-1">
-				<img src="https://img.icons8.com/doodle/96/000000/follow--v1.png"/>
+
+			<div class = "col-sm engirls_font_norm" id="my_subscribe" style= "width: 100% !important;">
+				<div class = "container-fluid" name = "Subscription_Container">
+					<div class = "row" >
+						<a data-toggle="collapse" href="#id_subscribe_form">
+							<div class = "theengirls-border-right mr-2">
+								<img src="https://img.icons8.com/bubbles/100/000000/email.png"/>
+								<div id= "id_sign_up"> Sign up for our news letter </div>
+							</div>
+						</a>
+					</div>
+					<div class = "row">
+						<form action = "{% url 'subscriptions:submit_subscription' %}" id = "id_subscribe_form" class="collapse theengirls-border-right theengirls-border-bottom" method="POST"> 
+							
+							{% csrf_token %}
+							{% for field in subscription_form %}
+								 {{ field.errors }}
+								 {{ field.label }}
+								 {{ field }}
+							{% endfor %}
+							
+
+							<button id = "id_subscribe_button" class= "button-submit btn-outline-dark btn-sm">Subscribe !</button>
+						</form>
+					</div>
+				</div>
 			</div>
+
 		</div>
 	</div>
 
+
 <script>
+
+function realign_subscribe() {
+  // push the subscribe button further back, if inside the center me div
+  var sub_position = $("#my_subscribe").position();
+  var center_position = $("#center-me").position();
+
+  // right most point of the center div
+  var center_position_right = center_position.left + $("#center-me").outerWidth(true);
+  
+  // If the subscribe button is inside the center image...
+  if(sub_position.left < center_position_right && sub_position.top <= center_position.top) {
+
+  	// Make sure resizing doesn't bring us out of the window...
+
+		$("#my_subscribe").css("left", (center_position_right - sub_position.left ) + "px");
+  }
+}
+
+/*
+	Center the custom content to be in the center of the page
+*/
+function center_custom_content() {
+  $("#center-me").css("left", Math.max(0, (($(window).width() - $("#center-me").outerWidth()) / 2) + 
+                                                $(window).scrollLeft()) + "px");
+}
+
 $(document).ready(function(){
-  //Make sure images don't become oversized... 
+  // Make sure images aren't oversized
   $("img").addClass("img-fluid");
+
+ center_custom_content();
+ realign_subscribe();
+
+  // If the window is resized, 
+  // reconfigure the center content and subscribe button
+$(window).on('resize',function(){location.reload();});
+
+
 
 });
 </script>
