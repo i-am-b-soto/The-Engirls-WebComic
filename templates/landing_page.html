@@ -12,6 +12,10 @@
 			border-radius: 0px 22px 0px 0px;
 
 		}
+		.sub-button, .sub-button:active, .sub-button:focus{
+        outline: none; 
+
+   		}
 	</style>
 	<div class = "container-fluid">
 		<div class = "row">
@@ -33,28 +37,34 @@
 
 			<div class = "col-sm engirls_font_norm" id="my_subscribe" style= "width: 100% !important;">
 				<div class = "container-fluid" name = "Subscription_Container">
-					<div class = "row" >
-						<a data-toggle="collapse" href="#id_subscribe_form">
-							<div class = "theengirls-border-right mr-2">
-								<img src="https://img.icons8.com/bubbles/100/000000/email.png"/>
-								<div id= "id_sign_up"> Sign up for our news letter </div>
-							</div>
-						</a>
-					</div>
-					<div class = "row">
-						<form action = "{% url 'subscriptions:submit_subscription' %}" id = "id_subscribe_form" class="collapse theengirls-border-right theengirls-border-bottom" method="POST"> 
-							
-							{% csrf_token %}
-							{% for field in subscription_form %}
-								 {{ field.errors }}
-								 {{ field.label }}
-								 {{ field }}
-							{% endfor %}
-							
+					<div class = "">
+						<div class = "row" style = "max-width: 100%;">
+							<a class = "sub-button" data-toggle="collapse" href="#id_subscribe_form" aria-expanded="true" aria-controls="id_subscribe_form" style = "color:inherit;">
+								<div class = "theengirls-border-right mr-2">
+									<img src="https://img.icons8.com/bubbles/100/000000/email.png"/>
+									<div id= "id_sign_up" class = "pr-2"> Sign up for our news letter </div>
+								</div>
+							</a>
+						</div>
+						<div class = "row" style = "max-width: 100%;">
+							<div class = "collapse" id = "id_subscribe_form">
+								<form action = "{% url 'subscriptions:submit_subscription' %}" method="POST"> 
+									
+									{% csrf_token %}
+									{% for field in subscription_form %}
+										 {{ field.errors }}
+										 {{ field.label }}
+										 {{ field }}
+									{% endfor %}
+									
 
-							<button id = "id_subscribe_button" class= "button-submit btn-outline-dark btn-sm">Subscribe !</button>
-						</form>
+									<button id = "id_subscribe_button" class= "button-submit btn-outline-dark btn-sm">Subscribe !</button>
+								</form>
+							</div>
+							<div id = "id_form_response" class ="the_engirls_fonr_norm"> </div>
+						</div>
 					</div>
+
 				</div>
 			</div>
 
@@ -64,6 +74,31 @@
 
 <script>
 
+/** 
+	Submit subscribe button
+**/
+$("#id_subscribe_button").on('click', function(e) {
+    e.preventDefault();
+    var form = $(this).closest("form");
+     $.ajax({
+            url: '/subscriptions/submit_subscription/',
+            type: 'POST',
+            data: form.serialize()
+        }).done(function(data){
+        	// Set email forum to none
+        	$("#id_email").val("");
+        	//$("#id_subscribe_form").toggle();
+        	// Display response message
+        	$.each( data, function( key, val ) {
+        		$("#id_form_response").text(val);
+        	});
+        });
+      return false;
+  });
+
+/**
+	Realign the Subscribe button
+**/
 function realign_subscribe() {
   // push the subscribe button further back, if inside the center me div
   var sub_position = $("#my_subscribe").position();
@@ -76,7 +111,6 @@ function realign_subscribe() {
   if(sub_position.left < center_position_right && sub_position.top <= center_position.top) {
 
   	// Make sure resizing doesn't bring us out of the window...
-
 		$("#my_subscribe").css("left", (center_position_right - sub_position.left ) + "px");
   }
 }
@@ -89,16 +123,25 @@ function center_custom_content() {
                                                 $(window).scrollLeft()) + "px");
 }
 
+/*
+	On Document Ready
+*/
 $(document).ready(function(){
-  // Make sure images aren't oversized
-  $("img").addClass("img-fluid");
+	  // Make sure images aren't oversized
+	  $("img").addClass("img-fluid");
 
- center_custom_content();
- realign_subscribe();
+	 center_custom_content();
+	 realign_subscribe();
 
-  // If the window is resized, 
-  // reconfigure the center content and subscribe button
-$(window).on('resize',function(){location.reload();});
+
+	 $("#id_email").val();
+
+	  // If the window is resized, 
+	  // reconfigure the center content and subscribe button
+	$(window).on('resize',function(){
+		center_custom_content();
+		realign_subscribe();
+	});
 
 
 

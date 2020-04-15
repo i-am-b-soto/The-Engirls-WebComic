@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -7,33 +6,28 @@ from django.conf import settings
 from django.core.mail import get_connection, EmailMultiAlternatives
 from content.models import Content
 import random
+import string
 from .models import Subscription 
 from .forms import SubscriptionForm  
-from django.http import HttpResponse, HttpResponseBadRequest, Http404, JsonResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseBadRequest, Http404, JsonResponse, HttpResponseForbidden 
+from .utils import create_subscription, send_thank_you
 
-""" 
-	* Must be a valid subscription form
-"""
-def create_subscription(subscription_form):
-	if not subscription_form.is_valid():
-		raise Exception("Subscription form must be valid before calling this method")
-	sub = subscription_form.save(commit = False)
-	# Need to create a key that does not exist
-	pass
 
 """
-
+	Submit subscription, with a post request
 """
 def submit_subscription(request):
 	if request.method != 'POST':
 		return HttpResponseBadRequest("Must be a POST Request to access this resource")
-	subscription_form = subscription_form(request.POST)
+	subscription_form = SubscriptionForm(request.POST)
 	if subscription_form.is_valid():
-		create_subscription(subscription_form)
-	else:
-		return HttpResponseBadRequest("Sorry, didn't quite get that")
+		if not create_subscription(subscription_form):
+			return JsonResponse({"Response":"We already got this email on record!"})
 
-	return HttpResponse("Thank You!")
+	else:
+		return JsonResponse({"Response": subscription_form['email'].errors})
+
+	return JsonResponse({"Response": "Got it, Thank You!"})
 
 def custom_email(request):
 	pass
