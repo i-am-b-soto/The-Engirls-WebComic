@@ -25,13 +25,19 @@ def set_CSRF_COOKIE_SECURE():
         return True
     else:
         return False
+        
+def set_domain():
+    if os.environ.get('on_heroku'):
+        return 'theengirls.herokuapp.com'
+    else:
+        return 'localhost:8000'
 
 ######## Base Directory ######################################
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+DOMAIN = set_domain()
 
 ###########################################
-# Custom Values
+# Editable Values
 ###########################################
 
 MAIN_SERIES_NAME = "main" # The name the website will look for to determine which comics are the main series
@@ -55,6 +61,7 @@ THUMBNAIL_SIZE = (330, 420) # Thumbnail size ** CAUTION WHEN CHANGING THIS ***
 COMIC_PAGINATOR_COUNT = 8 # Number of comics to view per archive page
 BLOG_POST_PAGINATION_COUNT = 5 # Number of blog posts per page
 
+THANK_YOU_EMAIL_SUBJECT = 'The Engirls - Thank You for Subscribing !' # Sibject linke for Thank You emails
 
 
 ###########################################

@@ -61,6 +61,8 @@
 									<button id = "id_subscribe_button" class= "button-submit btn-outline-dark btn-sm">Subscribe !</button>
 								</form>
 							</div>
+						</div>
+						<div class = "row">
 							<div id = "id_form_response" class ="the_engirls_fonr_norm"> </div>
 						</div>
 					</div>
@@ -87,7 +89,8 @@ $("#id_subscribe_button").on('click', function(e) {
         }).done(function(data){
         	// Set email forum to none
         	$("#id_email").val("");
-        	//$("#id_subscribe_form").toggle();
+
+        	$("#id_subscribe_form").toggle();
         	// Display response message
         	$.each( data, function( key, val ) {
         		$("#id_form_response").text(val);

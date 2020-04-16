@@ -1,9 +1,5 @@
 from django.shortcuts import render
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
 from django.conf import settings
-from django.core.mail import get_connection, EmailMultiAlternatives
 from content.models import Content
 import random
 import string
@@ -11,11 +7,35 @@ from .models import Subscription
 from .forms import SubscriptionForm  
 from django.http import HttpResponse, HttpResponseBadRequest, Http404, JsonResponse, HttpResponseForbidden 
 from .utils import create_subscription, send_thank_you
+import _thread as thread
+from ratelimit.decorators import ratelimit
+
+"""
+	Unsubscribe
+"""
+def unsubscribe(request, email_address =-1, key =-1):
+	#print("email address: {}".format(email_address))
+	if request.method!= 'GET':
+		return HttpResponseBadRequest("Must be a GET request to access this resource")
+	sub = None	
+	try:
+		sub = Subscription.objects.get(email = email_address)
+	except Subscription.DoesNotExist:
+		return HttpResponseBadRequest("Email address does not exist")
+
+	# Make sure user has the correct key
+	if key == sub.key:
+		sub.delete()
+		return render(request, "Sorry_To_See_You_Leave.html")
+	# If key does not match
+	else: 
+		return HttpResponseBadRequest("Something went wrong...")
 
 
 """
 	Submit subscription, with a post request
 """
+@ratelimit(key='ip', rate='5/h', block=True)
 def submit_subscription(request):
 	if request.method != 'POST':
 		return HttpResponseBadRequest("Must be a POST Request to access this resource")
@@ -23,10 +43,16 @@ def submit_subscription(request):
 	if subscription_form.is_valid():
 		if not create_subscription(subscription_form):
 			return JsonResponse({"Response":"We already got this email on record!"})
-
+	# If there are errors in the subscription form
 	else:
 		return JsonResponse({"Response": subscription_form['email'].errors})
 
+	# Try sending email in new thread
+	try:
+		thread.start_new_thread( send_thank_you, (subscription_form.cleaned_data['email'], ) )
+	except Exception as e:
+		print("Unable to start new thread-{}".format(str(e)))
+	#send_thank_you(subscription_form.cleaned_data['email'])
 	return JsonResponse({"Response": "Got it, Thank You!"})
 
 def custom_email(request):
@@ -35,65 +61,11 @@ def custom_email(request):
 def newContent(request):
 	pass
 
-def unsubscribe(request):
-	return HttpResponse("Unsubscribed")
-
 def subscribe(request):
 	
 	return HttpResponse("Subscribe")
 
-
-def get_recepients():
-	# TODO actually get recipients
-	return ['my_dream1817@hotmail.com', 'iambriansoto@gmail.com', 'kungfunub@gmail.com','theengirlswebcomic@gmail.com' ]
-	#return ['iambriansoto@gmail.com']
-
-# Each email 
-def send_mass_html_mail(email_template, subject, content, fail_silently=False, user=None, password=None, 
-                        connection=None):
-    """
-    Given a datatuple of (subject, text_content, html_content, from_email,
-    recipient_list), sends each message to each recipient list. Returns the
-    number of emails sent.
-
-    If from_email is None, the DEFAULT_FROM_EMAIL setting is used.
-    If auth_user and auth_password are set, they're used to log in.
-    If auth_user is None, the EMAIL_HOST_USER setting is used.
-    If auth_password is None, the EMAIL_HOST_PASSWORD setting is used.
-
-    """
-    recepients = get_recepients()
-    datatuple = []
-    for recepient in recepients:
-    	html_message = render_to_string(email_template, context = {"content": content })
-    	text_message = strip_tags(html_message)
-    	datatuple.append((subject,text_message, html_message, settings.EMAIL_HOST_USER, [recepient]))
-
-    connection = connection or get_connection(
-        username=user, password=password, fail_silently=fail_silently)
-
-    messages = []
-    for subject, text, html, from_email, recipient in datatuple:
-        message = EmailMultiAlternatives(subject, text, from_email, recipient)
-        message.attach_alternative(html, 'text/html')
-        messages.append(message)
-    return connection.send_messages(messages)
-
-def test(request):
-	subject = 'The Engirls Test3 - Subject'
-	html_message = render_to_string('subscriptions/test.html')
-	regular_message = strip_tags(html_message)
-	from_email = settings.EMAIL_HOST_USER
-	to_email = 'my_dream1817@hotmail.com'
-	send_mail( 
-		subject,
-		regular_message,
-		from_email,
-		[to_email],
-		fail_silently=False,
-		html_message = html_message,
-	)
-	return HttpResponse("Test Executed")
+"""
 
 def test2(request):
 	content = None
@@ -106,7 +78,8 @@ def test2(request):
 	
 	return HttpResponse("Executed Test2")
 	
-	"""
+"""
+"""
 	html_message = render_to_string("subscriptions/thanks.html", context = {"content": content })
 	return HttpResponse(render_to_string(html_message))
-	"""
+"""
