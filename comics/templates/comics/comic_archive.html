@@ -128,7 +128,9 @@
 
 <script>
 
-// retreive list of chapters given series
+/* 
+	Retreive list of chapters given series
+*/
 function get_chapters(){
 	//alert("click click, bitch");
 	return $.ajax({
@@ -148,7 +150,9 @@ function get_chapters(){
 	  //return false;
 };
 
-// Retreive list of pages given series and chapter
+/* 
+	Retreive list of pages given series and chapter
+*/
 function get_pages(){
 	//alert("click click, bitch");
 	return $.ajax({
@@ -169,7 +173,9 @@ function get_pages(){
 	  //return false;
 };
 
-// Chapter and page values must be loaded via ajax
+/* 
+	Chapter and page values must be loaded via ajax
+*/
 $(document).ready(function(){
 	// To style all selects
 	$(".Filter_Button").on("click", function(e){
@@ -229,7 +235,8 @@ $(document).ready(function(){
 
 		return false;
 	}); 
-	//alert($("#id_chapter").val())
+
+	// alert($("#id_chapter").val())
 	// Toggle display of filter form
 	// If series not selected...
 	if(urlParams.get('series') == null || urlParams.get('series') == '')
@@ -263,7 +270,9 @@ $(document).ready(function(){
 	return false;
 });
 
-// Every time filter form changes, submit the form
+/* 
+	Every time filter form changes, submit the form
+*/
 $(".theengirls_onchange" ).change(function() {
 	// Cluck cubmit
 
@@ -279,7 +288,6 @@ $(".theengirls_onchange" ).change(function() {
 });	
 
 
-</script>
 </script>
 
 {% endblock %}

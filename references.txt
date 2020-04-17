@@ -42,5 +42,9 @@ Comment body based off bootstrap snippets:
 Send mass HTML emails:
 -https://stackoverflow.com/questions/7583801/send-mass-emails-with-emailmultialternatives/10215091#10215091
 
-Footer Example
+Footer Example:
 - https://codepen.io/NamiqNamaz/pen/QZYyEq 
+
+Facebook Share:
+-https://developers.facebook.com/docs/plugins/share-button/#
+

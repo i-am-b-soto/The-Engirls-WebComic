@@ -3,15 +3,7 @@ from .models import Content
 from django.http import HttpResponse, HttpResponseBadRequest, Http404, JsonResponse, HttpResponseForbidden
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
-from subscriptions.forms import SubscriptionForm
-
-"""
-	Load the default content 
-"""
-def load_default_content(request):
-	for content_name in settings.CONTENT_KEY_NAMES.values():
-		html_name = "{}_default.html".format(content_name.lower())
-
+#from subscriptions.forms import SubscriptionForm
 
 """
 Return content titles in a json with this form:
@@ -56,8 +48,8 @@ def landing_page(request):
 	except Content.DoesNotExist:
 		print("Did not find landing page content")
 
-	subscription_form = SubscriptionForm()
+	#subscription_form = SubscriptionForm()
 
-	return render(request, "landing_page.html", context = {"content":lp , "subscription_form": subscription_form})
+	return render(request, "landing_page.html", context = {"content":lp })
 
 

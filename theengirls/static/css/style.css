@@ -87,8 +87,7 @@
 }
 
 
-
-/*******************
+/********************
   iframe
 *********************/
 iframe {
@@ -101,6 +100,22 @@ iframe {
   border: 0 none;
   box-sizing: border-box;
 }
+
+/********************
+  Some Custom borders
+*********************/
+.theengirls-border-right{
+  border-right: 5px solid rgba(28,110,164,0.09);
+  border-radius: 0px 22px 0px 0px;
+}
+
+.theengirls-border-bottom {
+
+  border-bottom: 5px solid rgba(28,110,164,0.09);
+  border-radius: 0px 22px 0px 0px;
+
+}
+
 
 /*******************
   Comments + Replies

@@ -11,10 +11,20 @@ import _thread as thread
 from ratelimit.decorators import ratelimit
 
 """
+	Render Subscription form
+"""
+def subscribe(request):
+	
+	if request.method != 'GET':
+		return HttpResponseBadRequest("Must be a GET request")
+	subscription_form = SubscriptionForm()
+	return render(request, "subscriptions/subscribe.html", context = {"subscription_form":subscription_form})
+
+"""
 	Unsubscribe
 """
 def unsubscribe(request, email_address =-1, key =-1):
-	#print("email address: {}".format(email_address))
+	
 	if request.method!= 'GET':
 		return HttpResponseBadRequest("Must be a GET request to access this resource")
 	sub = None	
@@ -61,9 +71,6 @@ def custom_email(request):
 def newContent(request):
 	pass
 
-def subscribe(request):
-	
-	return HttpResponse("Subscribe")
 
 """
 
