@@ -1,29 +1,25 @@
 {% extends "base.html" %}
 {% block main_content %}
 
-{% load static %}
-
-<link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
-
   <!-- Page Content -->
   <div class="container-fluid">
 
     {% if comic_panel %}
 
       <!-- Row for Title, Date, Subscribe -->
-      <div class="row" style = "overflow:hidden;">
+      <div class="row text-center" style = "overflow:hidden;">
 
-        <div class="col-sm-8 col-md-6 col-lg-6">        
+        <div class="col-sm-8 col-md-6 col-lg-8">        
           <!-- Title -->
           <div class="mt-4 engirls_font_large">
-            <h1>{{ comic_panel.title }}</h1> 
+            <h1><b>{{ comic_panel.title }}</b></h1> 
             <small><p>{{ comic_panel.uploadTime }}</p></small>
           </div>
           <!-- col -->
         </div>
 
         <!-- Wrapper for subscription button -->
-        <div class = "col-sm-5 engirls_font_norm" id = "id_subscribe_wrapper"> 
+        <div class = "col-sm-4 engirls_font_norm" id = "id_subscribe_wrapper"> 
         </div>
         
         <!-- row -->
