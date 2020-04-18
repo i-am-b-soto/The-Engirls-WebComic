@@ -51,7 +51,7 @@ CONTENT_KEY_NAMES = {
 
     ,'EMAIL_THANKS_CONTENT_NAME' : 'EMAIL_THANKS_CONTENT' # The name of the 'content' the website will use when distributing thank you emails
     ,'EMAIL_NEWS_CONTENT_NAME' : 'EMAIL_NEWS_CONTENT' # The name of the 'content' the website will use when distributing news emails
-    ,'EMAIL_UNSUBSCRIBE_NAME' : 'EMAIL_UNSUBSCRIBE' # The name of the 'content' the website will use when distributing unsubscrine emails
+    ,'UNSUBSCRIBE_CONTENT_NAME' : 'UNSUBSCRIBE_CONTENT' # The name of the 'content' the website will use when distributing unsubscrine emails
 }
 
 

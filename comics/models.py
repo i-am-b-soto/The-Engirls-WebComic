@@ -13,7 +13,9 @@ from .CropImage import cropped_thumbnail
 def getMainSeriesName():
 	return settings.MAIN_SERIES_NAME
 
-# Create your models here.
+"""
+	Comic Panel Object  
+"""
 class ComicPanel(models.Model):
 
 	title = models.CharField(max_length = 255)
@@ -49,6 +51,8 @@ class ComicPanel(models.Model):
 
 	def __str__(self):
 		return self.title
+
+
 
 	"""
 		DEPRECATED
@@ -162,7 +166,12 @@ class ComicPanel(models.Model):
 			print("Error saving thumbnail file to image field" + str(e))
 			return
 
-
+	"""
+		Save -
+		1) Generate Thumbnail
+		2) Generate youtube_url (if any)
+		3) Send emails
+	"""
 	def save(self):
 		#self.set_thumbnail_resize()
 		self.generateThumbnail()
@@ -171,17 +180,3 @@ class ComicPanel(models.Model):
 		super(ComicPanel, self).save()
 
 
-"""
-# in future projects this should really be its own app
-class Comment(models.Model):
-    ComicPanel = models.ForeignKey(ComicPanel,on_delete=models.CASCADE,related_name='comments')
-    name = models.CharField(max_length=144, blank=True, null=True)
-    body = models.TextField()
-    created_on = models.DateTimeField(auto_now_add=True)
-
-
-    def __str__(self):
-        return 'Comment {} by {}'.format(self.body, self.name)
-
-
-"""

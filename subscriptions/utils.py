@@ -10,6 +10,9 @@ from django.http import HttpResponse, HttpResponseBadRequest, Http404, JsonRespo
 from django.core.mail import send_mail
 from django.core.mail import get_connection, EmailMultiAlternatives
 
+"""
+
+"""
 def get_recepients():
 	subscriptions = Subscription.objects.all()
 	emails = []
@@ -23,7 +26,6 @@ def get_recepients():
 """
 
 """
-# Each email 
 def send_mass_html_mail(email_template, subject, content, fail_silently=False, user=None, password=None, 
                         connection=None):
     """
@@ -46,7 +48,8 @@ def send_mass_html_mail(email_template, subject, content, fail_silently=False, u
         messages.append(message)
     return connection.send_messages(messages)
 
-
+def send_new_comic_email(request):
+	pass
 
 """
 	Send Thank you Email. 

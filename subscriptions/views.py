@@ -36,7 +36,13 @@ def unsubscribe(request, email_address =-1, key =-1):
 	# Make sure user has the correct key
 	if key == sub.key:
 		sub.delete()
-		return render(request, "Sorry_To_See_You_Leave.html")
+		content = None
+		try:
+			content = Content.objects.get(title = settings.CONTENT_KEY_NAMES.get('UNSUBSCRIBE_CONTENT_NAME',None), None )
+		except content.DoesNotExist as d:
+			print(str(d))
+
+		return render(request, "Sorry_To_See_You_Leave.html" context = {"content": content})
 	# If key does not match
 	else: 
 		return HttpResponseBadRequest("Something went wrong...")
@@ -68,8 +74,8 @@ def submit_subscription(request):
 def custom_email(request):
 	pass
 
-def newContent(request):
-	pass
+
+
 
 
 """
