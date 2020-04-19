@@ -23,8 +23,11 @@ def subscribe(request):
 """
 	Unsubscribe
 """
+@ratelimit(key='ip', rate='10/h', block=True)
 def unsubscribe(request, email_address =-1, key =-1):
-	
+	email_address = request.GET.get('email_address', None)
+	key = request.GET.get('key', None)
+
 	if request.method!= 'GET':
 		return HttpResponseBadRequest("Must be a GET request to access this resource")
 	sub = None	
@@ -38,20 +41,20 @@ def unsubscribe(request, email_address =-1, key =-1):
 		sub.delete()
 		content = None
 		try:
-			content = Content.objects.get(title = settings.CONTENT_KEY_NAMES.get('UNSUBSCRIBE_CONTENT_NAME',None), None )
+			content = Content.objects.get(title = settings.CONTENT_KEY_NAMES.get('UNSUBSCRIBE_CONTENT_NAME',None))
 		except content.DoesNotExist as d:
 			print(str(d))
 
-		return render(request, "Sorry_To_See_You_Leave.html" context = {"content": content})
+		return render(request, "Sorry_To_See_You_Leave.html", context = {"content": content})
 	# If key does not match
 	else: 
-		return HttpResponseBadRequest("Something went wrong...")
+		return HttpResponseBadRequest("Looks like you don't have the right key...")
 
 
 """
 	Submit subscription, with a post request
 """
-@ratelimit(key='ip', rate='5/h', block=True)
+@ratelimit(key='ip', rate='10/h', block=True)
 def submit_subscription(request):
 	if request.method != 'POST':
 		return HttpResponseBadRequest("Must be a POST Request to access this resource")
@@ -74,25 +77,3 @@ def submit_subscription(request):
 def custom_email(request):
 	pass
 
-
-
-
-
-"""
-
-def test2(request):
-	content = None
-	try:
-		content = Content.objects.get(title = settings.CONTENT_KEY_NAMES.get('EMAIL_THANKS_CONTENT_NAME', None))
-	except Content.DoesNotExist:
-		print("Couldn't find the content")	
-	
-	send_mass_html_mail("subscriptions/thanks.html", "Thanks for Subscribing!", content)
-	
-	return HttpResponse("Executed Test2")
-	
-"""
-"""
-	html_message = render_to_string("subscriptions/thanks.html", context = {"content": content })
-	return HttpResponse(render_to_string(html_message))
-"""

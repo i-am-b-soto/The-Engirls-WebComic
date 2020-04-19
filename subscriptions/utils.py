@@ -11,50 +11,102 @@ from django.core.mail import send_mail
 from django.core.mail import get_connection, EmailMultiAlternatives
 
 """
+	get_recepients
 
+	Return:
+	- list of tuples (email, key)
 """
 def get_recepients():
 	subscriptions = Subscription.objects.all()
-	emails = []
+	data_tuples = []
 	for sub in subscriptions:
-		emails.append(sub.email)
-	return emails
+		data_tuples.append((sub.email, sub.key))
+	return data_tuples
 
 	#return ['my_dream1817@hotmail.com', 'iambriansoto@gmail.com', 'kungfunub@gmail.com','theengirlswebcomic@gmail.com' ]
 	#return ['iambriansoto@gmail.com']
 
 """
-
+	Send a mass html email...
 """
-def send_mass_html_mail(email_template, subject, content, fail_silently=False, user=None, password=None, 
-                        connection=None):
-    """
+def send_mass_html_mail(email_template, subject, content, title = None, fail_silently=False, user=None, password=None, 
+						connection=None):
+	"""
 
-    """
-    recepients = get_recepients()
-    datatuple = []
-    for recepient in recepients:
-    	html_message = render_to_string(email_template, context = {"content": content })
-    	text_message = strip_tags(html_message)
-    	datatuple.append((subject,text_message, html_message, settings.EMAIL_HOST_USER, [recepient]))
+	"""
+	recepients = get_recepients()
+	datatuple = []
+	for email_address, key in recepients:
+		# 1) Create the context
+		context = {}
+		if title:
+			context["title"] = title
+		context["content"] = content
+		context["email_address"] = email_address
+		context["key"] = key
+		context["domain"] = settings.DOMAIN
+		
+		# 2) Create HTML + text message
+		html_message = render_to_string(email_template, context = context)
+		text_message = strip_tags(html_message)
 
-    connection = connection or get_connection(
-        username=user, password=password, fail_silently=fail_silently)
+		# 3) Our datatuple
+		datatuple.append((subject,text_message, html_message, settings.EMAIL_HOST_USER, [email_address]))
 
-    messages = []
-    for subject, text, html, from_email, recipient in datatuple:
-        message = EmailMultiAlternatives(subject, text, from_email, recipient)
-        message.attach_alternative(html, 'text/html')
-        messages.append(message)
-    return connection.send_messages(messages)
+	# 4) Create our connection
+	connection = connection or get_connection(
+		username=user, password=password, fail_silently=fail_silently)
 
-def send_new_comic_email(request):
-	pass
+	# 5) Send our messages
+	messages = []
+	for subject, text, html, from_email, recipient in datatuple:
+		message = EmailMultiAlternatives(subject, text, from_email, recipient)
+		message.attach_alternative(html, 'text/html')
+		messages.append(message)
+	
+	# 6) Try to send duh messages
+	try:
+		connection.send_messages(messages)
+	except Exception as e:
+		print(str(e))
+		print(" A problem sending one or more emails")
+		return False
+	return True
+
+""" 
+	send_new_comic_email
+		Send a email for new comic_release
+
+	Input: 
+		str title: the title of the comic to release
+	Retur: 
+		None
+"""
+def send_new_comic_email(title):
+	try:
+		subject =  settings.NEW_COMIC_EMAIL_SUBJECT.format(title = title)
+	except Exception as e:
+		print("Unable to form subject line")
+		print(str(e))
+		subject = settings.NEW_COMIC_EMAIL_SUBJECT
+
+	content = None
+	try:
+		content = Content.objects.get(title = settings.CONTENT_KEY_NAMES.get('EMAIL_NEW_COMIC_NAME', None))
+	except Content.DoesNotExist as d:
+		prnt(str(d))
+
+	send_mass_html_mail("email_new_comic.html",subject, content, title = title, fail_silently = True)
+	
 
 """
 	Send Thank you Email. 
 
-	Using email_Thanks.html with content name EMAIL_THANKS_CONTENT
+	Input:
+		str email_address: the email address to send the thank you email to
+	Return:
+		None
+
 """
 def send_thank_you(email_address):
 	subject = settings.THANK_YOU_EMAIL_SUBJECT
@@ -103,9 +155,9 @@ def send_update_email():
 	Generate a random string
 """
 def randomString(stringLength=10):
-    """Generate a random string of fixed length """
-    letters = string.ascii_lowercase
-    return ''.join(random.choice(letters) for i in range(stringLength))
+	"""Generate a random string of fixed length """
+	letters = string.ascii_lowercase
+	return ''.join(random.choice(letters) for i in range(stringLength))
 
 
 """

@@ -3,14 +3,15 @@ from .models import Content
 from django.http import HttpResponse, HttpResponseBadRequest, Http404, JsonResponse, HttpResponseForbidden
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
-#from subscriptions.forms import SubscriptionForm
+
 
 """
+
 Return content titles in a json with this form:
-{ 
-	Content_Title : content_url,
-}
- Must be a GET request
+	{ 
+		Content_Title : content_url,
+	}
+Must be a GET request
 """
 def get_content(request):
 	

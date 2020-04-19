@@ -9,7 +9,13 @@ from django.utils import timezone
 from django.conf import settings
 from .url_changer import change_url
 from .CropImage import cropped_thumbnail
+import _thread as thread
+from subscriptions.utils import send_new_comic_email
 
+"""
+	Return: 
+		str Name of the main series 
+"""
 def getMainSeriesName():
 	return settings.MAIN_SERIES_NAME
 
@@ -18,25 +24,36 @@ def getMainSeriesName():
 """
 class ComicPanel(models.Model):
 
-	title = models.CharField(max_length = 255)
-	image = models.ImageField(upload_to = 'comics/')
+	# Title of our comic/ youtube video
+	title = models.CharField(max_length = 255)	
+
+	# User uploaded image for the comic/youtube video (If a youtube video this image will be used for the thumbnail)
+	image = models.ImageField(upload_to = 'comics/') 
 	
+	# The youtube URL (optional)
 	youtube_url = models.URLField(max_length=250, null = True, blank = True, help_text = "Insert a Youtube URL if you want a video for a comic")
 	
+	# Our description 
 	description = RichTextUploadingField()
+
+	# Custom Caption 
 	caption = models.CharField(max_length = 500)
 
+	# Series, defaults to settings.MAIN_SERIES_NAME
 	series = models.CharField(max_length = 255, null = False, blank = False, default = getMainSeriesName, 
 		help_text="The default value is what the main Series Name is set to in Settings.py" )
-	chapter = models.FloatField(null = True, blank = True)
-	page = models.IntegerField(null = True, blank = True, name="page")
-	#chapter = models.FloatField(null=True, validators=[MinValueValidator(1)])
-	#episode = models.IntegerField(null=True, validators=[MinValueValidator(1)])
 
-	#TODO Twitter + Instagram Feeds
+	# Chapter, optional
+	chapter = models.FloatField(null = True, blank = True)
+
+	# page, optional
+	page = models.IntegerField(null = True, blank = True, name="page")
+
+	# Send emails? 
+	send_emails = models.BooleanField(default= True)
+
 	# Time of upload
 	uploadTime = models.DateField(default=timezone.now)
-
 
 	# Thumbnail of the picture
 	thumbnail = models.ImageField(
@@ -53,39 +70,10 @@ class ComicPanel(models.Model):
 		return self.title
 
 
-
-	"""
-		DEPRECATED
-		Divides image size by division factor, keeping aspect ratios
-
-		returns tuple (width, height)
-	"""
-	def getThumnbnailSize(self, division_fact):
-		# length > width? Should be
-		
-
-		# If height is larger. Given width = width/4, what is height?
-		if self.image.width < self.image.height:
-			# Percentage difference
-			pct_diff = (self.image.height - self.image.width) / self.image.height
-			newheight = ((self.image.width / division_fact) * pct_diff) + (self.image.width/division_fact) 
-			
-			return (self.image.width/division_fact, newheight)
-
-		# width is larger . Given height = height/4, what is width
-		elif self.image.width > self.image.height: 
-			pct_diff = (self.image.width - (self.image.height/division_fact)) / self.image.width
-			newwidth = (self.image.height/division_fact) * pct_diff + (self.image.height/division_fact)
-
-			return (newwidth, self.image.height/division_fact)
-
 	"""
 		Generates Thumbnail. Saves in Media location /thumbnails
 	"""
 	def generateThumbnail(self):
-
-	  # Set our max thumbnail size in a tuple (max width, max height)
-		#THUMBNAIL_SIZE = self.getThumnbnailSize(division_fact = 3)
 			
 		if self.image.name.endswith(".jpg"):
 			PIL_TYPE = 'jpeg'
@@ -120,8 +108,6 @@ class ComicPanel(models.Model):
 
 		# Send the cropped image to be resized to the sandard thumbnail size
 		image = cropped_thumbnail(image)
-
-		#image.thumbnail(THUMBNAIL_SIZE, Image.ANTIALIAS)
 
 		# Save the thumbnail
 		temp_handle = BytesIO()
@@ -176,6 +162,13 @@ class ComicPanel(models.Model):
 		#self.set_thumbnail_resize()
 		self.generateThumbnail()
 		self.youtube_url = change_url(self.youtube_url)
+
+		if self.send_emails:
+			try:
+				thread.start_new_thread( send_new_comic_email,  (self.title, ) )
+			except Exception as e:
+				print("Unable to start new thread-{}\n Unable to send emails".format(str(e)))
+
 		#self.image.open()
 		super(ComicPanel, self).save()
 

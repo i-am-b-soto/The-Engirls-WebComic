@@ -6,7 +6,7 @@
 	<div class = "row">
 		<div class = "col-sm-12 text-center">
 			{% if content %}
-				{{ content.body }}
+				{{ content.body |safe }}
 			{% endif %}
 		</div>
 	</div>
