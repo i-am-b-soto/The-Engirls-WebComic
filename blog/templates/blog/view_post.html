@@ -2,7 +2,7 @@
 {% block main_content %}
 
   <!-- Page Content -->
-  <div class="container-fluid">
+  <div class="container">
 
     {% if post %}
 
@@ -11,7 +11,7 @@
         <div class="col">        
           <!-- Title -->
           <div class="mt-4 engirls_font_large">
-            <h1 class = "float-left">{{ post.title }}</h1> <br><small><p>{{ post.created_on }}</p>
+            <h1 class = "float-left"><b>{{ post.title }}</b></h1> <br><small><p>{{ post.created_on }}</p>
                <p> Category: {{ post.category }}</p></small>
           </div>
           
@@ -36,7 +36,9 @@
           
           <div class = "shadow rounded px-4 py-4" style= "background-color: #FAFAFA; display:inline-block; width:100%">
            <!-- <div class="card-body"> -->
-                {{ post.body | safe }} 
+                <div class="">
+                  {{ post.body | safe }} 
+                </div>
             <!-- </div> -->
           </div>
         </div> 

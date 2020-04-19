@@ -50,7 +50,8 @@ CONTENT_KEY_NAMES = {
     ,'ERROR_500_CONTENT_NAME' : 'ERROR_500_CONTENT' # The Name of the 'content' the website will use to display 500 errors
 
     ,'EMAIL_THANKS_CONTENT_NAME' : 'EMAIL_THANKS_CONTENT' # The name of the 'content' the website will use when distributing thank you emails
-    ,'EMAIL_NEW_COMIC_NAME' : 'EMAIL_NEW_COMIC_CONTENT' # The name of the 'content' the website will use when distributing news emails
+    ,'EMAIL_NEW_COMIC_CONTENT_NAME' : 'EMAIL_NEW_COMIC_CONTENT' # The name of the 'content' the website will use when distributing news comic emails
+    ,'EMAIL_NEW_POST_CONTENT_NAME' : 'EMAIL_NEW_POST_CONTENT'  # The name of the 'content' the website will use when distributing new blog post emails
     ,'UNSUBSCRIBE_CONTENT_NAME' : 'UNSUBSCRIBE_CONTENT' # The name of the 'content' the website will use when distributing unsubscrine emails
 }
 
@@ -63,6 +64,7 @@ BLOG_POST_PAGINATION_COUNT = 5 # Number of blog posts per page
 
 THANK_YOU_EMAIL_SUBJECT = 'The Engirls - Thank You for Subscribing !' # Sibject linke for Thank You emails
 NEW_COMIC_EMAIL_SUBJECT = 'The Engirls - New Comic Out: {title}'
+NEW_POST_EMAIL_SUBJECT = 'The Engirls - New Blog Post Out: {title}'
 
 ###########################################
 # Gmail 

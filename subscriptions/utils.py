@@ -75,7 +75,7 @@ def send_mass_html_mail(email_template, subject, content, title = None, fail_sil
 
 """ 
 	send_new_comic_email
-		Send a email for new comic_release
+		Send a email for new comic release
 
 	Input: 
 		str title: the title of the comic to release
@@ -92,11 +92,30 @@ def send_new_comic_email(title):
 
 	content = None
 	try:
-		content = Content.objects.get(title = settings.CONTENT_KEY_NAMES.get('EMAIL_NEW_COMIC_NAME', None))
+		content = Content.objects.get(title = settings.CONTENT_KEY_NAMES.get('EMAIL_NEW_COMIC_CONTENT_NAME', None))
 	except Content.DoesNotExist as d:
-		prnt(str(d))
+		print(str(d))
 
 	send_mass_html_mail("email_new_comic.html",subject, content, title = title, fail_silently = True)
+
+"""
+	Send a email for a new blog post rlease
+"""
+def send_new_post_email(title):
+	try:
+		subject =  settings.NEW_POST_EMAIL_SUBJECT.format(title = title)
+	except Exception as e:
+		print("Unable to form subject line")
+		print(str(e))
+		subject = settings.NEW_POST_EMAIL_SUBJECT
+
+	content = None
+	try:
+		content = Content.objects.get(title = settings.CONTENT_KEY_NAMES.get('EMAIL_NEW_POST_CONTENT_NAME', None))
+	except Content.DoesNotExist as d:
+		print(str(d))
+
+	send_mass_html_mail("email_new_post.html",subject, content, title = title, fail_silently = True)
 	
 
 """

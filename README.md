@@ -17,9 +17,10 @@ A web comic app developed for a friend to host his web comic series, The Engirls
 - AWS S3 (for static/media files)
 
 ##### List of upcoming features/pending bugs:
-- Youtube Video embedding 
-- Youtube like button
-- Landing page
+- Blog Posts to have cool hover effect
+- Custom Emails for admin
+- Default email entered on subscription form based on user's logged in email
+- Cool landing page title effects
 
 
 

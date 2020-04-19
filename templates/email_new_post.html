@@ -1,0 +1,49 @@
+{% extends "email_base.html" %}
+
+{% block custom_content %}
+	{% if content %}
+
+    	{{ content.body | safe }}
+
+	{% endif %}
+{% endblock %}
+
+{% block main_content %}
+
+<tr>
+	<!-- Header -->
+	<td data-color="title" data-size="size title" data-min="25" data-max="45" data-link-color="link title color" data-link-style="text-decoration:none; color:#292c34;" class="title" align="center" style="font:35px/38px Arial, Helvetica, sans-serif; color:#292c34; padding:0 0 24px;">
+		{% if title %}
+			New Comic Available! {{ title }}
+		{% else %}
+			New Comic Available!
+		{% endif %}
+	</td>
+</tr>
+
+<tr>
+	<!-- Not the header -->
+	<td data-color="text" data-size="size text" data-min="10" data-max="26" data-link-color="link text color" data-link-style="font-weight:bold; text-decoration:underline; color:#40aceb;" align="center" style="font:bold 16px/25px Arial, Helvetica, sans-serif; color:#888; padding:0 0 23px;">
+		Click the link below to check out the newest blog post!!
+	</td>
+</tr>
+
+<tr>
+	<!-- Box with link -->
+	<td style="padding:0 0 20px;">
+		<table width="134" align="center" style="margin:0 auto;" cellpadding="0" cellspacing="0">
+			<tr>
+				<td data-bgcolor="bg-button" data-size="size button" data-min="10" data-max="16" class="btn" align="center" style="font:12px/14px Arial, Helvetica, sans-serif; color:#f8f9fb; text-transform:uppercase; mso-padding-alt:12px 10px 10px; border-radius:2px;" bgcolor="#7bb84f">
+					<a target="_blank" style="text-decoration:none; color:#f8f9fb; display:block; padding:12px 10px 10px;" href="{{ domain }}/blog/">Check it out!</a>
+				</td>
+			</tr>
+		</table>
+	</td>
+</tr>
+
+{% endblock %}
+
+<!-- Unsubscribe -->
+{% block unsub_url %}
+	<a style="text-decoration:underline; color:#797c82;" href="{{ domain }}/subscriptions/unsubscribe/?email_address={{ email_address }}&key={{ key }}">Unsubscribe.</a>
+{% endblock %}
