@@ -30,10 +30,13 @@ class CustomEmail(models.Model):
 	
 	subject = models.CharField(max_length=255)
 
+	"""
+	TODO: 
 	custom_recipients = models.CharField(max_length = 3000, 	
 		null = True, 
 		blank = True, 
 		help_text = "Leave blank if you want to send to everyone in 'Subscriptions'. Seperate with comma")
+	"""
 
 	body = RichTextUploadingField()
 	
@@ -55,10 +58,16 @@ class CustomEmail(models.Model):
 		# Prevent the circle!!!!! 
 		from subscriptions.utils import mass_mail_thread_helper
 
+		"""
+		TODO: 
 		if self.custom_recipients:
 
 			print("Sending to custom recipient(s): {}".format(self.custom_recipients))
 			parsed_recipients = [x.strip() for x in self.custom_recipients.split(',')]
+			recipient_tuples = []
+
+			for recipient in parsed_recipients:
+				subscription
 
 			try:
 				thread.start_new_thread( mass_mail_thread_helper,  
@@ -69,11 +78,12 @@ class CustomEmail(models.Model):
 
 		# If recipients is none
 		else:
-			try:
-				thread.start_new_thread(mass_mail_thread_helper, ('email_custom.html', self.subject, context))
-			except Exception as e:
-				print(str(e))
-				return False
+		"""
+		try:
+			thread.start_new_thread(mass_mail_thread_helper, ('email_custom.html', self.subject, context))
+		except Exception as e:
+			print(str(e))
+			return False
 
 		self.date_sent = timezone.now()
 		# All is good!
