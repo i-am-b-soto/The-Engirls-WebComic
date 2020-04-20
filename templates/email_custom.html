@@ -1,0 +1,10 @@
+{% block main_content %}
+
+	{{ body | safe }}
+
+{% endblock %}
+
+<!-- Unsubscribe -->
+{% block unsub_url %}
+	<a style="text-decoration:underline; color:#797c82;" href="{{ domain }}/subscriptions/unsubscribe/?email_address={{ email_address }}&key={{ key }}">Unsubscribe.</a>
+{% endblock %}

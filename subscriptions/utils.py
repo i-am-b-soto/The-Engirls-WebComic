@@ -1,47 +1,43 @@
+from .models import Subscription 
+from .forms import SubscriptionForm 
+from content.models import Content
+
 from django.conf import settings
 import random
 import string
-from .models import Subscription 
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-from .forms import SubscriptionForm 
-from content.models import Content
 from django.http import HttpResponse, HttpResponseBadRequest, Http404, JsonResponse, HttpResponseForbidden 
-from django.core.mail import send_mail
-from django.core.mail import get_connection, EmailMultiAlternatives
+from django.core.mail import send_mail, get_connection, EmailMultiAlternatives
+
 
 """
-	get_recepients
+	get_recipients
 
 	Return:
 	- list of tuples (email, key)
 """
-def get_recepients():
+def get_recipients():
 	subscriptions = Subscription.objects.all()
 	data_tuples = []
 	for sub in subscriptions:
 		data_tuples.append((sub.email, sub.key))
 	return data_tuples
 
-	#return ['my_dream1817@hotmail.com', 'iambriansoto@gmail.com', 'kungfunub@gmail.com','theengirlswebcomic@gmail.com' ]
-	#return ['iambriansoto@gmail.com']
-
 """
 	Send a mass html email...
 """
-def send_mass_html_mail(email_template, subject, content, title = None, fail_silently=False, user=None, password=None, 
-						connection=None):
+def send_mass_html_mail(email_template, subject, context,  recipients = None, fail_silently=False, 
+	user=None, password=None, connection=None):
 	"""
 
 	"""
-	recepients = get_recepients()
+	if recipients is None:
+		recipients = get_recipients()
 	datatuple = []
-	for email_address, key in recepients:
-		# 1) Create the context
-		context = {}
-		if title:
-			context["title"] = title
-		context["content"] = content
+	for email_address, key in recipients:
+		
+		# 1) Update the context for the unsubscribe feature
 		context["email_address"] = email_address
 		context["key"] = key
 		context["domain"] = settings.DOMAIN
@@ -73,6 +69,11 @@ def send_mass_html_mail(email_template, subject, content, title = None, fail_sil
 		return False
 	return True
 
+def mass_mail_thread_helper(email_template, subject, context, recipients = None):
+
+	return send_mass_html_mail(email_template, subject, context, recipients = recipients)
+
+
 """ 
 	send_new_comic_email
 		Send a email for new comic release
@@ -96,7 +97,12 @@ def send_new_comic_email(title):
 	except Content.DoesNotExist as d:
 		print(str(d))
 
-	send_mass_html_mail("email_new_comic.html",subject, content, title = title, fail_silently = True)
+	context = {}
+	context["content"] = content
+	context["title"] = title
+
+
+	send_mass_html_mail("email_new_comic.html", subject, context, fail_silently = True)
 
 """
 	Send a email for a new blog post rlease
@@ -115,8 +121,11 @@ def send_new_post_email(title):
 	except Content.DoesNotExist as d:
 		print(str(d))
 
-	send_mass_html_mail("email_new_post.html",subject, content, title = title, fail_silently = True)
-	
+	context = {}
+	context["content"] = content
+	context["title"] = title
+
+	send_mass_html_mail("email_new_post.html",subject, context, fail_silently = True)
 
 """
 	Send Thank you Email. 
@@ -163,17 +172,11 @@ def send_thank_you(email_address):
 		return False
 	return True
 
-"""
-
-"""
-def send_update_email():
-	pass
-
 
 """
 	Generate a random string
 """
-def randomString(stringLength=10):
+def randomString(stringLength=15):
 	"""Generate a random string of fixed length """
 	letters = string.ascii_lowercase
 	return ''.join(random.choice(letters) for i in range(stringLength))

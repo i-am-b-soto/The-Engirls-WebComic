@@ -12,6 +12,11 @@ from django import template
 		1) If title already exists in contents, don't load it
 		2) If the default html file cannot be found, dont load content, 
 		   but don't throw exception
+		   
+	Input: 
+		None
+	Returns:
+		None
 """
 def load_default_content():
 	# Iterate over the content names in settings
