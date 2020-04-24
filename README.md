@@ -19,7 +19,7 @@ A web comic app developed for a friend to host his web comic series, The Engirls
 ##### List of upcoming features/pending bugs:
 - Blog Posts to have cool hover effect
 x Custom Emails for admin
-- Default email entered on subscription form based on user's logged in email
+x Default email entered on subscription form based on user's logged in email
 - Cool landing page title effects
 
 
