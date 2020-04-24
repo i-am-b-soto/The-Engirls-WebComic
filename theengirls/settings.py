@@ -20,6 +20,7 @@ def set_default_db(DATABASES):
         prod_db  =  dj_database_url.config(conn_max_age=500)
         DATABASES['default'].update(prod_db)
 
+# TODO: Work on bool values for enviornment
 def set_CSRF_COOKIE_SECURE():
     if os.environ.get('on_heroku'):
         return True
