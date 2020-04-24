@@ -1,0 +1,16 @@
+{% block main_content %}
+
+<tr>
+	<!-- Header -->
+	<td data-color="title" data-size="size title" data-min="25" data-max="45" data-link-color="link title color" data-link-style="text-decoration:none; color:#292c34;" class="title" align="center" style="font:35px/38px Arial, Helvetica, sans-serif; color:#292c34; padding:0 0 24px;">
+		{{ body | safe }}
+	</td>
+</tr>
+	
+
+{% endblock %}
+
+<!-- Unsubscribe -->
+{% block unsub_url %}
+	<a style="text-decoration:underline; color:#797c82;" href="{{ domain }}/subscriptions/unsubscribe/?email_address={{ email_address }}&key={{ key }}">Unsubscribe.</a>
+{% endblock %}

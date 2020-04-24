@@ -1,41 +1,35 @@
 """theengirls URL Configuration
 
-
-Add social login:
-https://simpleisbetterthancomplex.com/tutorial/2016/10/24/how-to-add-social-login-to-django.html  
-
-Login with AJAX:
-https://stackoverflow.com/questions/35461517/django-registration-ajax-post-form
-
-How Django Authentication works:
-https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Authentication
-
 """
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from .views import error_404, privacy_policy, privacy_policy_source,logout_page, about_page, about_source, meet_the_engirls, meet_the_engirls_source 
+from . import views
+from content import views as content_views, one_time_load
+
+one_time_load.load_default_content()
 
 urlpatterns = [
-	path('', include('comics.urls')) # Home URL
-	,path('comics/', include('comics.urls')) # Comic app URLS
-	,path('blog/',include('blog.urls'))
-    ,path('comments/', include('comments.urls'))
-    ,path('content/',include('content.urls'))
+	path('', content_views.landing_page, name = "landing_page") # Home URL
+	,path('comics/', include('comics.urls')) # comic app URLS
+	,path('blog/',include('blog.urls')) # blog URLS
+    ,path('comments/', include('comments.urls')) # comment URLS
+    ,path('content/',include('content.urls')) # content URLS
+    ,path('subscriptions/', include('subscriptions.urls')) # subscription URLS
 	,path('admin/', admin.site.urls) # Django Admin URLS
     ,path('accounts/', include('django.contrib.auth.urls')) # Django User Auth URLS
     ,path('oauth/', include('social_django.urls', namespace='social'))  # Social App URLS 
     ,path('ckeditor/', include('ckeditor_uploader.urls')) # CK Editor
-    ,path('privacy_policy/', privacy_policy, name = "privacy_policy")
-    ,path('privacy_policy_source/', privacy_policy_source, name = "privacy_policy_source")
-    ,path('logout/', logout_page, name="custom_logout")
-    #path('login')
-    ,path('about/', about_page, name= "about")
-    ,path('about_source/', about_source, name= "about_source")
-    ,path('meet_the_engirls/', meet_the_engirls, name = "meet_the_engirls")
-    ,path('meet_the_engirls_source/', meet_the_engirls_source, name = "meet_the_engirls_source")
+    ,path('privacy_policy/', views.privacy_policy, name = "privacy_policy")
+    ,path('privacy_policy_source/', views.privacy_policy_source, name = "privacy_policy_source")
+    ,path('logout/', views.logout_page, name="custom_logout")
+    #,path('about/', about_page, name= "about")
+    #,path('about_source/', about_source, name= "about_source")
+    #,path('meet_the_engirls/', meet_the_engirls, name = "meet_the_engirls")
+    #,path('meet_the_engirls_source/', meet_the_engirls_source, name = "meet_the_engirls_source")
+
 
 ]  
 #if settings.DEBUG:

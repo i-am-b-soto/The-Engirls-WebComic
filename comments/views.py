@@ -98,8 +98,9 @@ def num_likes(request, comment_pk=-1):
 
 
 """
-Like a Comment 
+	Like a Comment
 
+	Return:  
 """
 def like_comment(request,comment_pk=-1):
 	try:

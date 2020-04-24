@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<body>			
+	<div class = "container-fluid" name = "Subscription_Container">
+		<div class = "">
+			<div class = "row" style = "max-width: 100%;">
+				<a class = "sub-button" data-toggle="collapse" href="#id_subscribe_form" aria-expanded="true" aria-controls="id_subscribe_form" style = "color:inherit;">
+					<div class = "theengirls-border-right mr-2">
+						<img src="https://img.icons8.com/bubbles/100/000000/email.png"/>
+						<div id= "id_sign_up" class = "pr-2"> Sign up for email updates! </div>
+					</div>
+				</a>
+			</div>
+			<div class = "row" style = "max-width: 100%;">
+				<div class = "collapse" id = "id_subscribe_form">
+					<form action = "{% url 'subscriptions:submit_subscription' %}" method="POST">
+
+					{% if user.is_authenticated and user.email %}
+						<input type = "hidden" id = "id_user_email" value = "{{ user.email }}"> 
+					{% else %}
+						<input type = "hidden" id = "id_user_email" value = "false"> 
+					{% endif %} 
+						
+						{% csrf_token %}
+						{% for field in subscription_form %}
+							 {{ field.errors }}
+							 {{ field.label }}
+							 {{ field }}
+						{% endfor %}
+						
+
+						<button id = "id_subscribe_button" class= "button-submit btn-outline-dark btn-sm">Subscribe !</button>
+					</form>
+				</div>
+			</div>
+			<div class = "row">
+				<div id = "id_form_response" class ="the_engirls_fonr_norm"> </div>
+			</div>
+		</div>
+
+	</div>
+</body>
+<script>
+
+/** 
+	Submit Subscribe Button
+**/
+$("#id_subscribe_button").on('click', function(e) {
+    e.preventDefault();
+    var form = $(this).closest("form");
+     $.ajax({
+            url: '/subscriptions/submit_subscription/',
+            type: 'POST',
+            data: form.serialize()
+        }).done(function(data){
+        	// Set email forum to none
+        	$("#id_email").val("");
+
+        	
+        	// Display response message
+        	$.each( data, function( key, val ) {
+        		$("#id_form_response").text(val);
+        		if (val == "Got it, Thank You!")
+        		{
+        			$("#id_subscribe_form").toggle();
+        		}
+        		
+        	});
+        });
+      return false;
+  });
+
+
+$(document).ready(function(){
+/**
+	Fill in default email, if user is logged in
+**/
+	//alert("Whoo!");
+	var email = $("#id_user_email").val();
+	//alert("Email value: " + email)
+	if(email !== "false") {
+		$("#id_email").val(email);
+	}
+});
+</script>

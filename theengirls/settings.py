@@ -3,8 +3,6 @@
 View App on: https://dashboard.heroku.com/apps/theengirls
 
 
-
-
 Django settings for theengirls project.
 
 """
@@ -18,28 +16,68 @@ import dj_database_url
 ###################################################
 
 
+########## Heroku Specific Settings ##########################
 def set_default_db(DATABASES):
     if os.environ.get('on_heroku') or os.environ.get('on_heroku') == 'True':
         prod_db  =  dj_database_url.config(conn_max_age=500)
         DATABASES['default'].update(prod_db)
 
+# TODO: Work on bool values for enviornment
 def set_CSRF_COOKIE_SECURE():
     if os.environ.get('on_heroku'):
         return True
     else:
         return False
+        
+def set_domain():
+    if os.environ.get('on_heroku'):
+        return 'theengirls.herokuapp.com'
+    else:
+        return 'localhost:8000'
 
-
+######## Base Directory ######################################
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DOMAIN = set_domain()
 
+###########################################
+# Editable Values
+###########################################
 
-#### Custom values #########################
 MAIN_SERIES_NAME = "main" # The name the website will look for to determine which comics are the main series
+
+CONTENT_KEY_NAMES = {
+    'LANDING_PAGE_CONTENT_NAME' : 'LANDING_PAGE_CONTENT' # The name of the 'content' the website will use to display the landing page
+    
+    ,'ERROR_404_CONTENT_NAME' : 'ERROR_404_CONTENT' # The name of the 'content' the website will use to display 404 errors 
+    ,'ERROR_400_CONTENT_NAME' : 'ERROR_400_CONTENT' # The Name of the 'content' the website will use to display 400 errors
+    ,'ERROR_500_CONTENT_NAME' : 'ERROR_500_CONTENT' # The Name of the 'content' the website will use to display 500 errors
+
+    ,'EMAIL_THANKS_CONTENT_NAME' : 'EMAIL_THANKS_CONTENT' # The name of the 'content' the website will use when distributing thank you emails
+    ,'EMAIL_NEW_COMIC_CONTENT_NAME' : 'EMAIL_NEW_COMIC_CONTENT' # The name of the 'content' the website will use when distributing news comic emails
+    ,'EMAIL_NEW_POST_CONTENT_NAME' : 'EMAIL_NEW_POST_CONTENT'  # The name of the 'content' the website will use when distributing new blog post emails
+    ,'UNSUBSCRIBE_CONTENT_NAME' : 'UNSUBSCRIBE_CONTENT' # The name of the 'content' the website will use when distributing unsubscrine emails
+}
+
+
 COMMENTS_PAGINATOR_COUNT = 8 # Number of comments per page
-MAX_COMMENTS_PER_USER_PER_PAGE = 25
-THUMBNAIL_SIZE = (330, 420)
-COMIC_PAGINATOR_COUNT = 8
-############################################
+MAX_COMMENTS_PER_USER_PER_PAGE = 25 # Maximum number of comments a user can make per page
+THUMBNAIL_SIZE = (330, 420) # Thumbnail size ** CAUTION WHEN CHANGING THIS ***
+COMIC_PAGINATOR_COUNT = 8 # Number of comics to view per archive page
+BLOG_POST_PAGINATION_COUNT = 5 # Number of blog posts per page
+
+THANK_YOU_EMAIL_SUBJECT = 'The Engirls - Thank You for Subscribing !' # Sibject linke for Thank You emails
+NEW_COMIC_EMAIL_SUBJECT = 'The Engirls - New Comic Out: {title}'
+NEW_POST_EMAIL_SUBJECT = 'The Engirls - New Blog Post Out: {title}'
+
+###########################################
+# Gmail 
+###########################################
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'theintrocode@gmail.com'
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
 ############################################
@@ -91,7 +129,7 @@ WSGI_APPLICATION = 'theengirls.wsgi.application'
 
 DEBUG = True
 TEMPLATE_DEBUG = True
-ALLOWED_HOSTS = ['theengirls.herokuapp.com', '192.168.1.129']
+ALLOWED_HOSTS = ['theengirls.herokuapp.com', '192.168.1.6']
 ALLOWED_HOSTS.append('localhost')
 ALLOWED_HOSTS.append('localhost:8000')
 
@@ -112,12 +150,12 @@ INSTALLED_APPS = [
     'blog',
     'comments',
     'content',
+    'subscriptions',
     'django_filters',
     'social_django',
     'django.contrib.admin',
     'django.contrib.auth', 
     'storages',
-
 ]
 
 ############################################
@@ -187,6 +225,10 @@ DATABASES = {
 }
 
 set_default_db(DATABASES)
+
+############################################
+# CSRF cookie secure
+#############################################
 CSRF_COOKIE_SECURE = set_CSRF_COOKIE_SECURE()
 
 
@@ -213,8 +255,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ############################################
 # Internationalization
 #############################################
-
-# https://docs.djangoproject.com/en/3.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -245,7 +285,8 @@ CKEDITOR_CONFIGS = {
  
 
 ############################################
-#STATIC CONFIGURATION
+# STATIC CONFIGURATION - Must be changed when 
+# deploying to different servers
 #############################################
 
 
@@ -259,11 +300,8 @@ STATICFILES_DIRS = (
 )
 
 
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-#EDIA_URL = '/media/'
-
 STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-
 DEFAULT_FILE_STORAGE = 'theengirls.storage_backends.MediaStorage' 
+

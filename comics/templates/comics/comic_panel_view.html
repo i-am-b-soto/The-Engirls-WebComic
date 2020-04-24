@@ -1,45 +1,53 @@
 {% extends "base.html" %}
 {% block main_content %}
 
-{% load static %}
-
-<link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
-
   <!-- Page Content -->
-  <div class="container">
+  <div class="container-fluid">
 
     {% if comic_panel %}
 
-      <div class="row">
+      <!-- Row for Title, Date, Subscribe -->
+      <div class="row text-center" style = "overflow:hidden;">
 
-        <div class="col">        
+        <div class="col-sm-8 col-md-6 col-lg-8">        
           <!-- Title -->
           <div class="mt-4 engirls_font_large">
-            <h1>{{ comic_panel.title }}</h1> <small><p>{{ comic_panel.uploadTime }}</p></small>
+            <h1><b>{{ comic_panel.title }}</b></h1> 
+            <small><p>{{ comic_panel.uploadTime }}</p></small>
           </div>
-
-          <hr>
           <!-- col -->
         </div>
+
+        <!-- Wrapper for subscription button -->
+        <div class = "col-sm-4 engirls_font_norm" id = "id_subscribe_wrapper"> 
+        </div>
+        
         <!-- row -->
       </div>
+
+      <!-- hr row -->
+      <div class = "row">
+        <div class = "col">
+          <hr>
+        </div>
+      </div>
+
+      <!-- Main Row With comic panel/Youtube video-->
       <div class="row">
-        <div class="col-sm-8">
-          <!-- FB Share. 
-            More info here: https://developers.facebook.com/docs/plugins/share-button/#
-          -->
+        <!-- Main col containing comic panel/youtube video -->
+        <div class="col-lg-8 col-md-12">
           <meta property="og:url"           content="{{ request.get_path }}" />
           <meta property="og:type"          content="website" />
           <meta property="og:title"         content="The Engirls" />
           <meta property="og:description"   content="Check out this engirls page!" />
           <meta property="og:image"         content="{{ comic_panel.image.url }}" />         
             <!-- Preview Image -->
-        <div class="fb-share-button" data-href="{{ request.get_path }}" data-layout="button_count" data-size="small">
-          <a target="{{ request.get_path }}" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a>
-        </div> 
+          <div class="fb-share-button" data-href="{{ request.get_path }}" data-layout="button_count" data-size="small">
+            <a target="{{ request.get_path }}" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a>
+          </div> 
 
-
-          <div class="shadow">
+          <!-- the comment/video itself -->
+          <!-- <div class="col-sm" style = "width:100% !important;"> -->
               {% if comic_panel.youtube_url %}
                 <iframe src="{{ comic_panel.youtube_url }}" frameborder="0" allowfullscreen> </iframe>
               {% else %}
@@ -47,12 +55,12 @@
                 <img class="rounded img-fluid" src="{{ comic_panel.image.url }}" title = "{{ comic_panel.caption }}" >
 
               {% endif %}
-              
-            
-          </div>
+          <!-- </div>-->
           <hr>  
 
+          <!-- Nav buttons -->
           <div class = "container">
+            <!-- nav row -->
             <div class = "row">
                <!-- Button to oldest comic -->
                {% if oldest_comic_pk != comic_panel.pk and oldest_comic_pk != -1 %}
@@ -76,10 +84,10 @@
                     <a href="{% url 'comics:view_panel' comic_pk=newest_comic_pk %}" role="button" class="btn btn-outline-dark btn-sm shadow"> Newest >> </a>
                   </div> 
               {% endif %}
-              <!-- row --> 
+              <!-- nav rowrow --> 
             </div>            
              
-              <!-- Container -->
+              <!-- Nav Button container Container -->
           </div>
           <hr>                  
 
@@ -95,11 +103,11 @@
             <!-- card -->
           </div>
 
-        <!-- col-sm -->
+        <!-- main col -->
         </div> 
 
-         <!-- 3rd column - Comments -->
-        <div class = "col-sm py-2">
+         <!-- column - Comments -->
+        <div class = "col-sm-12 col-lg-4 py-2">
           {% if user.is_authenticated %}
           <div class = "comment_form ml-2">
             <p>
@@ -127,7 +135,7 @@
                     </div>
               </form>
           </div>
-            <!-- if user is not authenticated -->
+            <!-- If user is not authenticated, don't show comment form -->
             {% else %}
               <div class="engirls_font_small">
                 <div class = "container" id = "social_login_container">
@@ -143,10 +151,11 @@
             {% endif %}
             <div id = "comment_list"></div>
             <a name="comment_start"></a>
-          <!-- col -->
+          
+          <!-- comment column -->
           </div>  
 
-        <!-- row -->     
+        <!-- Main Row -->     
         </div>
        
     <!-- If no comic Pk -->
@@ -192,6 +201,7 @@ $("#post_comment").on('click', function(e) {
 
 $(document).ready(function(){
   render_comment_list();
+  $("#id_subscribe_wrapper").load("/subscriptions/subscribe/");
 });
 
  

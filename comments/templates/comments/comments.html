@@ -1,22 +1,13 @@
-  
 <!DOCTYPE html>
-<!-- Comment body based off bootstrap snippet: 
-https://bootsnipp.com/snippets/g68X5
-
-and
-
-https://bootsnipp.com/snippets/ZkexO
--->
+<!-- Comment Body -->
 <HTML lang="en">
 
 <body>
 <div class= container>
-
 	<div class="post-comments">
 
 			    <!-- first comment -->
 				<h2 class = "engirls_font_large">{{ comments.paginator.count }} Comments </h2>
-            	
             	{% if max_comments %}
               		<p class = "text-warning"> You have reached the maximum alloted comments for this Item </p>
             	{% endif %}
@@ -160,13 +151,17 @@ $(".my_pagination_submit").on('click', function(e) {
       return false;
   });
 
-/* Given comment_pk, load replies div */
+/* 
+	Given comment_pk, load replies div 
+*/
 function load_replies(comment_pk, cur_set = 1){
 	var div_name = "#id_replies_load_" + comment_pk;
 	$(div_name).load('/comments/view_conversations/' + comment_pk + '/' + cur_set + '/');
 }
-//$('.collapse').toggle();
-/* On Document ready load all replies  */
+
+/* 
+	On Document ready load all replies  
+*/
 $(document).ready(function(){
 
 
@@ -185,7 +180,8 @@ $(document).ready(function(){
   return false;
 });
 
-/* modify on click event for replies 
+/* 
+   modify on click event for replies 
    re-render all comments upon submit
 */
 $(".my_reply_button").on('click', function(e) {

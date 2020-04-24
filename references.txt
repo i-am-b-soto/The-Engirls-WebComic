@@ -1,5 +1,5 @@
 
-References and useful links: 
+-- The following links helped me build this app -- 
 
 For resizing an image using PIL:
 -https://gist.github.com/valberg/2429288
@@ -21,3 +21,30 @@ Logout redirect information:
 
 Very useful SO reference on CSS Keyframes
 -https://stackoverflow.com/questions/6805482/css3-transition-animation-on-load
+
+Sending google email
+-https://medium.com/@_christopher/how-to-send-emails-with-python-django-through-google-smtp-server-for-free-22ea6ea0fb8e
+-https://www.geekinsta.com/send-email-from-django-using-gmail-smtp/
+
+Add social login:
+-https://simpleisbetterthancomplex.com/tutorial/2016/10/24/how-to-add-social-login-to-django.html  
+
+Login with AJAX:
+-https://stackoverflow.com/questions/35461517/django-registration-ajax-post-form
+
+How Django Authentication works:
+-https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Authentication
+
+Comment body based off bootstrap snippets: 
+-https://bootsnipp.com/snippets/g68X5
+-https://bootsnipp.com/snippets/ZkexO
+
+Send mass HTML emails:
+-https://stackoverflow.com/questions/7583801/send-mass-emails-with-emailmultialternatives/10215091#10215091
+
+Footer Example:
+- https://codepen.io/NamiqNamaz/pen/QZYyEq 
+
+Facebook Share:
+-https://developers.facebook.com/docs/plugins/share-button/#
+

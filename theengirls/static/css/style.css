@@ -88,7 +88,14 @@
 
 
 
-/*******************
+/********************
+  Subscribe 
+*********************/
+.sub-button, .sub-button:active, .sub-button:focus{
+    outline: none; 
+
+}
+/********************
   iframe
 *********************/
 iframe {
@@ -101,6 +108,22 @@ iframe {
   border: 0 none;
   box-sizing: border-box;
 }
+
+/********************
+  Some Custom borders
+*********************/
+.theengirls-border-right{
+  border-right: 5px solid rgba(28,110,164,0.09);
+  border-radius: 0px 22px 0px 0px;
+}
+
+.theengirls-border-bottom {
+
+  border-bottom: 5px solid rgba(28,110,164,0.09);
+  border-radius: 0px 22px 0px 0px;
+
+}
+
 
 /*******************
   Comments + Replies
@@ -275,11 +298,11 @@ ul.social-network li {
 .social-network a.icoIG:hover {
   background-color: #C01ACA;
 }
-.social-network a.icoFacebook:hover i,
-.social-network a.icoLinkedin:hover i {
+.social-network a.icoFacebook:hover img,
+.social-network a.icoLinkedin:hover img {
   color: #fff;
 }
-.social-network a.icoIG:hover i {
+.social-network a.icoIG:hover img {
   color: #fff;
 }
 
@@ -301,13 +324,13 @@ ul.social-network li {
   font-size: 15px;
 }
 
-.social-circle li i {
+.social-circle li img {
   margin: 0;
   line-height: 30px;
   text-align: center;
 }
 
-.social-circle li a:hover i,
+.social-circle li a:hover img,
 .triggeredHover {
   -moz-transform: rotate(360deg);
   -webkit-transform: rotate(360deg);
@@ -320,7 +343,7 @@ ul.social-network li {
   transition: all 0.2s;
 }
 
-.social-circle i {
+.social-circle img {
   color: #595959;
   -webkit-transition: all 0.8s;
   -moz-transition: all 0.8s;

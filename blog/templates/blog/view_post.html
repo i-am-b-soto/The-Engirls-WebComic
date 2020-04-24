@@ -1,23 +1,32 @@
 {% extends "base.html" %}
 {% block main_content %}
 
-{% load static %}
-<!-- Bootstrap core CSS -->
-<link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
-
-
   <!-- Page Content -->
   <div class="container">
 
     {% if post %}
 
-      <div class="row">
+      <!-- Row for the header and subscribe -->
+      <div class="row" style="overflow:hidden;">
         <div class="col">        
           <!-- Title -->
           <div class="mt-4 engirls_font_large">
-            <h1 class = "float-left">{{ post.title }}</h1> <br><small><p>{{ post.created_on }}</p>
+            <h1 class = "float-left"><b>{{ post.title }}</b></h1> <br><small><p>{{ post.created_on }}</p>
                <p> Category: {{ post.category }}</p></small>
           </div>
+          
+        </div>
+
+        <!-- Subscription -->
+        <div class = "col-sm-5">
+          <div class = "engirls_font_norm" id = "id_subscribe_wrapper" style= "width: 100% !important;"> </div>
+        </div>
+
+      </div>
+
+      <!-- Row for the <hr> -->
+      <div class = "row">
+        <div class = "col">
           <hr>
         </div>
       </div>
@@ -27,7 +36,9 @@
           
           <div class = "shadow rounded px-4 py-4" style= "background-color: #FAFAFA; display:inline-block; width:100%">
            <!-- <div class="card-body"> -->
-                {{ post.body | safe }} 
+                <div class="">
+                  {{ post.body | safe }} 
+                </div>
             <!-- </div> -->
           </div>
         </div> 
@@ -96,7 +107,6 @@
 
 // Render the list of comments via ajax
 function render_comment_list(page_num=1){
-  
     $("#comment_list").load('/comments/post/{{ post.pk }}/' + page_num + '/');
   
 }
@@ -118,7 +128,10 @@ $("#post_comment").on('click', function(e) {
 
 
 $(document).ready(function(){
+  // Make sure images aren't oversized
+  $("img").addClass("img-fluid");
   render_comment_list();
+  $("#id_subscribe_wrapper").load("/subscriptions/subscribe/");
 });
 
 

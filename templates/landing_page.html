@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block main_content %}
+<div class = "container-fluid">
+	<div class = "row">
+		<div class = "col-sm-12">
+			<div class = "page-header engirls_font_large"> 
+				<div class = "text-center well">
+					<h1>Welcome to The Engirls</h1>				
+				</div> 
+			</div>
+			
+		</div>			
+	</div>
+	
+	<div class = "row" style = "overflow: hidden;">
+		<!-- Custom content goes here -->
+		<div class = "col-sm theengirls-border-right" id="id_center_me">
+			{{ content.body | safe}}
+		</div>
+
+	<div class = "col-sm engirls_font_norm" id = "id_subscribe_wrapper" style= "width: 100% !important;"> </div>
+
+	</div>
+</div>
+
+
+<script>
+
+
+/**
+	Realign the Subscribe button
+**/
+function realign_subscribe() {
+  // push the subscribe button further back, if inside the center me div
+  var sub_position = $("#id_subscribe_wrapper").position();
+  var center_position = $("#id_center_me").position();
+
+  // right most point of the center div
+  var center_position_right = center_position.left + $("#id_center_me").outerWidth(true);
+  
+  // If the subscribe button is inside the center image...
+  if(sub_position.left < center_position_right && sub_position.top <= center_position.top) {
+
+  	// Make sure resizing doesn't bring us out of the window...
+		$("#id_subscribe_wrapper").css("left", (center_position_right - sub_position.left ) + "px");
+  }
+}
+
+/*
+	Center the custom content to be in the center of the page
+*/
+function center_custom_content() {
+  $("#id_center_me").css("left", Math.max(0, (($(window).width() - $("#id_center_me").outerWidth()) / 2) + 
+                                                $(window).scrollLeft()) + "px");
+}
+
+/*
+	On Document Ready
+*/
+$(document).ready(function(){
+	  // Make sure images aren't oversized
+	  $("img").addClass("img-fluid");
+
+
+	 center_custom_content();
+	 $("#id_subscribe_wrapper").load("/subscriptions/subscribe/");
+	 realign_subscribe();
+	 
+
+
+	 $("#id_email").val();
+
+	  // If the window is resized, 
+	  // reconfigure the center content and subscribe button
+	$(window).on('resize',function(){
+		center_custom_content();
+		$("#id_subscribe_wrapper").load("/subscriptions/subscribe/");
+		realign_subscribe();
+	});
+
+
+
+});
+</script>
+{% endblock %}
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}

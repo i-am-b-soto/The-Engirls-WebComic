@@ -1,16 +1,7 @@
 <!DOCTYPE html>
-<!-- Comment body based off bootstrap snippet: 
-https://bootsnipp.com/snippets/g68X5
-
-and:
-
-https://bootsnipp.com/snippets/ZkexO
--->
 <HTML lang="en">	
 
-
 <body>
-
 
 <!-- replies -->
 {% if max_comments %}
@@ -76,7 +67,9 @@ https://bootsnipp.com/snippets/ZkexO
 
 <script>
 
-// Load value of comments/num_likes/comment_pk into div
+/* 
+	Load value of comments/num_likes/comment_pk into div
+*/
 function load_num_likes(comment_pk){
 	var div_id = "#id_num_likes_display_"+comment_pk;
 	$.getJSON( '/comments/num_likes/' + comment_pk + '/', function( data ) {
@@ -90,6 +83,9 @@ function load_num_likes(comment_pk){
 	});
 }
 
+/**
+	On Document Ready
+**/
 $(document).ready(function(){
 	var csrftoken = $("[name=csrfmiddlewaretoken]").val();
 
@@ -125,7 +121,9 @@ $(document).ready(function(){
 	});
 
 
-   	// Give View more buttons proper functionality  
+   	/* 
+   		Give View more buttons proper functionality 
+   	*/ 
 	$(".replies_view_more").each(function(i){
 	    // Retreive hidden input values
 	    var comment_pk = $(this).find("input[name='name_view_more_comment_pk']").val();
@@ -142,7 +140,9 @@ $(document).ready(function(){
 	});
 
 
-	// Give Delete Comment button proper funcionality
+	/* 
+		Give Delete Comment button proper funcionality
+	*/
 	$('.delete_comment').each(function(i){
 		var comment_pk = $(this).find("input[name='name_comment_delete']").val();
 		var delete_comment_button = "#id_comment_delete_"+comment_pk;
@@ -150,7 +150,6 @@ $(document).ready(function(){
 		$(delete_comment_button).unbind().click(function(e){
 		 	e.stopPropagation();
 		 	e.preventDefault();
-		 	
 		 	
 		 	if(confirm ('Delete this comment? ')) {
 	    	//alert("I'm going to delete this fucker ");

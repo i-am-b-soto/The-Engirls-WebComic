@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block main_content %}
+
+<div class = "page-header text-center engirls_font_large">  </div>
+<div class = "container-fluid">
+	<div class = "row">
+		<div class = "col-sm-12 text-center">
+			{% if content %}
+				{{ content.body |safe }}
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}
