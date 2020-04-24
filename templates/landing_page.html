@@ -13,12 +13,15 @@
 	</div>
 	
 	<div class = "row" style = "overflow: hidden;">
+		<div class = "col-sm-2 col-md-1 col-lg-2"> </div>
+
 		<!-- Custom content goes here -->
-		<div class = "col-sm theengirls-border-right" id="id_center_me">
+		<div class = "col-sm-12 col-md-7 col-lg-8 theengirls-border-right text-center">
+		<!-- <div class = "col-sm theengirls-border-right" id="id_center_me"> -->
 			{{ content.body | safe}}
 		</div>
 
-	<div class = "col-sm engirls_font_norm" id = "id_subscribe_wrapper" style= "width: 100% !important;"> </div>
+		<div class = "col-sm-5 col-md-4 col-lg-2 engirls_font_norm" id = "id_subscribe_wrapper" style= "width: 100% !important;"> </div>
 
 	</div>
 </div>
@@ -62,9 +65,9 @@ $(document).ready(function(){
 	  $("img").addClass("img-fluid");
 
 
-	 center_custom_content();
+	 //center_custom_content();
 	 $("#id_subscribe_wrapper").load("/subscriptions/subscribe/");
-	 realign_subscribe();
+	 //realign_subscribe();
 	 
 
 
@@ -73,9 +76,9 @@ $(document).ready(function(){
 	  // If the window is resized, 
 	  // reconfigure the center content and subscribe button
 	$(window).on('resize',function(){
-		center_custom_content();
+		//center_custom_content();
 		$("#id_subscribe_wrapper").load("/subscriptions/subscribe/");
-		realign_subscribe();
+		//realign_subscribe();
 	});
 
 
