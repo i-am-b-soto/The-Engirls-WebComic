@@ -11,7 +11,7 @@ class Subscription(models.Model):
 
     email = models.EmailField(blank = False, null = False, unique = True)
 
-    key = models.CharField(max_length= 11, blank = True)
+    key = models.CharField(max_length= 20, blank = True)
 
     created_on = models.DateTimeField(auto_now_add=True)
 
