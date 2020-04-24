@@ -48,7 +48,7 @@
 **/
 $("#id_subscribe_button").on('click', function(e) {
     e.preventDefault();
-    $("#id_email").val("");
+    
     var form = $(this).closest("form");
      $.ajax({
             url: '/subscriptions/submit_subscription/',
@@ -56,9 +56,7 @@ $("#id_subscribe_button").on('click', function(e) {
             data: form.serialize()
         }).done(function(data){
         	// Set email forum to none
-        	
-
-        	
+        	$("#id_email").val("");
         	// Display response message
         	$.each( data, function( key, val ) {
         		$("#id_form_response").text(val);

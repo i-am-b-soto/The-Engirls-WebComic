@@ -71,6 +71,8 @@ def submit_subscription(request):
 		thread.start_new_thread( send_thank_you, (subscription_form.cleaned_data['email'], ) )
 	except Exception as e:
 		print("Unable to start new thread-{}".format(str(e)))
+		return JsonResponse({"Response": "Internal Server Error. Please try again soon :)"})
+
 	#send_thank_you(subscription_form.cleaned_data['email'])
 	return JsonResponse({"Response": "Got it, Thank You!"})
 
