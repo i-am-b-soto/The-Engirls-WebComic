@@ -87,6 +87,14 @@
 }
 
 
+
+/********************
+  Subscribe 
+*********************/
+.sub-button, .sub-button:active, .sub-button:focus{
+    outline: none; 
+
+}
 /********************
   iframe
 *********************/
