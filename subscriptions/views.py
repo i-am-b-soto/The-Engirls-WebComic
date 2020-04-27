@@ -58,6 +58,10 @@ def unsubscribe(request, email_address =-1, key =-1):
 def submit_subscription(request):
 	if request.method != 'POST':
 		return HttpResponseBadRequest("Must be a POST Request to access this resource")
+	
+	if not request.is_secure():
+		return JsonResponse({"Response": "Looks like you're not on a secure connection. Try accessing the site through 'https' "})
+
 	subscription_form = SubscriptionForm(request.POST)
 	if subscription_form.is_valid():
 		if not create_subscription(subscription_form):
